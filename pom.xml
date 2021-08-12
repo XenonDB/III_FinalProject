@@ -55,6 +55,14 @@
 		<version>5.3.9</version>
 	</dependency>
   
+  	<!-- https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc -->
+	<dependency>
+    	<groupId>com.microsoft.sqlserver</groupId>
+    	<artifactId>mssql-jdbc</artifactId>
+    	<version>9.4.0.jre11</version>
+	</dependency>
+  	
+  
   </dependencies>
   
   

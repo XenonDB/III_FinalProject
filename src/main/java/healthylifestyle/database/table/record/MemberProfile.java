@@ -3,12 +3,21 @@ package healthylifestyle.database.table.record;
 import java.util.Date;
 import java.util.Optional;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import healthylifestyle.database.dbinterface.record.IJavaBean;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
-import healthylifestyle.database.table.record.bean.BeanMemberProfile;
 import healthylifestyle.utils.BloodTypeABO;
 import healthylifestyle.utils.Gender;
 
-public class MemberProfile implements IUniquidKeyData<Integer> {
+@Entity
+@Table(name = "Member")
+public class MemberProfile implements IUniquidKeyData<Integer>, IJavaBean {
 
 	/*
 	private Optional<Integer> id = Optional.empty();
@@ -32,16 +41,45 @@ public class MemberProfile implements IUniquidKeyData<Integer> {
 	
 	*/
 	
-	private final BeanMemberProfile bean;
+	
+
+	@Id
+	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+	
+	@Column(name = "name")
+	private String name;
+	
+	@Column(name = "mail")
+	private String mail;
+	
+	@Column(name = "password_SHA256")
+	private String password_SHA256;
+	
+	@Column(name = "gender")
+	private String gender;
+	
+	@Column(name = "bloodtypeABO")
+	private String bloodtypeABO;
+	
+	@Column(name = "birthday")
+	private Date birthday;
+	/*
+	@Column(name = "language")
+	private String language;
+	*/
+	@Column(name = "phone")
+	private String phone;
+	/*
+	@Column(name = "socialMediaAccounts")
+	private String socialMediaAccounts;
+	*/
+	@Column(name = "photo")
+	private Byte[] photo;
 	
 	
-	public MemberProfile() {
-		this.bean = new BeanMemberProfile();
-	}
-	
-	public MemberProfile(BeanMemberProfile b) {
-		this.bean = b == null ? new BeanMemberProfile() : b;
-	}
+	public MemberProfile() {}
 	
 	public MemberProfile(String mail, String password) {
 		this();
@@ -52,76 +90,79 @@ public class MemberProfile implements IUniquidKeyData<Integer> {
 	
 	@Override
 	public boolean canInsertIntoTable() {
-		return this.bean.getMail() != null && this.bean.getPassworld_SHA256() != null;
+		return !getMail().isEmpty() && !getHashedPassword().isEmpty();
 	}
 	
 	
 	@Override
 	public Optional<Integer> getUniquidKey() {
-		return Optional.ofNullable(bean.getId());
-	}
-
-	public void setId(int i) {
-		this.bean.setId(i);
+		return Optional.ofNullable(this.id);
 	}
 	
+	/*
+	 * 或許用不到
+	public void setId(int i) {
+		this.id = i;
+	}
+	*/
+	
 	public Optional<String> getHashedPassword(){
-		return Optional.ofNullable(bean.getPassworld_SHA256());
+		return Optional.ofNullable(this.password_SHA256);
 	}
 	
 	public void setHashedPassword(String pass) {
-		this.bean.setPassworld_SHA256(pass);
+		this.password_SHA256 = pass;
 	}
 
 	public Optional<String> getName() {
-		return Optional.ofNullable(bean.getName());
+		return Optional.ofNullable(this.name);
 	}
 
 	public void setName(String name) {
-		this.bean.setName(name);
+		this.name = name;
 	}
 	
 	public Optional<String> getMail() {
-		return Optional.ofNullable(bean.getMail());
+		return Optional.ofNullable(this.mail);
 	}
 
 	public void setMail(String mail) {
-		this.bean.setMail(mail);
+		this.mail = mail;
 	}
 
 	public Optional<Gender> getGender() {
 		
 		Gender g = null;
 		try {
-			g = Gender.valueOf(bean.getGender());
+			g = Gender.valueOf(this.gender);
 		}catch(Exception e) {}
 		
 		return Optional.ofNullable(g);
 	}
 
 	public void setGender(Gender gender) {
-		this.bean.setGender(gender == null ? "null" : gender.name());
+		this.gender = (gender == null ? "null" : gender.name());
 	}
 
 	public Optional<BloodTypeABO> getBloodtypeABO() {
 		BloodTypeABO b = null;
 		try {
-			b = BloodTypeABO.valueOf(bean.getBloodtypeABO());
+			b = BloodTypeABO.valueOf(this.bloodtypeABO);
 		}catch(Exception e) {}
 		
 		return Optional.ofNullable(b);
 	}
 
 	public void setBloodtypeABO(BloodTypeABO bloodtypeABO) {
-		this.bean.setBloodtypeABO(bloodtypeABO == null ? "null" : bloodtypeABO.name());
+		this.bloodtypeABO = (bloodtypeABO == null ? "null" : bloodtypeABO.name());
 	}
 
 	public Optional<Date> getBirthday() {
-		return Optional.ofNullable(this.bean.getBirthday());
+		return Optional.ofNullable(this.birthday);
 	}
 
 	public void setBirthday(Date birthday) {
-		this.bean.setBirthday(birthday);
+		this.birthday = birthday;
 	}
 
 	
@@ -142,11 +183,11 @@ public class MemberProfile implements IUniquidKeyData<Integer> {
 	*/
 
 	public Optional<String> getPhone() {
-		return Optional.ofNullable(this.bean.getPhone());
+		return Optional.ofNullable(this.phone);
 	}
 
 	public void setPhone(String phone) {
-		this.bean.setPhone(phone);
+		this.phone = phone;
 	}
 
 	/*
@@ -161,11 +202,11 @@ public class MemberProfile implements IUniquidKeyData<Integer> {
 	*/
 
 	public Optional<Byte[]> getPhoto() {
-		return Optional.ofNullable(this.bean.getPhoto());
+		return Optional.ofNullable(this.photo);
 	}
 
 	public void setPhoto(Byte[] photo) {
-		this.bean.setPhoto(photo);
+		this.photo = photo;
 	}
 
 

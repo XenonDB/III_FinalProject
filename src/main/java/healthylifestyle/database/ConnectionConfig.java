@@ -13,8 +13,6 @@ public class ConnectionConfig {
 	private String password;
 	private String ip;
 	
-	private String hibernetConnectionPoolSize;
-	
 	
 	public String getLoginAccount() {
 		return loginAccount;
@@ -54,13 +52,6 @@ public class ConnectionConfig {
 		return "org.hibernate.dialect.SQLServerDialect";
 	}
 	
-	
-	public String getHibernetConnectionPoolSize() {
-		return hibernetConnectionPoolSize;
-	}
-	public void setHibernetConnectionPoolSize(String hibernetConnectionPoolSize) {
-		this.hibernetConnectionPoolSize = hibernetConnectionPoolSize;
-	}
 	public String getDatabaseType() {
 		return databaseType;
 	}

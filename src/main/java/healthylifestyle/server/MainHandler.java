@@ -7,9 +7,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Session;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import healthylifestyle.database.ConnectionConfig;
+import healthylifestyle.database.ConnectionUtils;
+import healthylifestyle.database.table.record.MemberProfile;
 
 /**
  * Servlet implementation class MainHandler
@@ -37,7 +40,11 @@ public class MainHandler extends HttpServlet {
 		//ConnectionConfig config = (ConnectionConfig) beanContext.getBean("connectionConfig");
 		//response.getWriter().println(config.getDatabaseName());
 		
-		response.getWriter().println();
+		//response.getWriter().println(ConnectionUtils.sessionFactory.getProperties().toString());
+		
+		Session s = ConnectionUtils.sessionFactory.openSession();
+		MemberProfile m = s.get(MemberProfile.class, 1);
+		response.getWriter().println(m.getMail().get());
 	}
 
 	/**

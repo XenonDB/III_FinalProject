@@ -14,7 +14,6 @@
        <property name="password" value="MS2019SQL"/>
        <property name="ip" value="127.0.0.1:4876"/>
        <property name="databaseType" value="MSSQL"/>
-       <property name="hibernetConnectionPoolSize" value="2"/>
     </bean>
     
 	

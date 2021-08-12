@@ -20,9 +20,8 @@ public class ConnectionUtils {
 		config.setProperty(Environment.URL, config_inst.getURL());
 		config.setProperty(Environment.USER, config_inst.getLoginAccount());
 		config.setProperty(Environment.DIALECT, config_inst.getHibernateDialect());
-		config.setProperty(Environment.POOL_SIZE, config_inst.getHibernetConnectionPoolSize());
 		
-		sessionFactory = config.buildSessionFactory();
+		sessionFactory = config.configure("hibernate.cfg.xml").buildSessionFactory();
 	}
 	
 	
