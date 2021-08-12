@@ -1,5 +1,6 @@
 package healthylifestyle.database;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
@@ -8,7 +9,7 @@ import healthylifestyle.utils.JavaBeans;
 
 public class ConnectionUtils {
 
-	public static final SessionFactory sessionFactory;
+	private static final SessionFactory sessionFactory;
 	
 	static {
 		
@@ -24,5 +25,12 @@ public class ConnectionUtils {
 		sessionFactory = config.configure("hibernate.cfg.xml").buildSessionFactory();
 	}
 	
+	public static Session openSession() {
+		return sessionFactory.openSession();
+	}
+	
+	public static Session getCurrentSession() {
+		return sessionFactory.getCurrentSession();
+	}
 	
 }

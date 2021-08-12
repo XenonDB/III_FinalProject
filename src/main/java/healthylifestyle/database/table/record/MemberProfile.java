@@ -17,7 +17,7 @@ import healthylifestyle.utils.Gender;
 
 @Entity
 @Table(name = "Member")
-public class MemberProfile implements IUniquidKeyData<Integer>, IJavaBean {
+public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 
 	/*
 	private Optional<Integer> id = Optional.empty();
@@ -42,7 +42,6 @@ public class MemberProfile implements IUniquidKeyData<Integer>, IJavaBean {
 	*/
 	
 	
-
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -95,12 +94,17 @@ public class MemberProfile implements IUniquidKeyData<Integer>, IJavaBean {
 	
 	
 	@Override
-	public Optional<Integer> getUniquidKey() {
+	public Optional<String> getUniquidKey() {
+		return this.getMail();
+	}
+	
+	
+	
+	public Optional<Integer> getId(){
 		return Optional.ofNullable(this.id);
 	}
 	
 	/*
-	 * 或許用不到
 	public void setId(int i) {
 		this.id = i;
 	}
