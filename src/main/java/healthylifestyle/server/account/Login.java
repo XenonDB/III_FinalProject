@@ -42,7 +42,7 @@ public class Login extends HttpServlet {
     		response.getWriter().print(rawjson);
     	}
     	else {
-    		response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+    		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     	}
     	
     }
@@ -60,7 +60,7 @@ public class Login extends HttpServlet {
 		boolean successLogin = LoginUtils.onMemberTryingLogin(account, password, ip, session);
 		
 		if(!successLogin) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
 		
