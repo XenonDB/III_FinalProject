@@ -46,7 +46,7 @@ public class ConnectionConfig {
 	 * 請使用此函式來取得實際連進資料庫的資訊
 	 * */
 	public String getURL() {
-		return String.format("jdbc:sqlserver://%s;databaseName=%s", this.ip, this.databaseName);
+		return String.format("jdbc:sqlserver://%s;databaseName=%s", this.getIp(), this.getDatabaseName());
 	}
 	public String getHibernateDialect() {
 		return "org.hibernate.dialect.SQLServerDialect";

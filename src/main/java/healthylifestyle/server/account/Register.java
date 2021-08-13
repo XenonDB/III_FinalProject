@@ -3,12 +3,14 @@ package healthylifestyle.server.account;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.JDBCException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -23,12 +25,12 @@ import healthylifestyle.server.MainHandler;
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	private static final String AJAX_TAG_ACCOUNT = "email";
-	private static final String AJAX_TAG_PASSWORD = "password";
+	public static final String AJAX_TAG_ACCOUNT = "email";
+	public static final String AJAX_TAG_PASSWORD = "password";
 	
-	private static final String VAILD_ACCOUNT_PATTERN1 = "[\\w@.]+";
-	private static final String VAILD_ACCOUNT_PATTERN2 = "^[^@]+@[^@]+$";
-	private static final String VAILD_PASSWORD_PATTERN = "[\\w]+";
+	public static final String VAILD_ACCOUNT_PATTERN1 = "[\\w@.]+";
+	public static final String VAILD_ACCOUNT_PATTERN2 = "^[^@]+@[^@]+$";
+	public static final String VAILD_PASSWORD_PATTERN = "[\\w]+";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -56,7 +58,7 @@ public class Register extends HttpServlet {
 		Session s = ConnectionUtils.openSession();
 		try{
 			s.beginTransaction();
-			//TODO:此方法註冊失敗時，identity仍然會自增，需要解決這問題。
+			
 			s.save(mp);
 			
 			s.getTransaction().commit();
@@ -64,9 +66,10 @@ public class Register extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_OK);
 			
 		}
-		catch(ConstraintViolationException e) {
-			SQLException ee = (SQLException) e.getCause();
-			if(ee != null && ee.getErrorCode() == 2627) {
+		catch(PersistenceException e) {
+			Throwable ee = e.getCause();
+			
+			if(ee != null && ee instanceof JDBCException && ((JDBCException)ee).getErrorCode() == 2627) {
 				response.setStatus(HttpServletResponse.SC_CONFLICT);
 				response.getWriter().println("Account has been registered.");
 			}

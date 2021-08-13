@@ -5,22 +5,20 @@ import java.util.Optional;
 import org.hibernate.Session;
 
 import healthylifestyle.database.ConnectionUtils;
-import healthylifestyle.database.table.record.MemberProfile;
+import healthylifestyle.database.table.record.EmployeeProfile;
 
-public class TableMember {
+public class TableEmployee {
 
-	public static Optional<MemberProfile> getMemberByPK(String account) {
+	
+	public static Optional<EmployeeProfile> getEmployeeByPK(String account) {
 		
 		Session s = ConnectionUtils.openSession();
 		s.beginTransaction();
 		
-		MemberProfile p = s.get(MemberProfile.class, account);
+		EmployeeProfile p = s.get(EmployeeProfile.class, account);
 		
 		s.close();
 		
 		return Optional.ofNullable(p);
 	}
-	
-	
-	
 }

@@ -11,5 +11,7 @@
 		<property name="current_session_context_class">thread</property>
 		
 		<mapping class="healthylifestyle.database.table.record.MemberProfile"/>
+		<mapping class="healthylifestyle.database.table.record.EmployeeProfile"/>
+		
     </session-factory>
 </hibernate-configuration>

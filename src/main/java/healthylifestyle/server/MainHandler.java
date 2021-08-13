@@ -38,7 +38,10 @@ public class MainHandler extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 		response.getWriter().println("GET method is not allow for this path.");
-		
+		System.out.println(request.getRemoteAddr());
+		System.out.println(request.getRemoteHost());
+		System.out.println(request.getRemotePort());
+		System.out.println(request.getRemoteUser());
 		//ConnectionConfig config = (ConnectionConfig) beanContext.getBean("connectionConfig");
 		//response.getWriter().println(config.getDatabaseName());
 		

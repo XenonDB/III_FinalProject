@@ -41,15 +41,10 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	
 	*/
 	
-	
-	@Id
-	@Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
 	@Column(name = "name")
 	private String name;
 	
+	@Id
 	@Column(name = "mail")
 	private String mail;
 	
@@ -93,22 +88,20 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	}
 	
 	
+	/**
+	 * 等同於getMail()
+	 * */
 	@Override
 	public Optional<String> getUniquidKey() {
 		return this.getMail();
 	}
 	
-	
-	
-	public Optional<Integer> getId(){
-		return Optional.ofNullable(this.id);
+	/**
+	 * 等同於getMail(), getUniquidKey()
+	 * */
+	public Optional<String> getUser(){
+		return this.getUniquidKey();
 	}
-	
-	/*
-	public void setId(int i) {
-		this.id = i;
-	}
-	*/
 	
 	public Optional<String> getHashedPassword(){
 		return Optional.ofNullable(this.password_SHA256);
