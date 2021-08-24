@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script defer src="js/account.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
+	<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.js"></script>
+
+	
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" href="img/favi-logo.png" />
+    <link rel="stylesheet" href="css/general.css" />
+    <link rel="stylesheet" href="css/landpage.css" />
+    <link rel="stylesheet" href="css/landpage_queries.css" />
+
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule=""
+      src="https://unpkg.com/ionicons@5.4.0/dist/ionicons/ionicons.js"
+    ></script>
+    <script defer src="js/script.js"></script>
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>Healthy Style&mdash; Healthy 365 days!</title>
+  </head>
+  <body>
+    <header class="header">
+      <a href="index.html">
+        <img class="logo" alt="Healthy logo" src="img/healthy-logo2.png" />
+      </a>
+      <nav class="main-nav">
+        <ul class="main-nav-list">
+          <li><a class="main-nav-link" href="#how">如何使用</a></li>
+          <li><a class="main-nav-link" href="#doctors">醫生陣容</a></li>
+          <li><a class="main-nav-link" href="#testimonials">推薦</a></li>
+          <li><a class="main-nav-link" href="#pricing">價格</a></li>
+          <!-- bootstrap -->
+          <li class="dropdown">
+            <a
+              class="main-nav-link nav-cta dropdown-toggle"
+              data-bs-toggle="dropdown"
+              href=""
+              role="button"
+              aria-expanded="false"
+              >其他選項</a
+            >
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">登入</a></li>
+              <li><a class="dropdown-item" href="#cta">建立新帳號</a></li>
+              <li><a class="dropdown-item" href="#">加入合作夥伴</a></li>
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="#">關於我們</a></li>
+            </ul>
+          </li>
+          <!-- bootstrap -->
+        </ul>
+      </nav>
+
+      <button class="btn-mobile-nav">
+        <ion-icon class="icon-mobile-nav" name="menu-outline"></ion-icon>
+        <ion-icon class="icon-mobile-nav" name="close-outline"></ion-icon>
+      </button>
+    </header>
+
+    <main>
+      <section class="section-hero">
+        <div class="hero">
+          <div class="hero-text-box">
+            <h1 class="heading-primary">您的醫療好幫手</h1>
+            <p class="hero-description">
+              24小時一週七日，我們不打烊，我們關心您的健康
+            </p>
+            <div class="patients">
+              <div class="patients-imgs">
+                <img src="img/customers/customer-1.jpg" alt="Customer photo" />
+                <img src="img/customers/customer-2.jpg" alt="Customer photo" />
+                <img src="img/customers/customer-3.jpg" alt="Customer photo" />
+                <img src="img/customers/customer-4.jpg" alt="Customer photo" />
+                <img src="img/customers/customer-5.jpg" alt="Customer photo" />
+                <img src="img/customers/customer-6.jpg" alt="Customer photo" />
+              </div>
+              <p class="patients-text"><span>10,000+</span> 位使用者的體驗!</p>
+            </div>
+          </div>
+          <div class="login">
+            <div class="log-tex-box">
+              <h2 class="login-title" >歡迎回來</h2>
+			  <p class="hero-description">目前登入帳戶：<div id="loginAccount"></div></p>
+			  <button class="btn btn--form" onclick="alert('尚未實作')"><span id="form_send_text">切換為管理員模式(尚未實作)</span></button>
+			  <button class="btn btn--form" onclick="getRegisteredMembers()"><span id="form_send_text">取得會員列表</span></button>
+			  <button class="btn btn--form" onclick="logout()"><span id="form_send_text">登出帳號</span></button>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+
+      
+    </main>
+
+	<div id="adminTable" class="log-tex-box" style="display:none;">
+	
+	<table id="memberTable">
+		
+	</table>
+	<input id="accountToDelete" type="text">
+	<button class="btn btn--form" onclick="deleteAccount()"><span id="form_send_text">刪除帳號</span></button>
+	</div>
+	
+    <footer class="footer" id="footer">
+      <div class="container grid grid--footer">
+        <div class="logo-col">
+          <a href="#" class="footer-logo">
+            <img
+              class="footer-logo"
+              alt="Health LOGO"
+              src="img/healthy-logo2.png"
+            />
+          </a>
+
+          <ul class="social-links">
+            <li>
+              <a class="footer-link" href="#"
+                ><ion-icon class="social-icon" name="logo-instagram"></ion-icon
+              ></a>
+            </li>
+            <li>
+              <a class="footer-link" href="#"
+                ><ion-icon class="social-icon" name="logo-facebook"></ion-icon
+              ></a>
+            </li>
+            <li>
+              <a class="footer-link" href="#"
+                ><ion-icon class="social-icon" name="logo-twitter"></ion-icon
+              ></a>
+            </li>
+          </ul>
+
+          <p class="copyright">
+            Copyright &copy; <span class="year">2021</span> by Healthy, Inc. All
+            rights reserved.
+          </p>
+        </div>
+        <div class="address-col">
+          <p class="footer-heading">Contact us</p>
+          <address class="contacts">
+            <p class="address">高雄市前金區中正四路211號8樓之1</p>
+            <p>
+              <a class="footer-link" href="tel:07-969-9885">07-969-9885</a
+              ><br />
+              <a class="footer-link" href="mailto:starthealth@google.com"
+                >starthealth@google.com</a
+              >
+            </p>
+          </address>
+        </div>
+        <nav class="nav-col">
+          <p class="footer-heading">Account</p>
+          <ul class="footer-nav">
+            <li><a class="footer-link" href="#">建立帳號</a></li>
+            <li><a class="footer-link" href="#">登入</a></li>
+            <li><a class="footer-link" href="#">iOS app</a></li>
+            <li><a class="footer-link" href="#">Android app</a></li>
+          </ul>
+        </nav>
+
+        <nav class="nav-col">
+          <p class="footer-heading">Company</p>
+          <ul class="footer-nav">
+            <li><a class="footer-link" href="#">關於我們</a></li>
+            <li><a class="footer-link" href="#">商業合作</a></li>
+            <li><a class="footer-link" href="#">醫生合作</a></li>
+            <li><a class="footer-link" href="#">職涯</a></li>
+          </ul>
+        </nav>
+
+        <nav class="nav-col">
+          <p class="footer-heading">Resources</p>
+          <ul class="footer-nav">
+            <li><a class="footer-link" href="#">醫生名單</a></li>
+            <li><a class="footer-link" href="#">客服系統</a></li>
+            <li><a class="footer-link" href="#">服務條款</a></li>
+          </ul>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
