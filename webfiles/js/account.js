@@ -59,7 +59,7 @@ function getRegisteredMembers(){
 	}).fail(function(data){
 		var errmsg = "";
 		switch(data.status){
-			case 401:
+			case 403:
 				errmsg = "無權限的操作。";
 				break;
 			default:
