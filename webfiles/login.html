@@ -7,7 +7,7 @@
 	<title>login</title>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script defer src="js/login.js"></script>
+	<script defer src="js/loginAndRegister.js"></script>
 	
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -112,11 +112,11 @@
 						<form id="loginRegion" action="#" enctype="application/x-www-form-urlencoded">
 							<div class="group">
 								<label for="user" class="label">使用者名稱</label>
-								<input id="user" type="text" class="input" name="email">
+								<input id="user" type="text" class="input" name="email" required>
 							</div>
 							<div class="group">
 								<label for="pass" class="label">密碼</label>
-								<input id="pass" type="password" class="input" data-type="password" name="password">
+								<input id="pass" type="password" class="input" data-type="password" name="password" required>
 							</div>
 						
 							<div class="group">
@@ -124,8 +124,8 @@
 								<label for="check"><span class="icon"></span>記住帳號</label>
 							</div>
 							<div class="group">
-								<input id="form_send" type="submit" class="button btn btn--full" value="Sign In">
-								<button id="form_send_waiting" style="display:none;" class="button btn btn--full"><span class="glyphicon">&#x231b;</span></button>
+								<input id="form_login_send" type="submit" class="button btn btn--full" value="Sign In">
+								<button id="form_login_send_waiting" style="display:none;" class="button btn btn--full"><span class="glyphicon">&#x231b;</span></button>
 							</div>
 						</form>
 						<div class="hr"></div>
@@ -134,25 +134,28 @@
 						</div>
 					</div>
 					<div class="sign-up-htm">
+						<form id="registerRegion" action="#" enctype="application/x-www-form-urlencoded">
 						<div class="group">
 							<label for="user" class="label margin-bottom-sm">使用者名稱</label>
 							<input id="user" type="text" class="input">
 						</div>
 						<div class="group">
-							<label for="pass" class="label">密碼</label>
-							<input id="pass" type="password" class="input" data-type="password">
+							<label for="password" class="label">密碼</label>
+							<input id="password" type="password" class="input" data-type="password" name="password" required>
 						</div>
 						<div class="group">
-							<label for="pass" class="label">確認密碼</label>
-							<input id="pass" type="password" class="input" data-type="password">
+							<label for="passConfirm" class="label">確認密碼</label>
+							<input id="passConfirm" type="password" class="input" data-type="password" required>
 						</div>
 						<div class="group">
 							<label for="pass" class="label">信箱</label>
-							<input id="pass" type="text" class="input">
+							<input id="email" type="text" class="input" name="email" required>
 						</div>
 						<div class="group">
-							<input type="submit" class="button" value="Sign Up">
+							<input id="form_register_send" type="submit" type="submit" class="button" value="Sign Up">
+							<button id="form_register_send_waiting" style="display:none;" class="button btn btn--full"><span class="glyphicon">&#x231b;</span></button>
 						</div>
+						</form>
 						<div class="hr"></div>
 						<div class="foot-lnk">
 							<label for="tab-1">已經是會員了?</a>
