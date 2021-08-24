@@ -78,7 +78,7 @@ body {
 /* GENRAL REUSABLE COMPONENTS */
 /**************************/
 
-.container {
+.container1 {
   /* 1140px */
   max-width: 120rem;
   padding: 0 3.2rem;
@@ -462,4 +462,36 @@ strong {
 .footer-link:hover,
 .footer-link:active {
   color: #555;
+}
+
+.path{
+  margin: 10px 0;
+}
+.path ul {
+  position: relative;
+  display: flex;
+}
+.path li {
+  position: relative;
+  padding: 6px 8px;
+}
+.path a {
+  text-decoration: none;
+    font-size: 1.6rem;
+    color: #767676
+}
+.path ul, li {
+  list-style: none;
+}
+.path li + li::before {
+  position: absolute;
+  left: -2px;
+  content: '/';
+  color: #767676
+  
+}
+.action{
+  text-decoration: none;
+    font-size: 1.6rem;
+    color: #767676;
 }

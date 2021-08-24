@@ -1,0 +1,155 @@
+.form{
+    position: relative;
+    left: 30px;
+}
+
+.member {
+    margin-bottom: 5%;
+}
+.member-key{
+    text-align: left;
+}
+
+.member-list {
+    padding: 0;
+    max-height: 700px;
+    border-radius: 5px;
+    box-shadow: 2px 0.5rem 1rem rgb(0 0 0 / 15%)
+}
+
+.member-list h3,ul{
+    margin: 0;
+}
+
+.first-h3{
+    border-start-start-radius: 5px;
+    border-start-end-radius: 5px;
+}
+.last-a{
+    border-end-end-radius: 5px;
+    border-end-start-radius: 5px;
+}
+.member-list a{
+    text-decoration: none;
+    font-size: 1.6rem;
+    color: #767676;
+}
+.member-list div h3{
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    width: 100%;
+    background-color: #e7f5ff;
+}
+.member-list ul li{
+    margin: 0;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    width: 100%;
+    list-style: none;
+}
+
+.list-link a:hover{
+    display: block;
+    color: #fff;
+    background-color: #4dabf7;
+    text-decoration:underline;
+}
+
+.member-key{
+    padding-bottom: 15px;
+}
+.member-key h1{
+    font-weight: 700;
+}
+.member-form{
+    border-radius: 5px;
+    padding: 5%;
+    box-shadow:2px 0.5rem 1rem rgb(0 0 0 / 15%);
+    margin: 1% 0;
+    margin-bottom: 5%;
+}
+.member-form *:focus {
+    border: 2px solid;
+    border-color:#4dabf7;
+  }
+.member-img{
+    width:100%;
+    height: 60%;
+}
+
+.M-form label{
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin-bottom: 1.2rem;
+}
+.M-form input{
+    width: 100%;
+    padding: 1.2rem;
+    font-size: 1.8rem;
+    font-family: inherit;
+    color: inherit;
+    border: 2px solid;
+    border-color:#D3D3D3;
+    border-radius: 5px;
+    background-color: #fff;
+    border-radius: 9px;
+}
+.M-form input:hover{
+    border: 2px solid;
+    border-color:#4dabf7;
+}
+.form-group{
+    margin-bottom: 3rem;
+}
+.M-form select{
+    width: 100%;
+    font-size: 1.8rem;
+    font-family: inherit;
+    color: inherit;
+    background-color: #fff;
+    padding: 1.2rem;
+    border-width: initial;
+    border: 2px solid;
+    border-color:#D3D3D3;
+    border-image: initial;
+    border-radius: 9px;
+}
+.M-btn{
+    max-width: 23%;
+    margin-left: 7.5px;
+    background-color: #e7f5ff;
+    color:#555;
+    align-self: end;
+    padding: 1rem;
+}
+.M-btn:hover{
+    background-color: #4dabf7;
+    color:#fff;
+}
+.M-picture{
+    position: relative;
+    left: 60px;
+    max-height: 350px;
+    border-radius: 11px;
+    overflow: hidden;
+    box-shadow: 2px 0.5rem 1rem rgb(0 0 0 / 15%);
+}
+
+.set-picture{
+    padding: 1%;
+    position:absolute;
+    height: 30px;
+    width: 30px;
+    right: 8px;
+    top: 180px;
+    border-radius: 100px;
+}
+.set-picture:hover{
+    background-color:rgb(0 0 0 / 20%);
+    transition: all 0.5s;
+}
