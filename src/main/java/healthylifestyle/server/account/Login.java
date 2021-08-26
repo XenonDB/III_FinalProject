@@ -33,11 +33,11 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
     	HttpSession ss = request.getSession();
+    	OnlineUser ou = LoginUtils.getVaildOnlineUser(ss).orElse(null);
     	
-    	if(LoginUtils.isVaildSession(ss)) {
+    	if(ou != null) {
     		response.setStatus(HttpServletResponse.SC_OK);
     		response.setContentType("application/json;charset=utf-8");
-    		OnlineUser ou = LoginUtils.getOnlineUserBySession(ss).get();
     		String rawjson = String.format("{\"account\":\"%s\", \"permission\": %d}", ou.getUser(), ou.getPermissionLevel().getLevel());
     		response.getWriter().print(rawjson);
     	}

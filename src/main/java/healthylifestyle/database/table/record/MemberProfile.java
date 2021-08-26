@@ -5,8 +5,6 @@ import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -41,12 +39,15 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	
 	*/
 	
-	@Column(name = "name")
-	private String name;
-	
 	@Id
+	@Column(name = "user", nullable = false)
+	private String user;
+	
 	@Column(name = "mail")
 	private String mail;
+	
+	@Column(name = "nickName")
+	private String nickName;
 	
 	@Column(name = "password_SHA256")
 	private String password_SHA256;
@@ -59,48 +60,40 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	
 	@Column(name = "birthday")
 	private Date birthday;
-	/*
-	@Column(name = "language")
-	private String language;
-	*/
+	
 	@Column(name = "phone")
 	private String phone;
-	/*
-	@Column(name = "socialMediaAccounts")
-	private String socialMediaAccounts;
-	*/
+	
 	@Column(name = "photo")
 	private Byte[] photo;
 	
 	
 	public MemberProfile() {}
 	
-	public MemberProfile(String mail, String password) {
+	public MemberProfile(String user, String password) {
 		this();
-		this.setMail(mail);
+		this.setUser(user);
 		this.setHashedPassword(password);
 	}
 	
 	
 	@Override
 	public boolean canInsertIntoTable() {
-		return !getMail().isEmpty() && !getHashedPassword().isEmpty();
+		return !getUniquidKey().isEmpty() && !getHashedPassword().isEmpty();
 	}
 	
-	
-	/**
-	 * 等同於getMail()
-	 * */
 	@Override
 	public Optional<String> getUniquidKey() {
-		return this.getMail();
+		return this.getUser();
 	}
 	
-	/**
-	 * 等同於getMail(), getUniquidKey()
-	 * */
+	
 	public Optional<String> getUser(){
-		return this.getUniquidKey();
+		return Optional.ofNullable(this.user);
+	}
+	
+	public void setUser(String user) {
+		this.user = user;
 	}
 	
 	public Optional<String> getHashedPassword(){
@@ -111,12 +104,12 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		this.password_SHA256 = pass;
 	}
 
-	public Optional<String> getName() {
-		return Optional.ofNullable(this.name);
+	public Optional<String> getNickName() {
+		return Optional.ofNullable(this.nickName);
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNickName(String name) {
+		this.nickName = name;
 	}
 	
 	public Optional<String> getMail() {

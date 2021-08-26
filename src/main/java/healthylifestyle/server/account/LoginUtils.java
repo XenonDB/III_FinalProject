@@ -38,27 +38,30 @@ public class LoginUtils {
 		
 	}
 	
-	public static boolean isVaildSession(HttpSession session) {
-		Optional<OnlineUser> user = getOnlineUserBySession(session);
+	public static Optional<OnlineUser> getVaildOnlineUser(HttpSession session){
+		String user = (String) session.getAttribute(SESSION_TAG_USER);
+		if(user == null) return Optional.empty();
 		
-		return !user.isEmpty() && user.get().getSessionid().equals(session.getId());
+		Optional<OnlineUser> ouser = getOnlineUser(user);
+		
+		if(!ouser.isEmpty() && session.getId().equals(ouser.get().getSessionid())) return ouser;
+		
+		return Optional.empty();
+		
+	}
+	
+	public static boolean isVaildSession(HttpSession session) {
+		return !getVaildOnlineUser(session).isEmpty();
 	}
 	
 	public static boolean updatePermission(HttpSession session, int permissionToUse) {
-		Optional<OnlineUser> user = getOnlineUserBySession(session);
+		Optional<OnlineUser> user = getVaildOnlineUser(session);
 		
 		return !user.isEmpty() && user.get().setPermissionLevel(permissionToUse);
 	}
 	
-	public static OnlineUser getOnlineUser(String user) {
-		return onlineUsers.get(user);
-	}
-	
-	public static Optional<OnlineUser> getOnlineUserBySession(HttpSession session) {
-		String user = (String) session.getAttribute(SESSION_TAG_USER);
-		if(user == null) return Optional.empty();
-		
-		return Optional.ofNullable(getOnlineUser(user));
+	public static Optional<OnlineUser> getOnlineUser(String user) {
+		return Optional.ofNullable(onlineUsers.get(user));
 	}
 	
 	public static int getSessionExpireTimeSeconds() {

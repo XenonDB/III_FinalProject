@@ -44,13 +44,9 @@ public class MemberManager extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//TODO:權限切換之後再作好了。
-		if(!LoginUtils.isVaildSession(request.getSession())) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-			return;
-		}
 		
-		Optional<OnlineUser> ouser = LoginUtils.getOnlineUserBySession(request.getSession());
-		if(!ouser.get().setPermissionLevel(PermissionLevel.ADMIN)) {
+		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
+		if(ouser.isEmpty() || !ouser.get().setPermissionLevel(PermissionLevel.ADMIN)) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
@@ -67,10 +63,10 @@ public class MemberManager extends HttpServlet {
 			List<MemberProfile> members = q.getResultList();
 			
 			StringBuilder rawjson = new StringBuilder("[");
-			String template = "{\"mail\":\"%s\", \"name\":\"%s\"},";
+			String template = "{\"user\":\"%s\", \"nickName\":\"%s\"},";
 			
 			members.forEach(e -> {
-				rawjson.append(String.format(template, e.getUser().get(), e.getName().orElse("null")));
+				rawjson.append(String.format(template, e.getUser().get(), e.getNickName().orElse("null")));
 			});
 			
 			rawjson.deleteCharAt(rawjson.length()-1);
@@ -90,13 +86,8 @@ public class MemberManager extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		if(!LoginUtils.isVaildSession(request.getSession())) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			return;
-		}
-		
-		Optional<OnlineUser> ouser = LoginUtils.getOnlineUserBySession(request.getSession());
-		if(!ouser.get().setPermissionLevel(PermissionLevel.ADMIN)) {
+		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
+		if(ouser.isEmpty() || !ouser.get().setPermissionLevel(PermissionLevel.ADMIN)) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}
@@ -108,7 +99,7 @@ public class MemberManager extends HttpServlet {
 			
 			ss.beginTransaction();
 			
-			Query q = ss.createQuery("delete MemberProfile as m where m.mail=?0");
+			Query q = ss.createQuery("delete MemberProfile as m where m.user=?0");
 			
 			q.setParameter(0, accountToDelete);
 			

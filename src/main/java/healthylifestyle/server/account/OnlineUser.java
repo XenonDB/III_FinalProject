@@ -66,4 +66,9 @@ public class OnlineUser {
 		this.sessionid = sessionid;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("user: %s, permission: %s, ip: %s, sessionId: %s, %s", this.getUser(), this.getPermissionLevel().toString(), this.getLoginIp(), this.getSessionid(), super.toString());
+	}
+	
 }
