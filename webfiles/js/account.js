@@ -35,8 +35,8 @@ function buildTable(data){
 	
 	data.forEach(function(e){
 		
-		var col1 = $("<td>").html(e.mail);
-		var col2 = $("<td>").html(e.name);
+		var col1 = $("<td>").html(e.user);
+		var col2 = $("<td>").html(e.nickName);
 		
 		var row = $("<tr>").append(col1).append(col2);
 		
@@ -54,7 +54,7 @@ function getRegisteredMembers(){
 	$.get({
 		url: requestUrl
 	}).done(function(data){
-		alert("成功取得會員列表。")
+		alert("成功取得會員列表。");
 		buildTable(data);
 	}).fail(function(data){
 		var errmsg = "";

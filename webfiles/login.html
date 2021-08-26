@@ -7,7 +7,7 @@
 	<title>login</title>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script defer src="js/loginAndRegister.js"></script>
+	<script defer src="js/database_general.js"></script>
 	
 	<link rel="preconnect" href="https://fonts.gstatic.com" />
     <link
@@ -111,12 +111,12 @@
 					<div class="sign-in-htm">
 						<form id="loginRegion" action="#" enctype="application/x-www-form-urlencoded">
 							<div class="group">
-								<label for="user" class="label">使用者名稱</label>
-								<input id="user" type="text" class="input" name="email" required>
+								<label for="userLogin" class="label">使用者名稱</label>
+								<input id="userLogin" type="text" class="input" name="email" required>
 							</div>
 							<div class="group">
-								<label for="pass" class="label">密碼</label>
-								<input id="pass" type="password" class="input" data-type="password" name="password" required>
+								<label for="passLogin" class="label">密碼</label>
+								<input id="passLogin" type="password" class="input" data-type="password" name="password" required>
 							</div>
 						
 							<div class="group">
@@ -136,23 +136,23 @@
 					<div class="sign-up-htm">
 						<form id="registerRegion" action="#" enctype="application/x-www-form-urlencoded">
 						<div class="group">
-							<label for="user" class="label margin-bottom-sm">使用者名稱</label>
-							<input id="user" type="text" class="input">
+							<label for="userRegister" class="label margin-bottom-sm">使用者名稱</label>
+							<input id="userRegister" type="text" class="input">
 						</div>
 						<div class="group">
-							<label for="password" class="label">密碼</label>
-							<input id="password" type="password" class="input" data-type="password" name="password" required>
+							<label for="passRegister" class="label">密碼</label>
+							<input id="passRegister" type="password" class="input" data-type="password" name="password" required>
 						</div>
 						<div class="group">
 							<label for="passConfirm" class="label">確認密碼</label>
 							<input id="passConfirm" type="password" class="input" data-type="password" required>
 						</div>
 						<div class="group">
-							<label for="pass" class="label">信箱</label>
+							<label for="email" class="label">信箱</label>
 							<input id="email" type="text" class="input" name="email" required>
 						</div>
 						<div class="group">
-							<input id="form_register_send" type="submit" type="submit" class="button" value="Sign Up">
+							<input id="form_register_send" type="submit" class="button" value="Sign Up">
 							<button id="form_register_send_waiting" style="display:none;" class="button btn btn--full"><span class="glyphicon">&#x231b;</span></button>
 						</div>
 						</form>
@@ -164,7 +164,19 @@
 				</div>
 			</div>
 		</div>
-
+		<script>
+		
+		$("#loginRegion").submit(function(){
+			healthyLifeStyleDBUtil.login($("#userLogin")[0].value, $("#passLogin")[0].value);
+			return false;
+		});
+		
+		$("#registerRegion").submit(function(){
+			healthyLifeStyleDBUtil.register($("#userRegister")[0].value, $("#passRegister")[0].value, $("#email")[0].value);
+			return false;
+		});
+		
+		</script>
         </div>
       </section>
 
