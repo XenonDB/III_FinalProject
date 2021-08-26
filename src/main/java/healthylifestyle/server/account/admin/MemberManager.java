@@ -74,6 +74,8 @@ public class MemberManager extends HttpServlet {
 			
 			response.getWriter().print(rawjson.toString());
 			
+			ss.close();
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 			ss.getTransaction().rollback();

@@ -6,7 +6,7 @@
     <session-factory>
 		<property name="show_sql">true</property>
 		<property name="format_sql">true</property>
-		<property name="connection.pool_size">2</property>
+		<property name="connection.pool_size">5</property>
 		
 		<property name="current_session_context_class">thread</property>
 		

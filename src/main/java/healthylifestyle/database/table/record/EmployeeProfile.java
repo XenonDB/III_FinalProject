@@ -24,8 +24,8 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean{
 	
 	
 	@Id
-	@Column(name = "member")
-	private String member;
+	@Column(name = "[user]")
+	private String user;
 	
 	@Column(name = "officeLevel")
 	private int permissionLevel;
@@ -33,20 +33,20 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean{
 	
 	@Override
 	public boolean canInsertIntoTable() {
-		return this.member != null;
+		return this.user != null;
 	}
 
 	@Override
 	public Optional<String> getUniquidKey() {
-		return Optional.ofNullable(member);
+		return Optional.ofNullable(user);
 	}
 
-	public Optional<MemberProfile> getMember() {
-		return TableMember.getMemberByPK(member);
+	public Optional<MemberProfile> getUser() {
+		return TableMember.getMemberByPK(user);
 	}
 	
 	public void setMember(String m) {
-		this.member = m;
+		this.user = m;
 	}
 	
 	public PermissionLevel getMaxPermission() {

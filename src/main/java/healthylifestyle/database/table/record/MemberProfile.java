@@ -40,7 +40,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	*/
 	
 	@Id
-	@Column(name = "user", nullable = false)
+	@Column(name = "[user]", nullable = false)
 	private String user;
 	
 	@Column(name = "mail")
@@ -92,32 +92,36 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return Optional.ofNullable(this.user);
 	}
 	
-	public void setUser(String user) {
+	public MemberProfile setUser(String user) {
 		this.user = user;
+		return this;
 	}
 	
 	public Optional<String> getHashedPassword(){
 		return Optional.ofNullable(this.password_SHA256);
 	}
 	
-	public void setHashedPassword(String pass) {
+	public MemberProfile setHashedPassword(String pass) {
 		this.password_SHA256 = pass;
+		return this;
 	}
 
 	public Optional<String> getNickName() {
 		return Optional.ofNullable(this.nickName);
 	}
 
-	public void setNickName(String name) {
+	public MemberProfile setNickName(String name) {
 		this.nickName = name;
+		return this;
 	}
 	
 	public Optional<String> getMail() {
 		return Optional.ofNullable(this.mail);
 	}
 
-	public void setMail(String mail) {
+	public MemberProfile setMail(String mail) {
 		this.mail = mail;
+		return this;
 	}
 
 	public Optional<Gender> getGender() {
@@ -130,8 +134,9 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return Optional.ofNullable(g);
 	}
 
-	public void setGender(Gender gender) {
+	public MemberProfile setGender(Gender gender) {
 		this.gender = (gender == null ? "null" : gender.name());
+		return this;
 	}
 
 	public Optional<BloodTypeABO> getBloodtypeABO() {
@@ -143,16 +148,18 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return Optional.ofNullable(b);
 	}
 
-	public void setBloodtypeABO(BloodTypeABO bloodtypeABO) {
+	public MemberProfile setBloodtypeABO(BloodTypeABO bloodtypeABO) {
 		this.bloodtypeABO = (bloodtypeABO == null ? "null" : bloodtypeABO.name());
+		return this;
 	}
 
 	public Optional<Date> getBirthday() {
 		return Optional.ofNullable(this.birthday);
 	}
 
-	public void setBirthday(Date birthday) {
+	public MemberProfile setBirthday(Date birthday) {
 		this.birthday = birthday;
+		return this;
 	}
 
 	
@@ -176,8 +183,9 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return Optional.ofNullable(this.phone);
 	}
 
-	public void setPhone(String phone) {
+	public MemberProfile setPhone(String phone) {
 		this.phone = phone;
+		return this;
 	}
 
 	/*
@@ -195,8 +203,9 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return Optional.ofNullable(this.photo);
 	}
 
-	public void setPhoto(Byte[] photo) {
+	public MemberProfile setPhoto(Byte[] photo) {
 		this.photo = photo;
+		return this;
 	}
 
 

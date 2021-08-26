@@ -1,7 +1,6 @@
 package healthylifestyle.server.account;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.persistence.PersistenceException;
 import javax.servlet.ServletException;
@@ -12,11 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.JDBCException;
 import org.hibernate.Session;
-import org.hibernate.exception.ConstraintViolationException;
 
 import healthylifestyle.database.ConnectionUtils;
 import healthylifestyle.database.table.record.MemberProfile;
 import healthylifestyle.server.MainHandler;
+
 
 /**
  * Servlet implementation class Register
@@ -25,11 +24,12 @@ import healthylifestyle.server.MainHandler;
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	public static final String AJAX_TAG_ACCOUNT = "email";
+	public static final String AJAX_TAG_ACCOUNT = "user";
 	public static final String AJAX_TAG_PASSWORD = "password";
+	public static final String AJAX_TAG_EMAIL = "email";
 	
-	public static final String VAILD_ACCOUNT_PATTERN1 = "[\\w@.]+";
-	public static final String VAILD_ACCOUNT_PATTERN2 = "^[^@]+@[^@]+$";
+	public static final String VAILD_EMAIL_PATTERN1 = "[\\w@.]+";
+	public static final String VAILD_EMAIL_PATTERN2 = "^[^@]+@[^@]+$";
 	public static final String VAILD_PASSWORD_PATTERN = "[\\w]+";
 	
     /**
@@ -91,23 +91,26 @@ public class Register extends HttpServlet {
 	private MemberProfile resolveProfile(HttpServletRequest request) {
 		String account = request.getParameter(AJAX_TAG_ACCOUNT);
 		String password = request.getParameter(AJAX_TAG_PASSWORD);
+		String email = request.getParameter(AJAX_TAG_EMAIL);
 		
-		if(isVaildAccount(account) && isVaildPassword(password)) {
-			return new MemberProfile(account, password);
+		if(isVaildAccount(account) && isVaildPassword(password) && isVaildEmail(email)) {
+			return (new MemberProfile(account, password)).setMail(email);
 		}
 		return null;
 	}
 	
-	private boolean isVaildAccount(String acc) {
-		boolean r = acc != null && acc.matches(VAILD_ACCOUNT_PATTERN1) && acc.matches(VAILD_ACCOUNT_PATTERN2);
-		System.out.println("account: "+acc+" ,result: "+r);
+	private boolean isVaildEmail(String mail) {
+		boolean r = mail == null || (mail.matches(VAILD_EMAIL_PATTERN1) && mail.matches(VAILD_EMAIL_PATTERN2));
 		return r;
 	}
 
 	private boolean isVaildPassword(String pass) {
 		boolean r = pass != null && pass.matches(VAILD_PASSWORD_PATTERN);
-		System.out.println("password: "+pass+" ,result: "+r);
 		return r;
+	}
+	
+	private boolean isVaildAccount(String acc) {
+		return isVaildPassword(acc);
 	}
 	
 }
