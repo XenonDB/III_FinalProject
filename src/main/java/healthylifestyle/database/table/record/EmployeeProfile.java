@@ -11,10 +11,12 @@ import healthylifestyle.database.dbinterface.record.IJavaBean;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableMember;
 import healthylifestyle.server.account.PermissionLevel;
+import healthylifestyle.utils.IJsonSerializable;
+import healthylifestyle.utils.IJsonUtilsWrapper;
 
 @Entity
 @Table(name = "Employees")
-public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean{
+public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean, IJsonSerializable{
 
 	/**
 	 * TODO:需要告訴hibernate，有和MemberProfile建立外鍵關聯
@@ -52,5 +54,41 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean{
 	public PermissionLevel getMaxPermission() {
 		return PermissionLevel.getPermissionByLevel(permissionLevel);
 	}
+	
+	@Override
+	public Object getObjectForJsonSerialize() {
+		return new EmployeeProfileJson(this);
+	}
+	
+	private static class EmployeeProfileJson{
+		
+		private String user;
+		
+		private int permissionLevel;
+		
+		EmployeeProfileJson(EmployeeProfile p){
+			setUser(p.user);
+			setPermissionLevel(p.permissionLevel);
+		}
+
+		public String getUser() {
+			return user;
+		}
+
+		public void setUser(String user) {
+			this.user = user;
+		}
+
+		public int getPermissionLevel() {
+			return permissionLevel;
+		}
+
+		public void setPermissionLevel(int permissionLevel) {
+			this.permissionLevel = permissionLevel;
+		}
+		
+	}
+
+	
 	
 }

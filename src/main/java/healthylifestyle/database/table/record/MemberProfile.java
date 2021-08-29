@@ -8,14 +8,18 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import healthylifestyle.database.dbinterface.record.IJavaBean;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.utils.BloodTypeABO;
 import healthylifestyle.utils.Gender;
+import healthylifestyle.utils.IJsonSerializable;
+import healthylifestyle.utils.IJsonUtilsWrapper;
 
 @Entity
 @Table(name = "Member")
-public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
+public class MemberProfile implements IUniquidKeyData<String>, IJavaBean, IJsonSerializable {
 
 	/*
 	private Optional<Integer> id = Optional.empty();
@@ -44,7 +48,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	private String user;
 	
 	@Column(name = "mail")
-	private String mail;
+	private String email;
 	
 	@Column(name = "nickName")
 	private String nickName;
@@ -65,7 +69,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	private String phone;
 	
 	@Column(name = "photo")
-	private Byte[] photo;
+	private byte[] photo;
 	
 	
 	public MemberProfile() {}
@@ -83,6 +87,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	}
 	
 	@Override
+	
 	public Optional<String> getUniquidKey() {
 		return this.getUser();
 	}
@@ -97,6 +102,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return this;
 	}
 	
+	
 	public Optional<String> getHashedPassword(){
 		return Optional.ofNullable(this.password_SHA256);
 	}
@@ -106,6 +112,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return this;
 	}
 
+	
 	public Optional<String> getNickName() {
 		return Optional.ofNullable(this.nickName);
 	}
@@ -115,15 +122,17 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return this;
 	}
 	
+	
 	public Optional<String> getMail() {
-		return Optional.ofNullable(this.mail);
+		return Optional.ofNullable(this.email);
 	}
 
 	public MemberProfile setMail(String mail) {
-		this.mail = mail;
+		this.email = mail;
 		return this;
 	}
 
+	
 	public Optional<Gender> getGender() {
 		
 		Gender g = null;
@@ -139,6 +148,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return this;
 	}
 
+	
 	public Optional<BloodTypeABO> getBloodtypeABO() {
 		BloodTypeABO b = null;
 		try {
@@ -153,6 +163,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 		return this;
 	}
 
+	
 	public Optional<Date> getBirthday() {
 		return Optional.ofNullable(this.birthday);
 	}
@@ -179,6 +190,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	}
 	*/
 
+	
 	public Optional<String> getPhone() {
 		return Optional.ofNullable(this.phone);
 	}
@@ -199,16 +211,120 @@ public class MemberProfile implements IUniquidKeyData<String>, IJavaBean {
 	}
 	*/
 
-	public Optional<Byte[]> getPhoto() {
+	
+	public Optional<byte[]> getPhoto() {
 		return Optional.ofNullable(this.photo);
 	}
 
-	public MemberProfile setPhoto(Byte[] photo) {
+	public MemberProfile setPhoto(byte[] photo) {
 		this.photo = photo;
 		return this;
 	}
 
+	@Override
+	public Object getObjectForJsonSerialize() {
+		return new MemberProfileJson(this);
+	}
 
+	private static class MemberProfileJson{
+		
+		private String user;
+		
+		private String email;
+		
+		private String nickName;
+		
+		private String gender;
+		
+		private String bloodtypeABO;
+		
+		private Date birthday;
+		
+		private String phone;
+		
+		private byte[] photo;
 
+		
+		MemberProfileJson(MemberProfile p){
+			setUser(p.user);
+			setEmail(p.email);
+			setNickName(p.nickName);
+			setGender(p.gender);
+			setBloodtypeABO(p.bloodtypeABO);
+			setBirthday(p.birthday);
+			setPhone(p.phone);
+			setPhoto(p.photo);
+		}
+		
+		
+		public String getUser() {
+			return user;
+		}
+
+		public void setUser(String user) {
+			this.user = user;
+		}
+
+		public String getEmail() {
+			return email;
+		}
+
+		public void setEmail(String email) {
+			this.email = email;
+		}
+
+		public String getNickName() {
+			return nickName;
+		}
+
+		public void setNickName(String nickName) {
+			this.nickName = nickName;
+		}
+
+		public String getGender() {
+			return gender;
+		}
+
+		public void setGender(String gender) {
+			this.gender = gender;
+		}
+
+		public String getBloodtypeABO() {
+			return bloodtypeABO;
+		}
+
+		public void setBloodtypeABO(String bloodtypeABO) {
+			this.bloodtypeABO = bloodtypeABO;
+		}
+
+		public Date getBirthday() {
+			return birthday;
+		}
+
+		public void setBirthday(Date birthday) {
+			this.birthday = birthday;
+		}
+
+		public String getPhone() {
+			return phone;
+		}
+
+		public void setPhone(String phone) {
+			this.phone = phone;
+		}
+
+		public byte[] getPhoto() {
+			return photo;
+		}
+
+		public void setPhoto(byte[] photo) {
+			this.photo = photo;
+		}
+		
+		
+		
+	}
+
+	
 	
 }

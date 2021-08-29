@@ -38,8 +38,11 @@ public enum PermissionLevel {
 		return emp.get().getMaxPermission().isPermissionGreaterOrEqual(p);
 	}
 	
+	/**
+	 * 若權限等級不存在，一律傳回NONE
+	 * */
 	public static PermissionLevel getPermissionByLevel(int level) {
-		return permissionMapping.get(level);
+		return Optional.ofNullable(permissionMapping.get(level)).orElse(NONE);
 	}
 	
 	public boolean isPermissionGreaterOrEqual(PermissionLevel o) {

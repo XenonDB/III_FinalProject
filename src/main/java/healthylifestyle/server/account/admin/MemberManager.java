@@ -20,6 +20,7 @@ import healthylifestyle.database.table.record.MemberProfile;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
 import healthylifestyle.server.account.PermissionLevel;
+import healthylifestyle.utils.IJsonSerializable;
 
 /**
  * Servlet implementation class MemberManager
@@ -46,6 +47,7 @@ public class MemberManager extends HttpServlet {
 		//TODO:權限切換之後再作好了。
 		
 		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
+		
 		if(ouser.isEmpty() || !ouser.get().setPermissionLevel(PermissionLevel.ADMIN)) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return;
@@ -62,17 +64,7 @@ public class MemberManager extends HttpServlet {
 			Query<MemberProfile> q = ss.createQuery("from MemberProfile",MemberProfile.class);
 			List<MemberProfile> members = q.getResultList();
 			
-			StringBuilder rawjson = new StringBuilder("[");
-			String template = "{\"user\":\"%s\", \"nickName\":\"%s\"},";
-			
-			members.forEach(e -> {
-				rawjson.append(String.format(template, e.getUser().get(), e.getNickName().orElse("null")));
-			});
-			
-			rawjson.deleteCharAt(rawjson.length()-1);
-			rawjson.append(']');
-			
-			response.getWriter().print(rawjson.toString());
+			response.getWriter().print(IJsonSerializable.listToJson(members));
 			
 			ss.close();
 			

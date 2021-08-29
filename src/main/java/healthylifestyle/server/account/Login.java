@@ -38,8 +38,8 @@ public class Login extends HttpServlet {
     	if(ou != null) {
     		response.setStatus(HttpServletResponse.SC_OK);
     		response.setContentType("application/json;charset=utf-8");
-    		String rawjson = String.format("{\"account\":\"%s\", \"permission\": %d}", ou.getUser(), ou.getPermissionLevel().getLevel());
-    		response.getWriter().print(rawjson);
+    		//String rawjson = String.format("{\"account\":\"%s\", \"permission\": %d}", ou.getUser(), ou.getPermissionLevel().getLevel());
+    		response.getWriter().print(ou.toJson());
     	}
     	else {
     		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
