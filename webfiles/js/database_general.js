@@ -44,7 +44,7 @@ healthyLifeStyleDBUtil.logOut([successCallBack][, replaceSuccessCallBack])
 執行後將當前網頁登入的帳號登出。
 
 healthyLifeStyleDBUtil.getRegisteredMembers([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
-取得會員列表。當前登入的帳號必須要有管理員(ADMIN)權限等級才可執行成功。above
+取得會員列表。當前登入的帳號必須要有管理員(ADMIN)權限等級才可執行成功。
 目前還沒有把切換權限的功能完成。因此執行此函數時，會自動嘗試將帳號切換為管理員模式，若切換失敗則請求失敗。
 若成功，則回乎函式中的data會是已註冊的會員列表(以陣列形式存放，含系統帳號)，格式為解析完成的json資料。
 
@@ -58,7 +58,7 @@ const healthyLifeStyleDBUtil = {};
 		
 		var activatingAJAX = {};
 		
-		this.requestOrigin = window.location.origin;
+		this.requestOrigin = "https://healthylifestyle.hopto.org"//window.location.origin;
 		this.loginPath = "/HealthyLifestyle/Account/Login";
 		
 		this.login = (user, password, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
