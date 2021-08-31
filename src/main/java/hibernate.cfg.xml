@@ -12,6 +12,7 @@
 		
 		<mapping class="healthylifestyle.database.table.record.MemberProfile"/>
 		<mapping class="healthylifestyle.database.table.record.EmployeeProfile"/>
+		<mapping class="healthylifestyle.database.table.record.DoctorProfile"/>
 		
     </session-factory>
 </hibernate-configuration>

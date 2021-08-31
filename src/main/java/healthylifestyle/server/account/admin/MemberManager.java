@@ -17,9 +17,9 @@ import org.hibernate.query.Query;
 
 import healthylifestyle.database.ConnectionUtils;
 import healthylifestyle.database.table.record.MemberProfile;
+import healthylifestyle.server.account.LoginIdentity;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
-import healthylifestyle.server.account.PermissionLevel;
 import healthylifestyle.utils.IJsonSerializable;
 
 /**
@@ -48,7 +48,7 @@ public class MemberManager extends HttpServlet {
 		
 		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
 		
-		if(ouser.isEmpty() || !ouser.get().setPermissionLevel(PermissionLevel.ADMIN)) {
+		if(ouser.isEmpty() || !ouser.get().setLoginIdentity(LoginIdentity.ADMIN)) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			return;
 		}
@@ -81,7 +81,7 @@ public class MemberManager extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
-		if(ouser.isEmpty() || !ouser.get().setPermissionLevel(PermissionLevel.ADMIN)) {
+		if(ouser.isEmpty() || !ouser.get().setLoginIdentity(LoginIdentity.ADMIN)) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;
 		}

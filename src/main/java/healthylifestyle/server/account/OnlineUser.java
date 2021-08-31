@@ -3,7 +3,6 @@ package healthylifestyle.server.account;
 import java.util.Optional;
 
 import healthylifestyle.utils.IJsonSerializable;
-import healthylifestyle.utils.IJsonUtilsWrapper;
 
 /**
  * 表示一個上線中的使用者。
@@ -13,13 +12,13 @@ import healthylifestyle.utils.IJsonUtilsWrapper;
 public class OnlineUser implements IJsonSerializable {
 	
 	private String user;
-	private PermissionLevel permissionLevel;//表示該使用者的權限等級
+	private LoginIdentity loginIdentity;//表示該使用者以哪種身分登入
 	private String loginIp;
 	private String sessionid;
 	
 	public OnlineUser(String user, String ip, long loginTime, String sessionid) {
 		this.setUser(user);
-		this.setPermissionLevel(PermissionLevel.NONE);
+		this.setLoginIdentity(LoginIdentity.NONE);
 		this.setLoginIp(ip);
 		this.setSessionid(sessionid);
 	}
@@ -37,19 +36,16 @@ public class OnlineUser implements IJsonSerializable {
 		this.user = user;
 	}
 	
-	public PermissionLevel getPermissionLevel() {
-		return permissionLevel;
+	public LoginIdentity getLoginIdentity() {
+		return loginIdentity;
 	}
 	
-	public boolean setPermissionLevel(PermissionLevel permissionLevel) {
+	public boolean setLoginIdentity(LoginIdentity level) {
 		
-		if(!PermissionLevel.canUsePermission(user, permissionLevel)) return false;
+		if(!LoginIdentity.canUseIdentity(user, level)) return false;
 		
-		this.permissionLevel = permissionLevel;
+		this.loginIdentity = level;
 		return true;
-	}
-	public boolean setPermissionLevel(int level) {
-		return this.setPermissionLevel(PermissionLevel.getPermissionByLevel(level));
 	}
 
 	public String getLoginIp() {
@@ -71,7 +67,7 @@ public class OnlineUser implements IJsonSerializable {
 	
 	@Override
 	public String toString() {
-		return String.format("user: %s, permission: %s, ip: %s, sessionId: %s, %s", this.getUser(), this.getPermissionLevel().toString(), this.getLoginIp(), this.getSessionid(), super.toString());
+		return String.format("user: %s, loginIdentity: %s, ip: %s, sessionId: %s, %s", this.getUser(), this.getLoginIdentity().name(), this.getLoginIp(), this.getSessionid(), super.toString());
 	}
 	
 	@Override
@@ -82,11 +78,11 @@ public class OnlineUser implements IJsonSerializable {
 	private class OnlineUserJson{
 		
 		private String user;
-		private String permissionLevel;
+		private String loginIdentity;
 		
 		OnlineUserJson(OnlineUser o){
 			setUser(o.user);
-			setPermissionLevel(Optional.ofNullable(o.permissionLevel).orElse(PermissionLevel.NONE).name());
+			setLoginIdentity(Optional.ofNullable(o.loginIdentity).orElse(LoginIdentity.NONE).name());
 		}
 		
 		
@@ -96,11 +92,11 @@ public class OnlineUser implements IJsonSerializable {
 		public void setUser(String user) {
 			this.user = user;
 		}
-		public String getPermissionLevel() {
-			return permissionLevel;
+		public String getLoginIdentity() {
+			return loginIdentity;
 		}
-		public void setPermissionLevel(String permissionLevel) {
-			this.permissionLevel = permissionLevel;
+		public void setLoginIdentity(String level) {
+			this.loginIdentity = level;
 		}
 		
 	}

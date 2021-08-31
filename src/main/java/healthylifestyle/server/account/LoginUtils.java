@@ -54,10 +54,10 @@ public class LoginUtils {
 		return !getVaildOnlineUser(session).isEmpty();
 	}
 	
-	public static boolean updatePermission(HttpSession session, int permissionToUse) {
+	public static boolean updateLoginIdentity(HttpSession session, LoginIdentity level) {
 		Optional<OnlineUser> user = getVaildOnlineUser(session);
 		
-		return !user.isEmpty() && user.get().setPermissionLevel(permissionToUse);
+		return !user.isEmpty() && user.get().setLoginIdentity(level);
 	}
 	
 	public static Optional<OnlineUser> getOnlineUser(String user) {

@@ -8,18 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import healthylifestyle.database.dbinterface.record.IJavaBean;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.utils.BloodTypeABO;
 import healthylifestyle.utils.Gender;
 import healthylifestyle.utils.IJsonSerializable;
-import healthylifestyle.utils.IJsonUtilsWrapper;
 
 @Entity
 @Table(name = "Member")
-public class MemberProfile implements IUniquidKeyData<String>, IJavaBean, IJsonSerializable {
+public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable {
 
 	/*
 	private Optional<Integer> id = Optional.empty();

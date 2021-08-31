@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UpdatePermission extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	public static final String AJAX_TAG_UPDATEPERMISSION = "updatePermission";
+	public static final String AJAX_TAG_UPDATELOGINIDENTITY = "updateLoginIdentity";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -31,12 +31,21 @@ public class UpdatePermission extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		boolean result = LoginUtils.updatePermission(request.getSession(), Integer.parseInt(request.getParameter(AJAX_TAG_UPDATEPERMISSION)));
+		LoginIdentity toUpdate;
 		
-		if(!result) {
-			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-		}else {
+		try {
+			toUpdate = LoginIdentity.valueOf(request.getParameter(AJAX_TAG_UPDATELOGINIDENTITY));
+		}catch(Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+		
+		boolean result = LoginUtils.updateLoginIdentity(request.getSession(), toUpdate);
+		
+		if(result) {
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);
+		}else {
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		}
 		
 	}

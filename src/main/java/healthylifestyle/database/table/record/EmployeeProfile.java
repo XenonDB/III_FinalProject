@@ -7,30 +7,25 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import healthylifestyle.database.dbinterface.record.IJavaBean;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableMember;
-import healthylifestyle.server.account.PermissionLevel;
 import healthylifestyle.utils.IJsonSerializable;
-import healthylifestyle.utils.IJsonUtilsWrapper;
 
 @Entity
 @Table(name = "Employees")
-public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean, IJsonSerializable{
+public class EmployeeProfile implements IUniquidKeyData<String>, IJsonSerializable{
 
 	/**
 	 * TODO:需要告訴hibernate，有和MemberProfile建立外鍵關聯
 	 */
-	private static final long serialVersionUID = 1L;
-
 	
 	
 	@Id
 	@Column(name = "[user]")
 	private String user;
 	
-	@Column(name = "officeLevel")
-	private int permissionLevel;
+	@Column(name = "maxOfficeLevel")
+	private int maxOfficeLevel;
 	
 	
 	@Override
@@ -47,12 +42,16 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean, IJso
 		return TableMember.getMemberByPK(user);
 	}
 	
-	public void setMember(String m) {
+	public void setUser(String m) {
 		this.user = m;
 	}
 	
-	public PermissionLevel getMaxPermission() {
-		return PermissionLevel.getPermissionByLevel(permissionLevel);
+	public int getMaxOfficeLevel() {
+		return maxOfficeLevel;
+	}
+	
+	public void setMaxOfficeLevel(int level) {
+		this.maxOfficeLevel = level;
 	}
 	
 	@Override
@@ -64,11 +63,11 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean, IJso
 		
 		private String user;
 		
-		private int permissionLevel;
+		private int maxOfficeLevel;
 		
 		EmployeeProfileJson(EmployeeProfile p){
 			setUser(p.user);
-			setPermissionLevel(p.permissionLevel);
+			setPermissionLevel(p.maxOfficeLevel);
 		}
 
 		public String getUser() {
@@ -80,11 +79,11 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJavaBean, IJso
 		}
 
 		public int getPermissionLevel() {
-			return permissionLevel;
+			return maxOfficeLevel;
 		}
 
-		public void setPermissionLevel(int permissionLevel) {
-			this.permissionLevel = permissionLevel;
+		public void setPermissionLevel(int officeLevel) {
+			this.maxOfficeLevel = maxOfficeLevel;
 		}
 		
 	}
