@@ -1,26 +1,23 @@
 package healthylifestyle.database.table;
 
-import java.util.Optional;
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-
-import healthylifestyle.database.ConnectionUtils;
 import healthylifestyle.database.table.record.EmployeeProfile;
 
-public class TableEmployee {
+public class TableEmployee extends AbstractSinglePrimaryKeyTable<EmployeeProfile,String>{
 
+	public static final TableEmployee INSTANCE = new TableEmployee();
+	public static final String NAME = "Employees";
 	
-	public static Optional<EmployeeProfile> getEmployeeByPK(String account) {
-		
-		Session s = ConnectionUtils.getCurrentSession();
-		Transaction tx = s.beginTransaction();
-		
-		EmployeeProfile p = s.get(EmployeeProfile.class, account);
-		
-		tx.commit();
-		s.close();
-		
-		return Optional.ofNullable(p);
+	private TableEmployee() {};
+	
+	@Override
+	public String getTableName() {
+		return NAME;
 	}
+
+	@Override
+	public Class<EmployeeProfile> getCorrespondRecordClass() {
+		return EmployeeProfile.class;
+	}
+	
+	
 }

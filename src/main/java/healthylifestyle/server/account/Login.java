@@ -1,15 +1,14 @@
 package healthylifestyle.server.account;
 
 import java.io.IOException;
-import java.util.Optional;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import healthylifestyle.utils.TagsAndPatterns;
 
 /**
  * Servlet implementation class Login
@@ -17,9 +16,6 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/Account/Login")
 public class Login extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
-	public static final String COOKIE_TAG_ACCOUNT = "login_account";
-	public static final String COOKIE_TAG_TOKEN = "login_token";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -51,8 +47,8 @@ public class Login extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String account = request.getParameter(Register.AJAX_TAG_ACCOUNT);
-		String password = request.getParameter(Register.AJAX_TAG_PASSWORD);
+		String account = request.getParameter(TagsAndPatterns.AJAX_TAG_ACCOUNT);
+		String password = request.getParameter(TagsAndPatterns.AJAX_TAG_PASSWORD);
 		String ip = request.getRemoteAddr();
 		
 		HttpSession session = request.getSession();

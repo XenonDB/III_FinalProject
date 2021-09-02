@@ -8,10 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
+import healthylifestyle.database.table.TableDoctors;
 import healthylifestyle.utils.IJsonSerializable;
 
 @Entity
-@Table(name = "Doctors")
+@Table(name = TableDoctors.NAME)
 public class DoctorProfile implements IUniquidKeyData<String>, IJsonSerializable {
 
 	/**

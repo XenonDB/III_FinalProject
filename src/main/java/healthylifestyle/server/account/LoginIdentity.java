@@ -24,14 +24,14 @@ public enum LoginIdentity {
 		
 		if(p == DOCTOR && isDoctor(user)) return true;
 		
-		Optional<EmployeeProfile> emp = TableEmployee.getEmployeeByPK(user);
+		Optional<EmployeeProfile> emp = TableEmployee.INSTANCE.getDataByPK(user);
 		if(emp.isEmpty()) return false;
 		
 		return emp.get().getMaxOfficeLevel() >= p.maxOfficeLevel;
 	}
 	
 	public static boolean isDoctor(String user) {
-		return TableDoctors.getDoctorByPK(user).isPresent();
+		return TableDoctors.INSTANCE.getDataByPK(user).isPresent();
 		
 	}
 	

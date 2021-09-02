@@ -167,7 +167,9 @@
 		<script>
 		
 		$("#loginRegion").submit(function(){
-			healthyLifeStyleDBUtil.login($("#userLogin")[0].value, $("#passLogin")[0].value);
+			healthyLifeStyleDBUtil.login($("#userLogin")[0].value, $("#passLogin")[0].value,function(){
+				window.location.replace("account.html");
+			});
 			return false;
 		});
 		

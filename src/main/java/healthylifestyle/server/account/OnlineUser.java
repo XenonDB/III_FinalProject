@@ -8,6 +8,7 @@ import healthylifestyle.utils.IJsonSerializable;
  * 表示一個上線中的使用者。
  * 暫存他的登入時間
  * 登入token(一個等同於帳號密碼效力的識別。登入的所有使用者要做任何操作，都需要出示這個token。且token有時效性，一旦連續5分鐘沒有任何動作，token即失效，需要重新登入)
+ * 登入token以sessionid實現
  * */
 public class OnlineUser implements IJsonSerializable {
 	
@@ -16,15 +17,11 @@ public class OnlineUser implements IJsonSerializable {
 	private String loginIp;
 	private String sessionid;
 	
-	public OnlineUser(String user, String ip, long loginTime, String sessionid) {
+	public OnlineUser(String user, String ip, String sessionid) {
 		this.setUser(user);
 		this.setLoginIdentity(LoginIdentity.NONE);
 		this.setLoginIp(ip);
 		this.setSessionid(sessionid);
-	}
-	
-	public OnlineUser(String user, String ip, String sessionid) {
-		this(user,ip,System.currentTimeMillis(),sessionid);
 	}
 	
 	

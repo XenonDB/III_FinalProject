@@ -21,7 +21,7 @@ public class LoginUtils {
 	 * */
 	public static boolean onMemberTryingLogin(String user, String password, String loginIp, HttpSession session) {
 		
-		Optional<MemberProfile> mp = TableMember.getMemberByPK(user);
+		Optional<MemberProfile> mp = TableMember.INSTANCE.getDataByPK(user);
 		
 		if(mp.isEmpty()) return false;
 		

@@ -2,6 +2,8 @@ $(function(){
 	
 	healthyLifeStyleDBUtil.getCurrentLoginAccount(function(data){
 		$("#loginAccount").html(data.user);
+	},function(){
+		window.location.replace("login.html");
 	});
 	
 });
@@ -43,7 +45,9 @@ function getRegisteredMembers(){
 
 function logout(){
 
-	healthyLifeStyleDBUtil.logOut();
+	healthyLifeStyleDBUtil.logOut(function(){
+		window.location.replace("login.html");
+	});
 
 }
 

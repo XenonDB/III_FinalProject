@@ -9,14 +9,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
+import healthylifestyle.database.table.TableMember;
 import healthylifestyle.utils.BloodTypeABO;
 import healthylifestyle.utils.Gender;
 import healthylifestyle.utils.IJsonSerializable;
 
 @Entity
-@Table(name = "Member")
+@Table(name = TableMember.NAME)
 public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable {
-
+	
 	/*
 	private Optional<Integer> id = Optional.empty();
 	
@@ -46,8 +47,11 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	@Column(name = "mail")
 	private String email;
 	
-	@Column(name = "nickName")
-	private String nickName;
+	@Column(name = "lastName")
+	private String lastName;
+	
+	@Column(name = "firstName")
+	private String firstName;
 	
 	@Column(name = "password_SHA256")
 	private String password_SHA256;
@@ -67,6 +71,18 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	@Column(name = "photo")
 	private byte[] photo;
 	
+	
+	@Column(name = "height")
+	private int height;
+	
+	@Column(name = "[weight]")
+	private int weight;
+	
+	@Column(name = "city")
+	private String city;
+	
+	@Column(name = "[location]")
+	private String location;	
 	
 	public MemberProfile() {}
 	
@@ -109,12 +125,12 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	}
 
 	
-	public Optional<String> getNickName() {
-		return Optional.ofNullable(this.nickName);
+	public Optional<String> getFirstName() {
+		return Optional.ofNullable(this.firstName);
 	}
 
-	public MemberProfile setNickName(String name) {
-		this.nickName = name;
+	public MemberProfile setFirstName(String name) {
+		this.firstName = name;
 		return this;
 	}
 	
@@ -222,13 +238,60 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		return new MemberProfileJson(this);
 	}
 
+	public int getHeight() {
+		return height;
+	}
+
+	public MemberProfile setHeight(int height) {
+		this.height = height;
+		return this;
+	}
+
+	public int getWeight() {
+		return weight;
+	}
+
+	public MemberProfile setWeight(int weight) {
+		this.weight = weight;
+		return this;
+	}
+
+	public Optional<String> getCity() {
+		return Optional.ofNullable(city);
+	}
+
+	public MemberProfile setCity(String city) {
+		this.city = city;
+		return this;
+	}
+
+	public Optional<String> getLocation() {
+		return Optional.ofNullable(location);
+	}
+
+	public MemberProfile setLocation(String location) {
+		this.location = location;
+		return this;
+	}
+
+	public Optional<String> getLastName() {
+		return Optional.ofNullable(lastName);
+	}
+
+	public MemberProfile setLastName(String lastName) {
+		this.lastName = lastName;
+		return this;
+	}
+
 	private static class MemberProfileJson{
 		
 		private String user;
 		
 		private String email;
 		
-		private String nickName;
+		private String lastName;
+		
+		private String firstName;
 		
 		private String gender;
 		
@@ -241,15 +304,28 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		private byte[] photo;
 
 		
+		private int height;
+		
+		private int weight;
+		
+		private String city;
+		
+		private String location;	
+		
 		MemberProfileJson(MemberProfile p){
 			setUser(p.user);
 			setEmail(p.email);
-			setNickName(p.nickName);
+			setLastName(p.lastName);
+			setFirstName(p.firstName);
 			setGender(p.gender);
 			setBloodtypeABO(p.bloodtypeABO);
 			setBirthday(p.birthday);
 			setPhone(p.phone);
 			setPhoto(p.photo);
+			setHeight(p.height);
+			setWeight(p.weight);
+			setCity(p.city);
+			setLocation(p.location);
 		}
 		
 		
@@ -269,12 +345,12 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 			this.email = email;
 		}
 
-		public String getNickName() {
-			return nickName;
+		public String getFirstName() {
+			return firstName;
 		}
 
-		public void setNickName(String nickName) {
-			this.nickName = nickName;
+		public void setFirstName(String firstName) {
+			this.firstName = firstName;
 		}
 
 		public String getGender() {
@@ -315,6 +391,56 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 
 		public void setPhoto(byte[] photo) {
 			this.photo = photo;
+		}
+
+
+		public int getHeight() {
+			return height;
+		}
+
+
+		public void setHeight(int height) {
+			this.height = height;
+		}
+
+
+		public int getWeight() {
+			return weight;
+		}
+
+
+		public void setWeight(int weight) {
+			this.weight = weight;
+		}
+
+
+		public String getCity() {
+			return city;
+		}
+
+
+		public void setCity(String city) {
+			this.city = city;
+		}
+
+
+		public String getLocation() {
+			return location;
+		}
+
+
+		public void setLocation(String location) {
+			this.location = location;
+		}
+
+
+		public String getLastName() {
+			return lastName;
+		}
+
+
+		public void setLastName(String lastName) {
+			this.lastName = lastName;
 		}
 		
 		

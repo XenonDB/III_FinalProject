@@ -1,13 +1,13 @@
 package healthylifestyle.server.account;
 
 import java.io.IOException;
-import java.util.Optional;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import healthylifestyle.utils.TagsAndPatterns;
 
 /**
  * Servlet implementation class UpdatePermission
@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Account/UpdatePermission")
 public class UpdatePermission extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    
-	public static final String AJAX_TAG_UPDATELOGINIDENTITY = "updateLoginIdentity";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -34,7 +32,7 @@ public class UpdatePermission extends HttpServlet {
 		LoginIdentity toUpdate;
 		
 		try {
-			toUpdate = LoginIdentity.valueOf(request.getParameter(AJAX_TAG_UPDATELOGINIDENTITY));
+			toUpdate = LoginIdentity.valueOf(request.getParameter(TagsAndPatterns.AJAX_TAG_UPDATELOGINIDENTITY));
 		}catch(Exception e) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;

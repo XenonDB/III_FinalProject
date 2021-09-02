@@ -8,11 +8,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
+import healthylifestyle.database.table.TableEmployee;
 import healthylifestyle.database.table.TableMember;
 import healthylifestyle.utils.IJsonSerializable;
 
 @Entity
-@Table(name = "Employees")
+@Table(name = TableEmployee.NAME)
 public class EmployeeProfile implements IUniquidKeyData<String>, IJsonSerializable{
 
 	/**
@@ -39,7 +40,7 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJsonSerializab
 	}
 
 	public Optional<MemberProfile> getUser() {
-		return TableMember.getMemberByPK(user);
+		return TableMember.INSTANCE.getDataByPK(user);
 	}
 	
 	public void setUser(String m) {

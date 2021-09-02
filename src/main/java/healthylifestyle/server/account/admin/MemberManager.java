@@ -1,8 +1,6 @@
 package healthylifestyle.server.account.admin;
 
 import java.io.IOException;
-import java.lang.reflect.Member;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +19,7 @@ import healthylifestyle.server.account.LoginIdentity;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
 import healthylifestyle.utils.IJsonSerializable;
+import healthylifestyle.utils.TagsAndPatterns;
 
 /**
  * Servlet implementation class MemberManager
@@ -38,7 +37,7 @@ public class MemberManager extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-    private static final String AJAX_TAG_DELETEACCOUNT = "accountToDelete";
+    
     
 	/**
 	 * 取得會員列表
@@ -86,7 +85,7 @@ public class MemberManager extends HttpServlet {
 			return;
 		}
 		
-		String accountToDelete = request.getParameter(AJAX_TAG_DELETEACCOUNT);
+		String accountToDelete = request.getParameter(TagsAndPatterns.AJAX_TAG_DELETEACCOUNT);
 		
 		Session ss = ConnectionUtils.getCurrentSession();
 		try {

@@ -15,6 +15,7 @@ import org.hibernate.Session;
 import healthylifestyle.database.ConnectionUtils;
 import healthylifestyle.database.table.record.MemberProfile;
 import healthylifestyle.server.MainHandler;
+import healthylifestyle.utils.TagsAndPatterns;
 
 
 /**
@@ -24,13 +25,7 @@ import healthylifestyle.server.MainHandler;
 public class Register extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
-	public static final String AJAX_TAG_ACCOUNT = "user";
-	public static final String AJAX_TAG_PASSWORD = "password";
-	public static final String AJAX_TAG_EMAIL = "email";
 	
-	public static final String VAILD_EMAIL_PATTERN1 = "[\\w@.]+";
-	public static final String VAILD_EMAIL_PATTERN2 = "^[^@]+@[^@]+$";
-	public static final String VAILD_PASSWORD_PATTERN = "[\\w]+";
 	
     /**
      * @see HttpServlet#HttpServlet()
@@ -89,9 +84,9 @@ public class Register extends HttpServlet {
 	}
 	
 	private MemberProfile resolveProfile(HttpServletRequest request) {
-		String account = request.getParameter(AJAX_TAG_ACCOUNT);
-		String password = request.getParameter(AJAX_TAG_PASSWORD);
-		String email = request.getParameter(AJAX_TAG_EMAIL);
+		String account = request.getParameter(TagsAndPatterns.AJAX_TAG_ACCOUNT);
+		String password = request.getParameter(TagsAndPatterns.AJAX_TAG_PASSWORD);
+		String email = request.getParameter(TagsAndPatterns.AJAX_TAG_EMAIL);
 		
 		if(isVaildAccount(account) && isVaildPassword(password) && isVaildEmail(email)) {
 			return (new MemberProfile(account, password)).setMail(email);
@@ -100,12 +95,12 @@ public class Register extends HttpServlet {
 	}
 	
 	private boolean isVaildEmail(String mail) {
-		boolean r = mail == null || (mail.matches(VAILD_EMAIL_PATTERN1) && mail.matches(VAILD_EMAIL_PATTERN2));
+		boolean r = mail == null || (mail.matches(TagsAndPatterns.VAILD_EMAIL_PATTERN1) && mail.matches(TagsAndPatterns.VAILD_EMAIL_PATTERN2));
 		return r;
 	}
 
 	private boolean isVaildPassword(String pass) {
-		boolean r = pass != null && pass.matches(VAILD_PASSWORD_PATTERN);
+		boolean r = pass != null && pass.matches(TagsAndPatterns.VAILD_PASSWORD_PATTERN);
 		return r;
 	}
 	
