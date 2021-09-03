@@ -10,9 +10,13 @@
 		
 		<property name="current_session_context_class">thread</property>
 		
+		<!-- 同時使用兩種mapping方式不知道會不會出錯... -->
+		<!-- 哀好像第一個mapping會被蓋掉 -->
 		<mapping class="healthylifestyle.database.table.record.MemberProfile"/>
+		<!--mapping resource="MemberProfile.hbm.xml"/-->
 		<mapping class="healthylifestyle.database.table.record.EmployeeProfile"/>
 		<mapping class="healthylifestyle.database.table.record.DoctorProfile"/>
+		<!--mapping class="healthylifestyle.database.table.record.AvailableLanguage"/-->
 		
     </session-factory>
 </hibernate-configuration>

@@ -1,13 +1,5 @@
 package healthylifestyle.database.table;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.Optional;
-
-import org.hibernate.Session;
-
-import healthylifestyle.database.ConnectionUtils;
-import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.record.MemberProfile;
 
 public class TableMember extends AbstractSinglePrimaryKeyTable<MemberProfile,String> {
@@ -41,6 +33,9 @@ public class TableMember extends AbstractSinglePrimaryKeyTable<MemberProfile,Str
 		return MemberProfile.class;
 	}
 	
+	public int deleteUser(String user) {
+		return deleteData((new MemberProfile()).setUser(user));
+	}
 	
 	
 }

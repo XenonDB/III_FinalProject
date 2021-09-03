@@ -41,6 +41,7 @@ public class Register extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		MainHandler.setUTF8ForRequestAndResponse(request, response);
+		MainHandler.allowCrossOriginForAll(response);
 		
 		MemberProfile mp = resolveProfile(request);
 		
@@ -89,7 +90,7 @@ public class Register extends HttpServlet {
 		String email = request.getParameter(TagsAndPatterns.AJAX_TAG_EMAIL);
 		
 		if(isVaildAccount(account) && isVaildPassword(password) && isVaildEmail(email)) {
-			return (new MemberProfile(account, password)).setMail(email);
+			return (new MemberProfile(account, LoginUtils.getHashedPassword(password))).setMail(email);
 		}
 		return null;
 	}

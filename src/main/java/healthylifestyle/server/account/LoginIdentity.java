@@ -31,7 +31,7 @@ public enum LoginIdentity {
 	}
 	
 	public static boolean isDoctor(String user) {
-		return TableDoctors.INSTANCE.getDataByPK(user).isPresent();
+		return TableDoctors.INSTANCE.isDoctor(user);
 		
 	}
 	

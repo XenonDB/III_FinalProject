@@ -19,6 +19,8 @@ public class TableDoctors extends AbstractSinglePrimaryKeyTable<DoctorProfile,St
 		return DoctorProfile.class;
 	}
 
-	
+	public boolean isDoctor(String user) {
+		return hasData(user);
+	}
 	
 }

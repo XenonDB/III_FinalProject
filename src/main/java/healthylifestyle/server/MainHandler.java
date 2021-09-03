@@ -18,7 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import healthylifestyle.database.ConnectionConfig;
 import healthylifestyle.database.ConnectionUtils;
+import healthylifestyle.database.table.TableMember;
 import healthylifestyle.database.table.record.MemberProfile;
+import healthylifestyle.server.account.LoginUtils;
+import healthylifestyle.server.account.OnlineUser;
 import healthylifestyle.utils.Gender;
 import healthylifestyle.utils.IJsonSerializable;
 import healthylifestyle.utils.IJsonUtilsWrapper;
@@ -73,6 +76,19 @@ public class MainHandler extends HttpServlet {
 		response.getWriter().println(IJsonSerializable.listToJson(l));
 		*/
 		
+		//TableMember.INSTANCE.insertData(new MemberProfile("RRA","ccc"));
+		//MemberProfile p = TableMember.INSTANCE.getDataByPK("RRR").get();
+		//response.getWriter().println(p.toJson());
+		//TableMember.INSTANCE.deleteData(new MemberProfile().setUser("RRR"));
+		
+		/*
+		String sss = "healthy";
+		
+		System.out.println(LoginUtils.getHashedPassword(sss));
+		System.out.println(LoginUtils.getHashedPassword(sss));
+		System.out.println(LoginUtils.isPasswordMatchWithHashed(sss, LoginUtils.getHashedPassword(sss)));
+		*/
+		
 	}
 
 	/**
@@ -90,5 +106,17 @@ public class MainHandler extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
+	
+	public static void allowCrossOriginForAll(HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+	}
+	
+	public static void setJsonResponse(HttpServletResponse response) {
+		response.setContentType("application/json;charset=utf-8");
+	}
+	
+	public static void prepareDefaultResponseSetting(HttpServletResponse respons) {
+		allowCrossOriginForAll(respons);
+		setJsonResponse(respons);
+	}
 }

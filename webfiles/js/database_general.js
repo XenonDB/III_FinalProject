@@ -37,9 +37,36 @@ healthyLifeStyleDBUtil.getCurrentLoginAccount([successCallBack][, failCallBack][
 取得當前網頁登入的帳號。若沒有登入，則請求會失敗。
 若有登入的帳號，請求會成功，回乎函式中的data會是當前登入的帳號資訊，資料格式為已解析好的json資料。
 帳號資料包含兩個參數：
-user: 當前登入的帳號名稱。
-loginIdentity: 當前帳號的登入身分，以字串表示，可能的值有NONE,ADMIN,NORMAL_EMPLOYEE,DOCTOR;
+loginProfile: 當前登入帳號的身分，實際身分為其中的loginIdentity。可能的值有NONE,ADMIN,NORMAL_EMPLOYEE,DOCTOR。
 NONE表示一般無特殊權限的登入用戶。
+userProfile: 當前登入帳號的所有基本資料。
+
+帳號資料範例：
+{
+	"loginProfile":{
+		"user":"RRR",
+		"loginIdentity":"NONE"
+	},
+	"userProfile":{
+		"user":"RRR",
+		"email":"RRR@RRR.com",
+		"lastName":null,
+		"firstName":null,
+		"gender":null,
+		"bloodtypeABO":null,
+		"birthday":null,
+		"phone":null,
+		"photo":null,
+		"height":0,
+		"weight":0,
+		"city":null,
+		"location":null,
+		"availableLangs":[
+			"zh_tw",
+			"ja_jp"
+		]
+	}
+}
 
 healthyLifeStyleDBUtil.logOut([successCallBack][, replaceSuccessCallBack])
 執行後將當前網頁登入的帳號登出。

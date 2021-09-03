@@ -1,7 +1,7 @@
 $(function(){
 	
 	healthyLifeStyleDBUtil.getCurrentLoginAccount(function(data){
-		$("#loginAccount").html(data.user);
+		$("#loginAccount").html(data.loginProfile.user);
 	},function(){
 		window.location.replace("login.html");
 	});
@@ -25,7 +25,7 @@ function buildTable(data){
 	data.forEach(function(e){
 		
 		var col1 = $("<td>").html(e.user);
-		var col2 = $("<td>").html(e.nickName);
+		var col2 = $("<td>").html(e.firstName);
 		
 		var row = $("<tr>").append(col1).append(col2);
 		

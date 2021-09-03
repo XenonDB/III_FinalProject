@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import healthylifestyle.server.MainHandler;
 import healthylifestyle.utils.TagsAndPatterns;
 
 /**
@@ -28,6 +29,8 @@ public class UpdatePermission extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		MainHandler.allowCrossOriginForAll(response);
 		
 		LoginIdentity toUpdate;
 		

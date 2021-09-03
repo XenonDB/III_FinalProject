@@ -14,7 +14,9 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import healthylifestyle.database.ConnectionUtils;
+import healthylifestyle.database.table.TableMember;
 import healthylifestyle.database.table.record.MemberProfile;
+import healthylifestyle.server.MainHandler;
 import healthylifestyle.server.account.LoginIdentity;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
@@ -45,6 +47,8 @@ public class MemberManager extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//TODO:權限切換之後再作好了。
 		
+		MainHandler.prepareDefaultResponseSetting(response);
+		
 		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
 		
 		if(ouser.isEmpty() || !ouser.get().setLoginIdentity(LoginIdentity.ADMIN)) {
@@ -52,25 +56,7 @@ public class MemberManager extends HttpServlet {
 			return;
 		}
 		
-		response.setContentType("application/json;charset=utf-8");
-		
-		Session ss = ConnectionUtils.getCurrentSession();
-		
-		try {
-			
-			ss.beginTransaction();
-			
-			Query<MemberProfile> q = ss.createQuery("from MemberProfile",MemberProfile.class);
-			List<MemberProfile> members = q.getResultList();
-			
-			response.getWriter().print(IJsonSerializable.listToJson(members));
-			
-			ss.close();
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			ss.getTransaction().rollback();
-		}
+		response.getWriter().print(IJsonSerializable.listToJson(TableMember.INSTANCE.getAllData()));
 		
 	}
 
@@ -78,6 +64,8 @@ public class MemberManager extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		MainHandler.allowCrossOriginForAll(response);
 		
 		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
 		if(ouser.isEmpty() || !ouser.get().setLoginIdentity(LoginIdentity.ADMIN)) {
@@ -87,26 +75,7 @@ public class MemberManager extends HttpServlet {
 		
 		String accountToDelete = request.getParameter(TagsAndPatterns.AJAX_TAG_DELETEACCOUNT);
 		
-		Session ss = ConnectionUtils.getCurrentSession();
-		try {
-			
-			ss.beginTransaction();
-			
-			Query q = ss.createQuery("delete MemberProfile as m where m.user=?0");
-			
-			q.setParameter(0, accountToDelete);
-			
-			int result = q.executeUpdate();
-			
-			ss.getTransaction().commit();
-			System.out.println(result);
-			response.setStatus(result == 1 ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
-			
-		}catch(Exception e) {
-			e.printStackTrace();
-			ss.getTransaction().rollback();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		}
+		TableMember.INSTANCE.deleteUser(accountToDelete);
 		
 	}
 

@@ -2,6 +2,8 @@ package healthylifestyle.utils;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public interface IJsonSerializable {
 
 	public static String listToJson(List<? extends IJsonSerializable> l, IJsonUtilsWrapper wrapper) {
@@ -23,6 +25,7 @@ public interface IJsonSerializable {
 	 * 當然如果本身就滿足Java bean規範的話，也能直接回傳自己。
 	 * (PS:應該早該這樣設計才對...)
 	 * */
+	@JsonIgnore
 	public Object getObjectForJsonSerialize();
 	
 	default public String toJson() {

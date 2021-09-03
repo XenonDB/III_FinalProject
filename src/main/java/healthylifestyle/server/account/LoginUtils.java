@@ -7,6 +7,8 @@ import javax.servlet.http.HttpSession;
 import healthylifestyle.database.table.TableMember;
 import healthylifestyle.database.table.record.MemberProfile;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class LoginUtils {
 
 	//表示在線成員持有的有效session列表。
@@ -14,6 +16,8 @@ public class LoginUtils {
 	
 	private static final long SESSION_EXPIRE_TIME = 10*60*1000L;//單位為豪秒 預設10分鐘。
 	public static final String SESSION_TAG_USER = "user";
+	
+	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	/**
 	 * 當使用者成功登入後，回傳一個隨機的存取令牌給予客戶端下達操作指令用。
@@ -26,12 +30,12 @@ public class LoginUtils {
 		if(mp.isEmpty()) return false;
 		
 		Optional<String> passOfUser = mp.get().getHashedPassword();
-		if(!user.equals(mp.get().getUser().get()) || passOfUser.isEmpty() || !passOfUser.get().equals(password)) return false;
+		if(passOfUser.isEmpty() || !isPasswordMatchWithHashed(password, passOfUser.get())) return false;
 		
-		OnlineUser lu = new OnlineUser(user,loginIp,session.getId());
+		OnlineUser ou = new OnlineUser(user,loginIp,session.getId());
 		
 		synchronized(onlineUsers){
-			onlineUsers.put(user, lu);
+			onlineUsers.put(user, ou);
 		}
 		
 		return true;
@@ -70,6 +74,14 @@ public class LoginUtils {
 	
 	public static long getSessionExpireTimeMillseconds() {
 		return SESSION_EXPIRE_TIME;
+	}
+	
+	public static String getHashedPassword(String rawpass) {
+		return encoder.encode(rawpass);
+	}
+	
+	public static boolean isPasswordMatchWithHashed(String raw, String hashed) {
+		return encoder.matches(raw, hashed);
 	}
 	
 }

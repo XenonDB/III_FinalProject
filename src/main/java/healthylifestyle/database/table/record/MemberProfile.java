@@ -1,12 +1,23 @@
 package healthylifestyle.database.table.record;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.Hibernate;
 
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableMember;
@@ -16,7 +27,7 @@ import healthylifestyle.utils.IJsonSerializable;
 
 @Entity
 @Table(name = TableMember.NAME)
-public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable {
+public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable, IHibernateInitializable {
 	
 	/*
 	private Optional<Integer> id = Optional.empty();
@@ -53,8 +64,8 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	@Column(name = "firstName")
 	private String firstName;
 	
-	@Column(name = "password_SHA256")
-	private String password_SHA256;
+	@Column(name = "hashedPassword")
+	private String hashedPassword;
 	
 	@Column(name = "gender")
 	private String gender;
@@ -73,16 +84,21 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	
 	
 	@Column(name = "height")
-	private int height;
+	private Integer height;
 	
 	@Column(name = "[weight]")
-	private int weight;
+	private Integer weight;
 	
 	@Column(name = "city")
 	private String city;
 	
 	@Column(name = "[location]")
 	private String location;	
+	
+	@ElementCollection
+	@CollectionTable(name="AvailableLanguage", joinColumns=@JoinColumn(name="[user]"))
+	@Column(name="[language]")
+	private Set<String> availableLangs = new HashSet<>();
 	
 	public MemberProfile() {}
 	
@@ -116,11 +132,11 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	
 	
 	public Optional<String> getHashedPassword(){
-		return Optional.ofNullable(this.password_SHA256);
+		return Optional.ofNullable(this.hashedPassword);
 	}
 	
 	public MemberProfile setHashedPassword(String pass) {
-		this.password_SHA256 = pass;
+		this.hashedPassword = pass;
 		return this;
 	}
 
@@ -239,19 +255,19 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	}
 
 	public int getHeight() {
-		return height;
+		return this.height == null ? 0 : this.height.intValue();
 	}
 
-	public MemberProfile setHeight(int height) {
+	public MemberProfile setHeight(Integer height) {
 		this.height = height;
 		return this;
 	}
 
 	public int getWeight() {
-		return weight;
+		return this.weight == null ? 0 : this.weight.intValue();
 	}
 
-	public MemberProfile setWeight(int weight) {
+	public MemberProfile setWeight(Integer weight) {
 		this.weight = weight;
 		return this;
 	}
@@ -282,7 +298,21 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		this.lastName = lastName;
 		return this;
 	}
+	//TODO: 整理為Language型態
+	public Set<String> getAvailableLangs() {
+		return availableLangs;
+	}
 
+	public void setAvailableLangs(Set<String> avaLangs) {
+		this.availableLangs = availableLangs == null ? new HashSet<>() : availableLangs;
+	}
+
+	@Override
+	public void initialize() {
+		IHibernateInitializable.super.initialize();
+		Hibernate.initialize(this.availableLangs);
+	}
+	
 	private static class MemberProfileJson{
 		
 		private String user;
@@ -312,6 +342,8 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		
 		private String location;	
 		
+		private Set<String> availableLangs;
+		
 		MemberProfileJson(MemberProfile p){
 			setUser(p.user);
 			setEmail(p.email);
@@ -322,10 +354,11 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 			setBirthday(p.birthday);
 			setPhone(p.phone);
 			setPhoto(p.photo);
-			setHeight(p.height);
-			setWeight(p.weight);
+			setHeight(p.getHeight());
+			setWeight(p.getWeight());
 			setCity(p.city);
 			setLocation(p.location);
+			setAvailableLangs(p.getAvailableLangs());
 		}
 		
 		
@@ -441,6 +474,16 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 
 		public void setLastName(String lastName) {
 			this.lastName = lastName;
+		}
+
+
+		public Set<String> getAvailableLangs() {
+			return availableLangs;
+		}
+
+
+		public void setAvailableLangs(Set<String> avaLangs) {
+			this.availableLangs = avaLangs;
 		}
 		
 		
