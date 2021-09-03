@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 import healthylifestyle.database.table.TableMember;
 import healthylifestyle.server.MainHandler;
 import healthylifestyle.utils.IJsonSerializable;
-import healthylifestyle.utils.IJsonUtilsWrapper;
 import healthylifestyle.utils.TagsAndPatterns;
 
 /**
@@ -43,8 +42,8 @@ public class Login extends HttpServlet {
     		
     		String rej = new IJsonSerializable() {
     			
-    			public final Object loginProfile = ou.getObjectForJsonSerialize();
-    			public final Object userProfile = TableMember.INSTANCE.getDataByPK(ou.getUser()).get().getObjectForJsonSerialize();
+				public final Object loginProfile = ou.getObjectForJsonSerialize();
+				public final Object userProfile = TableMember.INSTANCE.getDataByPK(ou.getUser()).get().getObjectForJsonSerialize();
     			
     			@Override
     			public Object getObjectForJsonSerialize() {

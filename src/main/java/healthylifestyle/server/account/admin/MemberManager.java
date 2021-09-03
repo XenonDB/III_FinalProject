@@ -1,7 +1,6 @@
 package healthylifestyle.server.account.admin;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.ServletException;
@@ -10,12 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
-
-import healthylifestyle.database.ConnectionUtils;
 import healthylifestyle.database.table.TableMember;
-import healthylifestyle.database.table.record.MemberProfile;
 import healthylifestyle.server.MainHandler;
 import healthylifestyle.server.account.LoginIdentity;
 import healthylifestyle.server.account.LoginUtils;
