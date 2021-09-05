@@ -310,8 +310,11 @@ const healthyLifeStyleDBUtil = {};
 					case 401:
 						errmsg = "登入狀態過期，請重新登入。";
 						break;
+					case 400:
+						errmsg = "個人資料格式可能有誤。";
+						break;
 					default:
-						errmsg = "伺服器發生未預期錯誤，請重新登入。";
+						errmsg = "伺服器發生未預期錯誤，無法更新資料。";
 				}
 				alert(errmsg);
 				failCallBack(data, textStatus, jqXHR);

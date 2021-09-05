@@ -40,7 +40,13 @@ public class UpdateProfile extends HttpServlet {
 		}
 		
 		MemberProfile toUpdate = new MemberProfile();
-		toUpdate.constructWithJson(request.getReader());
+		
+		try{
+			toUpdate.constructWithJson(request.getReader());
+		}catch(Exception e) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 		
 		//防止有人冒名更改別人的資料。
 		toUpdate.setUser(ou.getUser());
