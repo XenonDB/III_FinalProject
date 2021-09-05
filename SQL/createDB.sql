@@ -1,0 +1,1 @@
+create database HealthyLifestyle COLLATE Chinese_Taiwan_Stroke_CI_AS;
