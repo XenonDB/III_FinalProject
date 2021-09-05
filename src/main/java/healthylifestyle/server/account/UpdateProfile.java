@@ -39,7 +39,9 @@ public class UpdateProfile extends HttpServlet {
 			return;
 		}
 		
-		MemberProfile toUpdate = new MemberProfile();
+		String user = ou.getUser();
+		
+		MemberProfile toUpdate = TableMember.INSTANCE.getDataByPK(user).get();
 		
 		try{
 			toUpdate.constructWithJson(request.getReader());
@@ -49,7 +51,7 @@ public class UpdateProfile extends HttpServlet {
 		}
 		
 		//防止有人冒名更改別人的資料。
-		toUpdate.setUser(ou.getUser());
+		toUpdate.setUser(user);
 		
 		TableMember.INSTANCE.updateData(toUpdate);
 		
