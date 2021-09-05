@@ -23,13 +23,14 @@ import healthylifestyle.database.table.record.MemberProfile;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
 import healthylifestyle.utils.Gender;
-import healthylifestyle.utils.IJsonSerializable;
-import healthylifestyle.utils.IJsonUtilsWrapper;
+import healthylifestyle.utils.Language;
+import healthylifestyle.utils.json.IJsonSerializable;
+import healthylifestyle.utils.json.IJsonUtilsWrapper;
 
 /**
  * Servlet implementation class MainHandler
  */
-@WebServlet("/MainHandler")
+@WebServlet(urlPatterns={"/MainHandler"}, loadOnStartup = 1)
 public class MainHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     
@@ -46,8 +47,6 @@ public class MainHandler extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-		//response.getWriter().println("GET method is not allow for this path.");
 		System.out.println(request.getRemoteAddr());
 		System.out.println(request.getRemoteHost());
 		System.out.println(request.getRemotePort());
@@ -77,8 +76,12 @@ public class MainHandler extends HttpServlet {
 		*/
 		
 		//TableMember.INSTANCE.insertData(new MemberProfile("RRA","ccc"));
-		//MemberProfile p = TableMember.INSTANCE.getDataByPK("RRR").get();
-		//response.getWriter().println(p.toJson());
+		/*
+		MemberProfile p = TableMember.INSTANCE.getDataByPK("RRR").get();
+		System.out.println(p.toJson());
+		p.removeAvailableLang(Language.ja_jp);
+		TableMember.INSTANCE.updateData(p);
+		*/
 		//TableMember.INSTANCE.deleteData(new MemberProfile().setUser("RRR"));
 		
 		/*
@@ -89,6 +92,7 @@ public class MainHandler extends HttpServlet {
 		System.out.println(LoginUtils.isPasswordMatchWithHashed(sss, LoginUtils.getHashedPassword(sss)));
 		*/
 		
+		response.getWriter().print("Server is online.");
 	}
 
 	/**
@@ -107,16 +111,19 @@ public class MainHandler extends HttpServlet {
 		}
 	}
 	
-	public static void allowCrossOriginForAll(HttpServletResponse response) {
-		response.setHeader("Access-Control-Allow-Origin", "*");
+	public static void allowCrossOriginForAll(HttpServletRequest request, HttpServletResponse response) {
+		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+		response.setHeader("Access-Control-Allow-Methods", "GET, POST");
+		response.setHeader("Access-Control-Allow-Credentials", "true");
+		//response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	}
 	
 	public static void setJsonResponse(HttpServletResponse response) {
 		response.setContentType("application/json;charset=utf-8");
 	}
 	
-	public static void prepareDefaultResponseSetting(HttpServletResponse respons) {
-		allowCrossOriginForAll(respons);
+	public static void prepareDefaultResponseSetting(HttpServletRequest request, HttpServletResponse respons) {
+		allowCrossOriginForAll(request,respons);
 		setJsonResponse(respons);
 	}
 }

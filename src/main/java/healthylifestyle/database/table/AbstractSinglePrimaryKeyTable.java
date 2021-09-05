@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -32,13 +33,14 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 			s = ConnectionUtils.openSession();
 			trans = s.beginTransaction();
 			
+			p = s.load(getCorrespondRecordClass(), primaryKey);
 			if(doReturn) {
-				p = s.get(getCorrespondRecordClass(), primaryKey);
-				
-				if(p instanceof IHibernateInitializable) ((IHibernateInitializable) p).initialize();
-			}
-			else {
-				p = s.load(getCorrespondRecordClass(), primaryKey);
+				if(p instanceof IHibernateInitializable) {
+					((IHibernateInitializable) p).initialize();
+				}
+				else {
+					Hibernate.initialize(p);
+				}
 			}
 			
 		}catch(Exception e) {

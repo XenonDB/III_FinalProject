@@ -2,7 +2,8 @@ package healthylifestyle.server.account;
 
 import java.util.Optional;
 
-import healthylifestyle.utils.IJsonSerializable;
+import healthylifestyle.utils.json.IJsonSerializable;
+import healthylifestyle.utils.json.IJsonUtilsWrapper;
 
 /**
  * 表示一個上線中的使用者。
@@ -10,7 +11,7 @@ import healthylifestyle.utils.IJsonSerializable;
  * 登入token(一個等同於帳號密碼效力的識別。登入的所有使用者要做任何操作，都需要出示這個token。且token有時效性，一旦連續5分鐘沒有任何動作，token即失效，需要重新登入)
  * 登入token以sessionid實現
  * */
-public class OnlineUser implements IJsonSerializable {
+public class OnlineUser implements IJsonSerializable<OnlineUser.OnlineUserJson> {
 	
 	private String user;
 	private LoginIdentity loginIdentity;//表示該使用者以哪種身分登入
@@ -72,7 +73,17 @@ public class OnlineUser implements IJsonSerializable {
 		return new OnlineUserJson(this);
 	}
 	
-	private class OnlineUserJson{
+	@Override
+	public Class<OnlineUserJson> getProxyClass() {
+		return OnlineUserJson.class;
+	}
+	
+	@Override
+	public void constructWithProxy(OnlineUserJson proxy) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public class OnlineUserJson{
 		
 		private String user;
 		private String loginIdentity;
@@ -97,7 +108,5 @@ public class OnlineUser implements IJsonSerializable {
 		}
 		
 	}
-
-	
 	
 }

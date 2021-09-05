@@ -1,5 +1,6 @@
 package healthylifestyle.database.table.record;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 import javax.persistence.Column;
@@ -9,16 +10,18 @@ import javax.persistence.Table;
 
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableDoctors;
-import healthylifestyle.utils.IJsonSerializable;
+import healthylifestyle.utils.json.IJsonSerializable;
 
 @Entity
 @Table(name = TableDoctors.NAME)
-public class DoctorProfile implements IUniquidKeyData<String>, IJsonSerializable {
-
-	/**
-	 * TODO:需要告訴hibernate，有和MemberProfile建立外鍵關聯
-	 */
+public class DoctorProfile implements IUniquidKeyData<String>, IJsonSerializable<DoctorProfile.DoctorProfileJson> {
 	
+	public DoctorProfile() {}
+	
+	public DoctorProfile(String user, String profession) {
+		this.setUser(user);
+		this.setProfession(profession);
+	}
 	
 	@Id
 	@Column(name = "[user]", nullable = false)
@@ -58,14 +61,35 @@ public class DoctorProfile implements IUniquidKeyData<String>, IJsonSerializable
 	public void setProfession(String profession) {
 		this.profession = profession;
 	}
-	
-	private static class DoctorProfileJson{
+
+
+	@Override
+	public Class<DoctorProfileJson> getProxyClass() {
+		return DoctorProfileJson.class;
+	}
+
+	@Override
+	public void constructWithProxy(DoctorProfileJson target) {
+		if(target == null) return;
 		
+		this.setProfession(target.getProfession());
+		this.setUser(target.getUser());
+	}
+	
+	public static class DoctorProfileJson implements Serializable{
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 6882358727475801074L;
+
 		private String user;
 		
 		private String profession;
 
-		DoctorProfileJson(DoctorProfile p){
+		public DoctorProfileJson(){}
+		
+		public DoctorProfileJson(DoctorProfile p){
 			setUser(p.user);
 			setProfession(p.profession);
 		}

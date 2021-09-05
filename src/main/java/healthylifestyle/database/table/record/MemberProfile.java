@@ -1,10 +1,11 @@
 package healthylifestyle.database.table.record;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
-
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -18,11 +19,13 @@ import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableMember;
 import healthylifestyle.utils.BloodTypeABO;
 import healthylifestyle.utils.Gender;
-import healthylifestyle.utils.IJsonSerializable;
+import healthylifestyle.utils.Language;
+import healthylifestyle.utils.json.IJsonSerializable;
+import healthylifestyle.utils.json.IJsonUtilsWrapper;
 
 @Entity
 @Table(name = TableMember.NAME)
-public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable, IHibernateInitializable {
+public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable<MemberProfile.MemberProfileJson>, IHibernateInitializable {
 	
 	/*
 	private Optional<Integer> id = Optional.empty();
@@ -46,6 +49,8 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	
 	*/
 	
+	
+
 	@Id
 	@Column(name = "[user]", nullable = false)
 	private String user;
@@ -167,10 +172,14 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	}
 
 	public MemberProfile setGender(Gender gender) {
-		this.gender = (gender == null ? "null" : gender.name());
+		this.gender = (gender == null ? null : gender.name());
 		return this;
 	}
-
+	
+	public MemberProfile setGender(String gender) {
+		this.setGender(gender == null ? null : Gender.valueOf(gender));
+		return this;
+	}
 	
 	public Optional<BloodTypeABO> getBloodtypeABO() {
 		BloodTypeABO b = null;
@@ -182,11 +191,15 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	}
 
 	public MemberProfile setBloodtypeABO(BloodTypeABO bloodtypeABO) {
-		this.bloodtypeABO = (bloodtypeABO == null ? "null" : bloodtypeABO.name());
+		this.bloodtypeABO = (bloodtypeABO == null ? null : bloodtypeABO.name());
+		return this;
+	}
+	
+	public MemberProfile setBloodtypeABO(String bloodtypeABO) {
+		this.setBloodtypeABO(bloodtypeABO == null ? null : BloodTypeABO.valueOf(bloodtypeABO));
 		return this;
 	}
 
-	
 	public Optional<Date> getBirthday() {
 		return Optional.ofNullable(this.birthday);
 	}
@@ -293,23 +306,100 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		this.lastName = lastName;
 		return this;
 	}
-	//TODO: 整理為Language型態
-	public Set<String> getAvailableLangs() {
-		return availableLangs;
+	
+	public Set<Language> getAvailableLangs() {
+		Set<Language> result = new HashSet<>();
+		
+		Iterator<String> iter = this.availableLangs.iterator();
+		String tmp;
+		while(iter.hasNext()) {
+			tmp = iter.next();
+			try {
+				result.add(Language.valueOf(tmp));
+			}catch(Exception e) {
+				iter.remove();
+			}
+		}
+		
+		return result;
 	}
 
 	public void setAvailableLangs(Set<String> avaLangs) {
-		this.availableLangs = availableLangs == null ? new HashSet<>() : availableLangs;
+		this.availableLangs = avaLangs == null ? new HashSet<>() : avaLangs;
+		
+		//檢查其中的內容是不是都符合列舉類別裡的項目
+		Iterator<String> iter = this.availableLangs.iterator();
+		String tmp;
+		while(iter.hasNext()) {
+			tmp = iter.next();
+			try {
+				Language.valueOf(tmp);
+			}catch(Exception e) {
+				iter.remove();
+			}
+		}
+		
+	}
+	
+	public void addAvailableLang(Language l) {
+		if(l == null) return;
+		
+		this.availableLangs.add(l.name());
 	}
 
+	public void removeAvailableLang(Language l) {
+		if(l == null) return;
+		
+		this.availableLangs.remove(l.name());
+	}
+	
+	public void clearAvailableLang() {
+		this.availableLangs.clear();
+	}
+	
 	@Override
 	public void initialize() {
 		IHibernateInitializable.super.initialize();
 		Hibernate.initialize(this.availableLangs);
+		
+		//不管是使用iterator或是remove直接移除特定元素，就算是在交易期間，好像也不會一併更新set的內容。可能當時不在set的交易時間內?
+		//this.availableLangs.remove("ja_jpp");
+		this.setAvailableLangs(availableLangs);//觸發一次內容檢查用。
 	}
 	
-	private static class MemberProfileJson{
+	@Override
+	public Class<MemberProfileJson> getProxyClass() {
+		return MemberProfileJson.class;
+	}
+
+	@Override
+	public void constructWithProxy(MemberProfileJson target) {
+		if(target == null) return;
 		
+		this.setUser(target.getUser()).
+		setMail(target.getEmail()).
+		setLastName(target.getLastName()).
+		setFirstName(target.getFirstName()).
+		setGender(target.getGender()).
+		setBloodtypeABO(target.getBloodtypeABO()).
+		setBirthday(target.getBirthday()).
+		setPhone(target.getPhone()).
+		setPhoto(target.getPhoto()).
+		setHeight(target.getHeight()).
+		setWeight(target.getWeight()).
+		setCity(target.getCity()).
+		setLocation(target.getLocation()).
+		setAvailableLangs(target.getAvailableLangs());
+		
+	}
+	
+	public static class MemberProfileJson implements Serializable{
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2548959694922551187L;
+
 		private String user;
 		
 		private String email;
@@ -339,7 +429,9 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		
 		private Set<String> availableLangs;
 		
-		MemberProfileJson(MemberProfile p){
+		public MemberProfileJson() {}
+		
+		public MemberProfileJson(MemberProfile p){
 			setUser(p.user);
 			setEmail(p.email);
 			setLastName(p.lastName);
@@ -353,7 +445,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 			setWeight(p.getWeight());
 			setCity(p.city);
 			setLocation(p.location);
-			setAvailableLangs(p.getAvailableLangs());
+			setAvailableLangs(p.availableLangs);
 		}
 		
 		
@@ -477,14 +569,10 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		}
 
 
-		public void setAvailableLangs(Set<String> avaLangs) {
-			this.availableLangs = avaLangs;
+		public void setAvailableLangs(Set<String> list) {
+			this.availableLangs = list;
 		}
 		
-		
-		
 	}
-
-	
 	
 }

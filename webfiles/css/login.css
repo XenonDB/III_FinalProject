@@ -1,8 +1,20 @@
+/* login background color: rgba(40,57,101,0.9); */
 
 *,:after,:before{box-sizing:border-box}
 .clearfix:after,.clearfix:before{content:'';display:table}
 .clearfix:after{clear:both;display:block}
 a{color:inherit;text-decoration:none}
+
+.btn--full:link, 
+.btn--full:visited {
+  background-color: #4dabf7 !important;
+  color: #fff !important;;
+}
+
+.btn--full:hover,
+.btn--full:active {
+  background-color: #1864ab !important;;
+}
 
 .login-wrap{
 	width:100%;
@@ -10,7 +22,7 @@ a{color:inherit;text-decoration:none}
 	max-width:100rem;
 	min-height:75rem;
 	position:relative;
-	box-shadow:0 1.2rem 1.5rem 0 rgba(0,0,0,.24);
+	box-shadow:0 1.2rem 1.5rem 0 rgba(0,0,0,.24),0 1.7rem 5rem 0 rgba(0,0,0,0.19);
 
 }
 .login-wrap{
@@ -22,7 +34,6 @@ a{color:inherit;text-decoration:none}
 	width:100%;
 	height:100%;
 	position:absolute;
-	/* padding:9rem 7rem 10rem 5rem; */
 	padding:5rem 5rem;
 	background:rgba(40,57,101,0.9);
 
@@ -154,4 +165,13 @@ a{color:inherit;text-decoration:none}
 
 .label{
 	margin-bottom: 1.8rem;
+}
+
+
+.mb-sm{
+margin-bottom: 2rem;
+}
+
+.mt-sm{
+	margin-top: 3rem;
 }

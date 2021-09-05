@@ -30,7 +30,7 @@ public class UpdatePermission extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		MainHandler.allowCrossOriginForAll(response);
+		MainHandler.allowCrossOriginForAll(request, response);
 		
 		LoginIdentity toUpdate;
 		
@@ -41,7 +41,7 @@ public class UpdatePermission extends HttpServlet {
 			return;
 		}
 		
-		boolean result = LoginUtils.updateLoginIdentity(request.getSession(), toUpdate);
+		boolean result = LoginUtils.updateLoginIdentity(request, toUpdate);
 		
 		if(result) {
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);

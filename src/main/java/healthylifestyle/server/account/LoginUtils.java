@@ -2,6 +2,8 @@ package healthylifestyle.server.account;
 
 import java.util.HashMap;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import healthylifestyle.database.table.TableMember;
@@ -23,7 +25,7 @@ public class LoginUtils {
 	 * 當使用者成功登入後，回傳一個隨機的存取令牌給予客戶端下達操作指令用。
 	 * 令牌有時效性，預設為5分鐘。
 	 * */
-	public static boolean onMemberTryingLogin(String user, String password, String loginIp, HttpSession session) {
+	public static boolean onMemberTryingLogin(String user, String password, HttpServletRequest request) {
 		
 		Optional<MemberProfile> mp = TableMember.INSTANCE.getDataByPK(user);
 		
@@ -32,7 +34,10 @@ public class LoginUtils {
 		Optional<String> passOfUser = mp.get().getHashedPassword();
 		if(passOfUser.isEmpty() || !isPasswordMatchWithHashed(password, passOfUser.get())) return false;
 		
-		OnlineUser ou = new OnlineUser(user,loginIp,session.getId());
+		//讓沒有session的使用者強制創立一個session
+		request.getSession();
+		//changeSessionID():防止會話固定攻擊。
+		OnlineUser ou = new OnlineUser(user,request.getRemoteAddr(),request.changeSessionId());
 		
 		synchronized(onlineUsers){
 			onlineUsers.put(user, ou);
@@ -42,24 +47,25 @@ public class LoginUtils {
 		
 	}
 	
-	public static Optional<OnlineUser> getVaildOnlineUser(HttpSession session){
+	public static Optional<OnlineUser> getVaildOnlineUser(HttpServletRequest request){
+		
+		HttpSession session = request.getSession();
+		
 		String user = (String) session.getAttribute(SESSION_TAG_USER);
 		if(user == null) return Optional.empty();
 		
-		Optional<OnlineUser> ouser = getOnlineUser(user);
+		Optional<OnlineUser> result = getOnlineUser(user);
+		OnlineUser ouser = result.orElse(null);
 		
-		if(!ouser.isEmpty() && session.getId().equals(ouser.get().getSessionid())) return ouser;
+		if(ouser != null && session.getId().equals(ouser.getSessionid()) && request.getRemoteAddr().equals(ouser.getLoginIp())) return result;
 		
 		return Optional.empty();
 		
 	}
 	
-	public static boolean isVaildSession(HttpSession session) {
-		return !getVaildOnlineUser(session).isEmpty();
-	}
 	
-	public static boolean updateLoginIdentity(HttpSession session, LoginIdentity level) {
-		Optional<OnlineUser> user = getVaildOnlineUser(session);
+	public static boolean updateLoginIdentity(HttpServletRequest request, LoginIdentity level) {
+		Optional<OnlineUser> user = getVaildOnlineUser(request);
 		
 		return !user.isEmpty() && user.get().setLoginIdentity(level);
 	}

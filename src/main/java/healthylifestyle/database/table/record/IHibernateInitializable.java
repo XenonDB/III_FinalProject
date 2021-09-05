@@ -10,6 +10,9 @@ import org.hibernate.Hibernate;
  * */
 public interface IHibernateInitializable {
 
+	/**
+	 * 複寫此方法時記得使用IHibernateInitializable.super.initialize()來呼叫預設的初始化方法。
+	 * */
 	public default void initialize() {
 		Hibernate.initialize(this);
 	}

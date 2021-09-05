@@ -14,8 +14,8 @@ import healthylifestyle.server.MainHandler;
 import healthylifestyle.server.account.LoginIdentity;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
-import healthylifestyle.utils.IJsonSerializable;
 import healthylifestyle.utils.TagsAndPatterns;
+import healthylifestyle.utils.json.IJsonSerializable;
 
 /**
  * Servlet implementation class MemberManager
@@ -41,9 +41,9 @@ public class MemberManager extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//TODO:權限切換之後再作好了。
 		
-		MainHandler.prepareDefaultResponseSetting(response);
+		MainHandler.prepareDefaultResponseSetting(request,response);
 		
-		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
+		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser(request);
 		
 		if(ouser.isEmpty() || !ouser.get().setLoginIdentity(LoginIdentity.ADMIN)) {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
@@ -59,9 +59,9 @@ public class MemberManager extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		MainHandler.allowCrossOriginForAll(response);
+		MainHandler.allowCrossOriginForAll(request, response);
 		
-		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser((request.getSession()));
+		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser(request);
 		if(ouser.isEmpty() || !ouser.get().setLoginIdentity(LoginIdentity.ADMIN)) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 			return;

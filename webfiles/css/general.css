@@ -62,7 +62,7 @@ Medium: 11px
 }
 
 html {
-  /* font-size: 10px; */
+  
 
   font-size: 62.5% ;
 }
@@ -78,7 +78,7 @@ body {
 /* GENRAL REUSABLE COMPONENTS */
 /**************************/
 
-.container1 {
+.container {
   /* 1140px */
   max-width: 120rem;
   padding: 0 3.2rem;
@@ -196,7 +196,7 @@ body {
 }
 
 .btn--form {
-  background-color: #4dabf7 ;
+  background-color: #45260a ;
   color: #fdf2e9;
   align-self: end;
   padding: 1.2rem;
@@ -245,7 +245,7 @@ body {
 
 *:focus {
   outline: none;
-  box-shadow: 0 0 0 0.8rem 4dabf7;
+  box-shadow: 0 0 0 0.8rem #4dabf7;
 }
 
 /* HELPER/SETTINGS CLASSES */
@@ -255,6 +255,9 @@ body {
 
 .margin-bottom-md {
   margin-bottom: 4.8rem !important;
+}
+.margin-bottom-sm {
+  margin-bottom: 2.4rem !important;
 }
 
 .center-text {
@@ -439,7 +442,7 @@ strong {
   margin-bottom: 2.4rem;
 }
 
-.footer-nav{
+.footer-nav {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -462,36 +465,4 @@ strong {
 .footer-link:hover,
 .footer-link:active {
   color: #555;
-}
-
-.path{
-  margin: 10px 0;
-}
-.path ul {
-  position: relative;
-  display: flex;
-}
-.path li {
-  position: relative;
-  padding: 6px 8px;
-}
-.path a {
-  text-decoration: none;
-    font-size: 1.6rem;
-    color: #767676
-}
-.path ul, li {
-  list-style: none;
-}
-.path li + li::before {
-  position: absolute;
-  left: -2px;
-  content: '/';
-  color: #767676
-  
-}
-.action{
-  text-decoration: none;
-    font-size: 1.6rem;
-    color: #767676;
 }

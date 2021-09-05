@@ -1,5 +1,6 @@
 package healthylifestyle.database.table.record;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 import javax.persistence.Column;
@@ -10,23 +11,26 @@ import javax.persistence.Table;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableEmployee;
 import healthylifestyle.database.table.TableMember;
-import healthylifestyle.utils.IJsonSerializable;
+import healthylifestyle.utils.json.IJsonSerializable;
 
 @Entity
 @Table(name = TableEmployee.NAME)
-public class EmployeeProfile implements IUniquidKeyData<String>, IJsonSerializable{
+public class EmployeeProfile implements IUniquidKeyData<String>, IJsonSerializable<EmployeeProfile.EmployeeProfileJson>{
 
-	/**
-	 * TODO:需要告訴hibernate，有和MemberProfile建立外鍵關聯
-	 */
+	public EmployeeProfile() {}
 	
+	public EmployeeProfile(String user, int maxOfficeLevel) {
+		this();
+		this.setUser(user);
+		this.setMaxOfficeLevel(maxOfficeLevel);
+	}
 	
 	@Id
 	@Column(name = "[user]")
 	private String user;
 	
 	@Column(name = "maxOfficeLevel")
-	private int maxOfficeLevel;
+	private Integer maxOfficeLevel;
 	
 	
 	@Override
@@ -48,10 +52,10 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJsonSerializab
 	}
 	
 	public int getMaxOfficeLevel() {
-		return maxOfficeLevel;
+		return maxOfficeLevel == null ? 0 : maxOfficeLevel.intValue();
 	}
 	
-	public void setMaxOfficeLevel(int level) {
+	public void setMaxOfficeLevel(Integer level) {
 		this.maxOfficeLevel = level;
 	}
 	
@@ -60,15 +64,35 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJsonSerializab
 		return new EmployeeProfileJson(this);
 	}
 	
-	private static class EmployeeProfileJson{
+	@Override
+	public Class<EmployeeProfileJson> getProxyClass() {
+		return EmployeeProfileJson.class;
+	}
+
+	@Override
+	public void constructWithProxy(EmployeeProfileJson target) {
+		if(target == null) return;
 		
+		this.setUser(target.getUser());
+		this.setMaxOfficeLevel(target.getMaxOfficeLevel());
+	}
+	
+	public static class EmployeeProfileJson implements Serializable{
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -3356898722761234029L;
+
 		private String user;
 		
 		private int maxOfficeLevel;
 		
-		EmployeeProfileJson(EmployeeProfile p){
+		public EmployeeProfileJson() {}
+		
+		public EmployeeProfileJson(EmployeeProfile p){
 			setUser(p.user);
-			setPermissionLevel(p.maxOfficeLevel);
+			setMaxOfficeLevel(p.getMaxOfficeLevel());
 		}
 
 		public String getUser() {
@@ -79,16 +103,14 @@ public class EmployeeProfile implements IUniquidKeyData<String>, IJsonSerializab
 			this.user = user;
 		}
 
-		public int getPermissionLevel() {
+		public int getMaxOfficeLevel() {
 			return maxOfficeLevel;
 		}
 
-		public void setPermissionLevel(int officeLevel) {
-			this.maxOfficeLevel = maxOfficeLevel;
+		public void setMaxOfficeLevel(int officeLevel) {
+			this.maxOfficeLevel = officeLevel;
 		}
 		
 	}
-
-	
 	
 }
