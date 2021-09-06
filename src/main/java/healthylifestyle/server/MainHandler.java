@@ -91,7 +91,6 @@ public class MainHandler extends HttpServlet {
 		System.out.println(LoginUtils.getHashedPassword(sss));
 		System.out.println(LoginUtils.isPasswordMatchWithHashed(sss, LoginUtils.getHashedPassword(sss)));
 		*/
-		
 		response.getWriter().print("Server is online.");
 	}
 
@@ -115,6 +114,8 @@ public class MainHandler extends HttpServlet {
 		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
+		System.out.println("Origin1:");
+		System.out.println(response.getHeader("Access-Control-Allow-Origin"));
 		//response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	}
 	

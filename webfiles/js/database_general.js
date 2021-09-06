@@ -151,7 +151,8 @@ const healthyLifeStyleDBUtil = {};
 				url: this.requestOrigin+this.loginPath,
 				data: $.param({user:user, password:password}),
 				xhrFields: {withCredentials: true},
-				crossDomain: true
+				crossDomain: true,
+				headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack).always(() => {
 				activatingAJAX["login"] = false;
 			});
@@ -199,7 +200,8 @@ const healthyLifeStyleDBUtil = {};
 				url: this.requestOrigin+"/Account/Register",
 				data: $.param({user:user, password:password, email:email}),
 				xhrFields: {withCredentials: true},
-				crossDomain: true
+				crossDomain: true,
+				headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack).always(() => {
 				activatingAJAX["register"] = false;
 			});
@@ -237,7 +239,8 @@ const healthyLifeStyleDBUtil = {};
 			$.get({
 				url: this.requestOrigin+this.loginPath,
 				xhrFields: {withCredentials: true},
-				crossDomain: true
+				crossDomain: true,
+				headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack);
 		}
 		
@@ -256,7 +259,8 @@ const healthyLifeStyleDBUtil = {};
 			$.get({
 				url: this.requestOrigin + "/Account/Logout",
 				xhrFields: {withCredentials: true},
-				crossDomain: true
+				crossDomain: true,
+				headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack);
 			
 		}
@@ -291,7 +295,8 @@ const healthyLifeStyleDBUtil = {};
 			$.get({
 				url: this.requestOrigin + "/Account/Admin/MemberManager",
 				xhrFields: {withCredentials: true},
-				crossDomain: true
+				crossDomain: true,
+				headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack);
 
 		}
@@ -327,7 +332,8 @@ const healthyLifeStyleDBUtil = {};
 				url: this.requestOrigin+"/Account/UpdateProfile",
 				data: JSON.stringify(profile),
 				xhrFields: {withCredentials: true},
-				crossDomain: true
+				crossDomain: true,
+				headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack);
 			
 		}

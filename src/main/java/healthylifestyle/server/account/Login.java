@@ -1,6 +1,8 @@
 package healthylifestyle.server.account;
 
 import java.io.IOException;
+import java.io.Serializable;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -59,7 +61,7 @@ public class Login extends HttpServlet {
 				}
 
 				@Override
-				public void constructWithProxy(Object proxy) {
+				public void constructWithProxy(Serializable proxy) {
 					throw new UnsupportedOperationException();
 				}
 

@@ -1,6 +1,7 @@
 package healthylifestyle.database.table.record;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -20,8 +21,9 @@ import healthylifestyle.database.table.TableMember;
 import healthylifestyle.utils.BloodTypeABO;
 import healthylifestyle.utils.Gender;
 import healthylifestyle.utils.Language;
+import healthylifestyle.utils.TagsAndPatterns;
+import healthylifestyle.utils.exception.DeserializeException;
 import healthylifestyle.utils.json.IJsonSerializable;
-import healthylifestyle.utils.json.IJsonUtilsWrapper;
 
 @Entity
 @Table(name = TableMember.NAME)
@@ -84,10 +86,10 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	
 	
 	@Column(name = "height")
-	private Integer height;
+	private Float height;
 	
 	@Column(name = "[weight]")
-	private Integer weight;
+	private Float weight;
 	
 	@Column(name = "city")
 	private String city;
@@ -208,6 +210,15 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		this.birthday = birthday;
 		return this;
 	}
+	
+	public MemberProfile setBirthday(String birthday){
+		try {
+			this.birthday = TagsAndPatterns.DATE_FORMAT.parse(birthday);
+			return this;
+		} catch (ParseException e) {
+			throw new DeserializeException(e);
+		}
+	}
 
 	
 	/*
@@ -262,20 +273,20 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		return new MemberProfileJson(this);
 	}
 
-	public int getHeight() {
-		return this.height == null ? 0 : this.height.intValue();
+	public float getHeight() {
+		return this.height == null ? 0 : this.height.floatValue();
 	}
 
-	public MemberProfile setHeight(Integer height) {
+	public MemberProfile setHeight(Float height) {
 		this.height = height;
 		return this;
 	}
 
-	public int getWeight() {
-		return this.weight == null ? 0 : this.weight.intValue();
+	public float getWeight() {
+		return this.weight == null ? 0 : this.weight.floatValue();
 	}
 
-	public MemberProfile setWeight(Integer weight) {
+	public MemberProfile setWeight(Float weight) {
 		this.weight = weight;
 		return this;
 	}
@@ -412,16 +423,16 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		
 		private String bloodtypeABO;
 		
-		private Date birthday;
+		private String birthday;
 		
 		private String phone;
 		
 		private byte[] photo;
 
 		
-		private int height;
+		private float height;
 		
-		private int weight;
+		private float weight;
 		
 		private String city;
 		
@@ -489,12 +500,12 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 			this.bloodtypeABO = bloodtypeABO;
 		}
 
-		public Date getBirthday() {
+		public String getBirthday() {
 			return birthday;
 		}
 
 		public void setBirthday(Date birthday) {
-			this.birthday = birthday;
+			this.birthday = birthday == null ? null : TagsAndPatterns.DATE_FORMAT.format(birthday);
 		}
 
 		public String getPhone() {
@@ -514,22 +525,22 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		}
 
 
-		public int getHeight() {
+		public float getHeight() {
 			return height;
 		}
 
 
-		public void setHeight(int height) {
+		public void setHeight(float height) {
 			this.height = height;
 		}
 
 
-		public int getWeight() {
+		public float getWeight() {
 			return weight;
 		}
 
 
-		public void setWeight(int weight) {
+		public void setWeight(float weight) {
 			this.weight = weight;
 		}
 

@@ -1,5 +1,6 @@
 package healthylifestyle.server.account;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 import healthylifestyle.utils.json.IJsonSerializable;
@@ -83,8 +84,12 @@ public class OnlineUser implements IJsonSerializable<OnlineUser.OnlineUserJson> 
 		throw new UnsupportedOperationException();
 	}
 	
-	public class OnlineUserJson{
+	public class OnlineUserJson implements Serializable{
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -3027617157405275640L;
 		private String user;
 		private String loginIdentity;
 		

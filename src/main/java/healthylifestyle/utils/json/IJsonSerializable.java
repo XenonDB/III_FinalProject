@@ -2,6 +2,7 @@ package healthylifestyle.utils.json;
 
 import java.io.InputStream;
 import java.io.Reader;
+import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  * (PS:應該早該這樣設計才對...)<br>
  * T表示代理物件的型態
  * */
-public interface IJsonSerializable<T> {
+public interface IJsonSerializable<T extends Serializable> {
 
 	public static String listToJson(List<? extends IJsonSerializable<?>> l, IJsonUtilsWrapper wrapper){
 		Object[] l2 = l.stream().map(e -> e.getObjectForJsonSerialize()).toArray();
