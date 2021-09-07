@@ -33,14 +33,9 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 			s = ConnectionUtils.openSession();
 			trans = s.beginTransaction();
 			
-			p = s.load(getCorrespondRecordClass(), primaryKey);
-			if(doReturn) {
-				if(p instanceof IHibernateInitializable) {
-					((IHibernateInitializable) p).initialize();
-				}
-				else {
-					Hibernate.initialize(p);
-				}
+			p = s.get(getCorrespondRecordClass(), primaryKey);
+			if(doReturn && p instanceof IHibernateInitializable) {
+				((IHibernateInitializable) p).initialize();
 			}
 			
 		}catch(Exception e) {

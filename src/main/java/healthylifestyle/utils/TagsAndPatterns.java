@@ -2,6 +2,8 @@ package healthylifestyle.utils;
 
 import java.text.SimpleDateFormat;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class TagsAndPatterns {
 
 	public static final String AJAX_TAG_DELETEACCOUNT = "accountToDelete";
@@ -18,4 +20,24 @@ public class TagsAndPatterns {
 	
 	public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	
+	public static final String REQUEST_OP_ADD = "rq_op_add";
+	public static final String REQUEST_OP_REMOVE = "rq_op_remove";
+	public static final String REQUEST_OP_CLEAR = "rq_op_clear";
+	public static final String REQUEST_OP_SET = "rq_op_set";
+	
+	public static boolean isAddElementRequest(HttpServletRequest r) {
+		return r.getParameter(REQUEST_OP_ADD) != null;
+	}
+	
+	public static boolean isRemoveElementRequest(HttpServletRequest r) {
+		return r.getParameter(REQUEST_OP_REMOVE) != null;
+	}
+	
+	public static boolean isClearElementRequest(HttpServletRequest r) {
+		return r.getParameter(REQUEST_OP_CLEAR) != null;
+	}
+	
+	public static boolean isSetCollectionRequest(HttpServletRequest r) {
+		return r.getParameter(REQUEST_OP_SET) != null;
+	}
 }

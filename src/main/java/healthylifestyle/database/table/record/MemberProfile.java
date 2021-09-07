@@ -7,15 +7,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import org.hibernate.Hibernate;
+import org.hibernate.proxy.HibernateProxy;
 
+import healthylifestyle.database.GenericUtils;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableMember;
 import healthylifestyle.utils.BloodTypeABO;
@@ -97,10 +103,18 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	@Column(name = "[location]")
 	private String location;	
 	
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name="AvailableLanguage", joinColumns=@JoinColumn(name="[user]"))
 	@Column(name="[language]")
 	private Set<String> availableLangs = new HashSet<>();
+	
+	//參考資料 https://www.codeleading.com/article/83712130217/
+	@ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name="UserSchedule", joinColumns ={@JoinColumn(name = "[user]")})
+    @AttributeOverrides({ @AttributeOverride(name="date",column = @Column(name="date")),	
+                          @AttributeOverride(name = "title", column = @Column(name = "title")),
+                          @AttributeOverride(name = "theme", column = @Column(name = "theme")) })
+	private Set<Schedule> schedule;
 	
 	public MemberProfile() {}
 	
@@ -402,6 +416,38 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		setLocation(target.getLocation()).
 		setAvailableLangs(target.getAvailableLangs());
 		
+	}
+	
+	/**
+	 * Schedule在設計上不希望隨著會員資料一起全數取出，而是需要時才取出。<br>
+	 * 因此只有當需要時，才會主動去初始化物件狀態並讀取資料後回傳。
+	 */
+	public Set<Schedule> getSchedule() {
+		
+		if(schedule != null && !Hibernate.isInitialized(schedule)) {
+			GenericUtils.procressInSession(cs -> {
+				cs.update(this);
+				Hibernate.initialize(schedule);
+			});
+		}
+		
+		return schedule;
+	}
+
+	public void setSchedule(Set<Schedule> schedule) {
+		this.schedule = schedule == null ? new HashSet<>() : schedule;
+	}
+
+	public boolean addSchedule(Schedule s) {
+		return this.getSchedule().add(s);
+	}
+	
+	public boolean removeSchedule(Schedule s) {
+		return this.getSchedule().remove(s);
+	}
+	
+	public void clearSchedule() {
+		this.setSchedule(null);
 	}
 	
 	public static class MemberProfileJson implements Serializable{

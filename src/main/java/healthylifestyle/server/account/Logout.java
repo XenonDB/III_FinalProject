@@ -29,8 +29,6 @@ public class Logout extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		MainHandler.allowCrossOriginForAll(request, response);
-		
 		request.getSession().invalidate();
 	}
 

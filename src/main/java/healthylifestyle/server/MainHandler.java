@@ -2,6 +2,7 @@ package healthylifestyle.server;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -20,6 +22,7 @@ import healthylifestyle.database.ConnectionConfig;
 import healthylifestyle.database.ConnectionUtils;
 import healthylifestyle.database.table.TableMember;
 import healthylifestyle.database.table.record.MemberProfile;
+import healthylifestyle.database.table.record.Schedule;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
 import healthylifestyle.utils.Gender;
@@ -91,6 +94,18 @@ public class MainHandler extends HttpServlet {
 		System.out.println(LoginUtils.getHashedPassword(sss));
 		System.out.println(LoginUtils.isPasswordMatchWithHashed(sss, LoginUtils.getHashedPassword(sss)));
 		*/
+		/*
+		Schedule s = new Schedule();
+		s.setDate(new Date()).setTheme("yellow").setTitle("ha/ha\\ha/ha\\");
+		Schedule s2 = (new Schedule());
+		s2.constructWithJson(s.toJson());
+		System.out.println(s.toJson());
+		System.out.println(s2.toJson());
+		*/
+		String json = IJsonUtilsWrapper.DEFAULT_WRAPPER.objectToJson(TableMember.INSTANCE.getDataByPK("RRR").get().getSchedule()).get();
+		System.out.println(json);
+		
+		
 		response.getWriter().print("Server is online.");
 	}
 
@@ -110,8 +125,9 @@ public class MainHandler extends HttpServlet {
 		}
 	}
 	
-	public static void allowCrossOriginForAll(HttpServletRequest request, HttpServletResponse response) {
-		response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+	@SuppressWarnings("unused")
+	private static void allowCrossOriginFor(HttpServletRequest request, HttpServletResponse response, String origin) {
+		response.setHeader("Access-Control-Allow-Origin", origin /*request.getHeader("Origin")*/);
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 		System.out.println("Origin1:");
@@ -124,7 +140,7 @@ public class MainHandler extends HttpServlet {
 	}
 	
 	public static void prepareDefaultResponseSetting(HttpServletRequest request, HttpServletResponse respons) {
-		allowCrossOriginForAll(request,respons);
+		//allowCrossOriginFor(request,respons,"");
 		setJsonResponse(respons);
 	}
 }

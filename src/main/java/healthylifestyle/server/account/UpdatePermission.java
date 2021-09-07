@@ -30,8 +30,6 @@ public class UpdatePermission extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		MainHandler.allowCrossOriginForAll(request, response);
-		
 		LoginIdentity toUpdate;
 		
 		try {

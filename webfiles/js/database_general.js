@@ -115,6 +115,8 @@ const healthyLifeStyleDBUtil = {};
 		
 		this.loginPath = "/Account/Login";
 		
+		this.schedulePath = "/UserScheduleHandler";
+		
 		this.login = (user, password, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
 			
 			if(activatingAJAX["login"]) return;
@@ -149,10 +151,10 @@ const healthyLifeStyleDBUtil = {};
 			
 			$.post({
 				url: this.requestOrigin+this.loginPath,
-				data: $.param({user:user, password:password}),
-				xhrFields: {withCredentials: true},
-				crossDomain: true,
-				headers: { 'Origin': window.location.origin }
+				data: $.param({user:user, password:password})
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack).always(() => {
 				activatingAJAX["login"] = false;
 			});
@@ -198,10 +200,10 @@ const healthyLifeStyleDBUtil = {};
 			
 			$.post({
 				url: this.requestOrigin+"/Account/Register",
-				data: $.param({user:user, password:password, email:email}),
-				xhrFields: {withCredentials: true},
-				crossDomain: true,
-				headers: { 'Origin': window.location.origin }
+				data: $.param({user:user, password:password, email:email})
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack).always(() => {
 				activatingAJAX["register"] = false;
 			});
@@ -237,10 +239,10 @@ const healthyLifeStyleDBUtil = {};
 			var finalFailCallBack = !replaceFailCallBack ? defaultFailCallBack : failCallBack;
 			
 			$.get({
-				url: this.requestOrigin+this.loginPath,
-				xhrFields: {withCredentials: true},
-				crossDomain: true,
-				headers: { 'Origin': window.location.origin }
+				url: this.requestOrigin+this.loginPath
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack);
 		}
 		
@@ -257,10 +259,10 @@ const healthyLifeStyleDBUtil = {};
 			
 			
 			$.get({
-				url: this.requestOrigin + "/Account/Logout",
-				xhrFields: {withCredentials: true},
-				crossDomain: true,
-				headers: { 'Origin': window.location.origin }
+				url: this.requestOrigin + "/Account/Logout"
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack);
 			
 		}
@@ -293,10 +295,10 @@ const healthyLifeStyleDBUtil = {};
 			
 			
 			$.get({
-				url: this.requestOrigin + "/Account/Admin/MemberManager",
-				xhrFields: {withCredentials: true},
-				crossDomain: true,
-				headers: { 'Origin': window.location.origin }
+				url: this.requestOrigin + "/Account/Admin/MemberManager"
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack);
 
 		}
@@ -330,12 +332,95 @@ const healthyLifeStyleDBUtil = {};
 			
 			$.post({
 				url: this.requestOrigin+"/Account/UpdateProfile",
-				data: JSON.stringify(profile),
-				xhrFields: {withCredentials: true},
-				crossDomain: true,
-				headers: { 'Origin': window.location.origin }
+				data: JSON.stringify(profile)
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
 			}).done(finalSuccessCallBack).fail(finalFailCallBack);
 			
+		}
+		
+		this.getSchedule = (successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			successCallBack = successCallBack || function(){};
+			failCallBack = failCallBack || function(){};
+			
+			var defaultSuccessCallBack = function(data, textStatus, jqXHR){
+				alert("成功取得排程表!");
+				successCallBack(data, textStatus, jqXHR);
+			};
+			var defaultFailCallBack = function(data){
+				var errmsg = "";
+				switch(data.status){
+					case 401:
+						errmsg = "登入狀態過期，請重新登入。";
+						break;
+					default:
+						errmsg = "伺服器發生未預期錯誤，無法取得資料。";
+				}
+				alert(errmsg);
+				failCallBack(data, textStatus, jqXHR);
+			}
+			
+			var finalSuccessCallBack = !replaceSuccessCallBack ? defaultSuccessCallBack : successCallBack;
+			var finalFailCallBack = !replaceFailCallBack ? defaultFailCallBack : failCallBack;
+			
+			$.get({
+				url: this.requestOrigin+this.schedulePath
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
+			}).done(finalSuccessCallBack).fail(finalFailCallBack);
+			
+		}
+		
+		this.modifySchedule = (scheduleData, oper, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			successCallBack = successCallBack || function(){};
+			failCallBack = failCallBack || function(){};
+			
+			var defaultSuccessCallBack = function(data, textStatus, jqXHR){
+				alert("成功更新排程表!");
+				successCallBack(data, textStatus, jqXHR);
+			};
+			var defaultFailCallBack = function(data){
+				var errmsg = "";
+				switch(data.status){
+					case 401:
+						errmsg = "登入狀態過期，請重新登入。";
+						break;
+					default:
+						errmsg = "伺服器發生未預期錯誤，無法更新資料。";
+				}
+				alert(errmsg);
+				failCallBack(data, textStatus, jqXHR);
+			}
+			
+			var finalSuccessCallBack = !replaceSuccessCallBack ? defaultSuccessCallBack : successCallBack;
+			var finalFailCallBack = !replaceFailCallBack ? defaultFailCallBack : failCallBack;
+			
+			$.post({
+				url: this.requestOrigin+this.schedulePath+"?"+oper+"=1",
+				data: JSON.stringify(profile)
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
+			}).done(finalSuccessCallBack).fail(finalFailCallBack);
+			
+		}
+		
+		this.addSchedule = (scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			this.modifySchedule(scheduleData,"rq_op_add");
+		}
+		
+		this.removeSchedule = (scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			this.modifySchedule(scheduleData,"rq_op_remove");
+		}
+		
+		this.setSchedule = (scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			this.modifySchedule(scheduleData,"rq_op_set");
+		}
+		
+		this.clearSchedule = (scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			this.modifySchedule(scheduleData,"rq_op_clear");
 		}
 		
 	};

@@ -5,6 +5,7 @@ drop table [Transaction];
 drop table [Products];
 drop table [Transaction_status];
 drop table [LoginRecord];
+drop table [UserSchedule];
 drop table [ChattingGroupJoinList];
 drop table [ChattingRecord];
 

@@ -7,9 +7,9 @@ import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public interface IJsonUtilsWrapper {
+public interface IJsonUtilsWrapper<U> {
 
-	public static final IJsonUtilsWrapper DEFAULT_WRAPPER = new IJsonUtilsWrapper() {
+	public static final IJsonUtilsWrapper<ObjectMapper> DEFAULT_WRAPPER = new IJsonUtilsWrapper<>() {
 		
 		ObjectMapper ow = new ObjectMapper();
 		
@@ -48,9 +48,16 @@ public interface IJsonUtilsWrapper {
 				throw new JsonDeserializeException(e);
 			}
 		}
+
+		@Override
+		public ObjectMapper getWrappedUtil() {
+			return ow;
+		}
 	};
 	
 	public Optional<String> objectToJson(Object o);
+	
+	public U getWrappedUtil();
 	
 	public <T> Optional<T> JsonToObject(String json, Class<T> objCls);
 	

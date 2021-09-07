@@ -10,7 +10,7 @@ use HealthyLifestyle;
 1.成員(含員工、醫師、諮詢者。)
 成員資料至少包含：id、名稱
 成員可能含法人
-登入帳號使用郵件，密碼部分則以SHA256雜湊函數取摘要後紀錄(所以就算有人能翻出資料庫內容也很難知道具體密碼，除非能動手修改資料庫)
+登入帳號使用郵件，密碼部分則以雜湊函數取摘要後紀錄(所以就算有人能翻出資料庫內容也很難知道具體密碼，除非能動手修改資料庫)
 若有一個成員的密碼欄位為null，則表示該成員僅作為資料庫內部紀錄用，不可用於實際登錄。(例如：公司本身)
 1.1 醫師資訊表(至少含專長，其ID對應到一個註冊在此的唯一一個成員，表示該筆醫師資訊是屬於該成員的)
 1.2 員工資訊表(至少含職位，其ID對應到一個註冊在此的唯一一個成員，表示該筆員工資訊是屬於該成員的)
@@ -93,6 +93,16 @@ insert into [Member] values('RRR','RRR@RRR.com','Lee','Long','$2a$10$ggFu4s4foKv
 insert into [AvailableLanguage] values('RRR','zh_tw');
 insert into [AvailableLanguage] values('RRR','ja_jp');
 --insert into [AvailableLanguage] values('RRR','ja_jpp');
+
+create table [UserSchedule](
+	[user] varchar(128) not null foreign key references [Member]([user]),
+	[date] date,
+	title nvarchar(32),
+	theme varchar(16)
+)
+
+insert into [UserSchedule] values('RRR','2021-08-09','YAA','green');
+insert into [UserSchedule] values('RRR','2022-07-11','2ㄏ','yellow');
 
 create table [LoginRecord](
   id int not null primary key identity(1,1),

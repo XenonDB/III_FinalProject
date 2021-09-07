@@ -17,7 +17,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
  * */
 public interface IJsonSerializable<T extends Serializable> {
 
-	public static String listToJson(List<? extends IJsonSerializable<?>> l, IJsonUtilsWrapper wrapper){
+	public static String listToJson(List<? extends IJsonSerializable<?>> l, IJsonUtilsWrapper<?> wrapper){
 		Object[] l2 = l.stream().map(e -> e.getObjectForJsonSerialize()).toArray();
 		return wrapper.objectToJson(l2).orElse("[]");
 	}
@@ -32,10 +32,15 @@ public interface IJsonSerializable<T extends Serializable> {
 	@JsonIgnore
 	public Class<T> getProxyClass();
 	
+	/**
+	 * 回傳一個建構好的代理物件來建構自己
+	 * 需要注意的是，就算代理物件的型態和自身完全相同，代理物件和自身仍然算是不同的物件
+	 * 因此需要一個一個從代理物件上取值出來存入自身中。
+	 * */
 	public void constructWithProxy(T proxy);
 	
 	
-	default public String toJson(IJsonUtilsWrapper wrapper) {
+	default public String toJson(IJsonUtilsWrapper<?> wrapper) {
 		return wrapper.objectToJson(this.getObjectForJsonSerialize()).orElse("{}");
 	}
 	
@@ -43,7 +48,7 @@ public interface IJsonSerializable<T extends Serializable> {
 		return toJson(IJsonUtilsWrapper.DEFAULT_WRAPPER);
 	}
 	
-	default public void constructWithJson(IJsonUtilsWrapper wrapper, String json) {
+	default public void constructWithJson(IJsonUtilsWrapper<?> wrapper, String json) {
 		this.constructWithProxy(wrapper.<T>JsonToObject(json, getProxyClass()).orElse(null));
 	}
 	
@@ -51,7 +56,7 @@ public interface IJsonSerializable<T extends Serializable> {
 		this.constructWithJson(IJsonUtilsWrapper.DEFAULT_WRAPPER, json);
 	}
 	
-	default public void constructWithJson(IJsonUtilsWrapper wrapper, InputStream jsoninput) {
+	default public void constructWithJson(IJsonUtilsWrapper<?> wrapper, InputStream jsoninput) {
 		this.constructWithProxy(wrapper.<T>JsonToObject(jsoninput, getProxyClass()).orElse(null));
 	}
 	
@@ -59,7 +64,7 @@ public interface IJsonSerializable<T extends Serializable> {
 		this.constructWithJson(IJsonUtilsWrapper.DEFAULT_WRAPPER, jsoninput);
 	}
 	
-	default public void constructWithJson(IJsonUtilsWrapper wrapper, Reader jsoninput) {
+	default public void constructWithJson(IJsonUtilsWrapper<?> wrapper, Reader jsoninput) {
 		this.constructWithProxy(wrapper.<T>JsonToObject(jsoninput, getProxyClass()).orElse(null));
 	}
 	

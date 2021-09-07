@@ -80,8 +80,6 @@ public class Login extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		MainHandler.allowCrossOriginForAll(request, response);
 
 		String account = request.getParameter(TagsAndPatterns.AJAX_TAG_ACCOUNT);
 		String password = request.getParameter(TagsAndPatterns.AJAX_TAG_PASSWORD);

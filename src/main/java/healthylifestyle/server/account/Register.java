@@ -41,7 +41,6 @@ public class Register extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		MainHandler.setUTF8ForRequestAndResponse(request, response);
-		MainHandler.allowCrossOriginForAll(request, response);
 		
 		MemberProfile mp = resolveProfile(request);
 		

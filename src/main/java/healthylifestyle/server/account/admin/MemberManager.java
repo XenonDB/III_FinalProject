@@ -59,8 +59,6 @@ public class MemberManager extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		MainHandler.allowCrossOriginForAll(request, response);
-		
 		Optional<OnlineUser> ouser = LoginUtils.getVaildOnlineUser(request);
 		if(ouser.isEmpty() || !ouser.get().setLoginIdentity(LoginIdentity.ADMIN)) {
 			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

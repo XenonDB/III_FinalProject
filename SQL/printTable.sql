@@ -3,6 +3,7 @@ use HealthyLifestyle;
 select * from Member;
 select * from Doctors;
 select * from Employees;
+select * from [UserSchedule];
 select * from LoginRecord;
 select * from [Transaction];
 select * from [Transaction_status];

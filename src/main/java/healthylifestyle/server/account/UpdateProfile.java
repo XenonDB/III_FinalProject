@@ -30,8 +30,6 @@ public class UpdateProfile extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//TODO 需要測試
-		MainHandler.allowCrossOriginForAll(request, response);
 		
 		OnlineUser ou = LoginUtils.getVaildOnlineUser(request).orElse(null);
 		if(ou == null) {
