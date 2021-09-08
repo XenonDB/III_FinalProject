@@ -33,20 +33,19 @@ public class GenericUtils {
 	
 	/**
 	 * 傳入一系列需要和資料庫建立session才能處裡的工作來執行。<br>
-	 * 回傳值為已經完成處裡而沒有拋出例外的工作陣列。<br>
 	 * 已經完成處裡的工作會從輸入的工作集中移除。
 	 * */
-	public static List<Consumer<Session>> procressInSession(List<Consumer<Session>> cs) {
+	public static void procressInSession(List<Consumer<Session>> cs) {
 		Session s = null;
 		Transaction trans = null;
 		LinkedList<Consumer<Session>> doneWork = new LinkedList<>();
+		Consumer<Session> work = null;
 		
 		try{
 			s = ConnectionUtils.openSession();
 			trans = s.beginTransaction();
 			
 			Iterator<Consumer<Session>> it = cs.iterator();
-			Consumer<Session> work;
 			while(it.hasNext()) {
 				work = it.next();
 				work.accept(s);
@@ -63,7 +62,6 @@ public class GenericUtils {
 		finally {
 			if(s != null) s.close();
 		}
-		return doneWork;
 	}
 	
 }
