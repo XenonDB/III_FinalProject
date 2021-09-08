@@ -136,7 +136,9 @@ healthyLifeStyleDBUtil.addDiagBooking(bookingData, [successCallBack][, failCallB
 healthyLifeStyleDBUtil.removeDiagBooking(bookingData, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 healthyLifeStyleDBUtil.setDiagBooking(bookingData, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 healthyLifeStyleDBUtil.clearDiagBooking([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
-
+使用方式與操作日程表相同。
+唯一需要注意的是：若預約內容裡的「醫生」欄位填入了在資料庫的記錄中不是醫生的使用者，則伺服器會報錯(internal server error)。
+參考預設SQL腳本來增加預設的醫生。
 
 */
 const healthyLifeStyleDBUtil = {};
