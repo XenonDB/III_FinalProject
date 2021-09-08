@@ -64,7 +64,7 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 		
 		Session ss = null;
 		Transaction trans = null;
-		List<T> members = List.of();
+		List<T> data = List.of();
 		
 		try {
 			
@@ -72,10 +72,10 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 			trans = ss.beginTransaction();
 			
 			Query<T> q = ss.createQuery(String.format("from %s", getCorrespondRecordClass().getSimpleName()),getCorrespondRecordClass());
-			members = q.getResultList();
+			data = q.getResultList();
 			
 			if(IHibernateInitializable.class.isAssignableFrom(getCorrespondRecordClass())) {
-				members.stream().forEach(e -> ((IHibernateInitializable) e).initialize());
+				data.stream().forEach(e -> ((IHibernateInitializable) e).initialize());
 			}
 			
 		}catch(Exception e) {
@@ -85,7 +85,7 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 			if(ss != null) ss.close();
 		}
 		
-		return members;
+		return data;
 	}
 
 	private int insertOrUpdate(T data, DataBaseOperation oper) {

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -115,6 +116,10 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
                           @AttributeOverride(name = "title", column = @Column(name = "title")),
                           @AttributeOverride(name = "theme", column = @Column(name = "theme")) })
 	private Set<Schedule> schedule;
+	
+	@ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name="DiagnosisBooking", joinColumns ={@JoinColumn(name = "[user]")})
+	private Set<DiagnosisBooking> diagBooking;
 	
 	public MemberProfile() {}
 	
@@ -448,6 +453,34 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	
 	public void clearSchedule() {
 		this.setSchedule(null);
+	}
+	
+	public Set<DiagnosisBooking> getDiagBooking() {
+		
+		if(diagBooking != null && !Hibernate.isInitialized(diagBooking)) {
+			GenericUtils.procressInSession(cs -> {
+				cs.update(this);
+				Hibernate.initialize(diagBooking);
+			});
+		}
+		
+		return diagBooking;
+	}
+
+	public void setDiagBooking(Set<DiagnosisBooking> diagBooking) {
+		this.diagBooking = diagBooking == null ? new HashSet<>() : diagBooking;
+	}
+
+	public boolean addDiagBooking(DiagnosisBooking b) {
+		return this.getDiagBooking().add(b);
+	}
+	
+	public boolean removeDiagBooking(DiagnosisBooking b) {
+		return this.getDiagBooking().remove(b);
+	}
+	
+	public void clearDiagBooking() {
+		this.setDiagBooking(null);
 	}
 	
 	public static class MemberProfileJson implements Serializable{

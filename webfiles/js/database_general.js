@@ -1,38 +1,27 @@
 /*
-
 資策會Java班期末專題第二小組的資料庫存取用程式庫。
 資料庫和會員相關的註冊、登入、登出...等操作皆包含在healthyLifeStyleDBUtil中。
 只需要執行healthyLifeStyleDBUtil中建構好的函式，即可向伺服器傳送請求以做各種操作。
-
 登入功能透過session實現。當登入成功後，只要不關閉網頁以及session沒有過期(預設5分鐘內沒有任何操作則session過期)，會員都將保持登入狀態而可以執行相關操作。
 登出功能則是讓使用者訪問特定網址以讓當前session失效來登出使用者。
-
 說明：
-
 healthyLifeStyleDBUtil.requestOrigin
 存放欲傳送請求的主機位址(含通訊協定、IP、通訊阜)，不包刮路徑。非必要請勿更動。
-
 healthyLifeStyleDBUtil.loginPath
 執行登入相關請求的請求路徑。非必要請勿更動。
-
 healthyLifeStyleDBUtil.login(user, password[, successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 讓當前瀏覽器以帳戶user，密碼password來登入伺服器。
 可以提供兩個自定義回呼函式(successCallBack(data, textStatus, jqXHR), failCallBack(data, textStatus, jqXHR))以分別在登入成功、失敗時進行呼叫
 傳入回乎函式的參數等同於jQuery的get、post方法中，傳給回乎函數的參數：https://api.jquery.com/jquery.post/
-
 登入函數中有設計預設的回乎函數，呼叫回乎函數時，將會先執行預設回乎函數(其中有一個alert方法來提醒結果)，再執行傳入的自定義回乎函數。
 若不想要使用預設函數。則可以將replaceSuccessCallBack或replaceFailCallBack設為true，可分別停用預設回乎函數。
-
 healthyLifeStyleDBUtil.isLoginRequestActivate()
 登入請求是否正在執行中。
-
 healthyLifeStyleDBUtil.register(user, password[, email][, successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 向網頁伺服器提交帳戶註冊請求。
 回乎函式的行為同login函式。
-
 healthyLifeStyleDBUtil.isRegisterRequestActivate()
 註冊帳戶的請求是否正在執行中。
-
 healthyLifeStyleDBUtil.getCurrentLoginAccount([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 取得當前網頁登入的帳號。若沒有登入，則請求會失敗。
 若有登入的帳號，請求會成功，回乎函式中的data會是當前登入的帳號資訊，資料格式為已解析好的json資料。
@@ -40,7 +29,6 @@ healthyLifeStyleDBUtil.getCurrentLoginAccount([successCallBack][, failCallBack][
 loginProfile: 當前登入帳號的身分，實際身分為其中的loginIdentity。可能的值有NONE,ADMIN,NORMAL_EMPLOYEE,DOCTOR。
 NONE表示一般無特殊權限的登入用戶。
 userProfile: 當前登入帳號的所有基本資料。
-
 帳號資料範例：
 {
 	"loginProfile":{
@@ -67,10 +55,8 @@ userProfile: 當前登入帳號的所有基本資料。
 		]
 	}
 }
-
 healthyLifeStyleDBUtil.logOut([successCallBack][, replaceSuccessCallBack])
 執行後將當前網頁登入的帳號登出。
-
 healthyLifeStyleDBUtil.getRegisteredMembers([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 取得會員列表。當前登入的帳號必須要有管理員(ADMIN)權限等級才可執行成功。
 目前還沒有把切換權限的功能完成。因此執行此函數時，會自動嘗試將帳號切換為管理員模式，若切換失敗則請求失敗。
@@ -84,11 +70,9 @@ bloodtypeABO: 用戶的ABO血型。可能的值有O,A,B,AB或null
 birthday: 用戶的生日，可能為null
 phone: 用戶的手機號碼，可能為null
 photo: 用戶的頭像(照片)，資料格式應該是base64，可能為null。
-
 healthyLifeStyleDBUtil.updateProfile(profile, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 更新用戶資料。
 profile表示用戶資料的js物件，格式等同於healthyLifeStyleDBUtil.getCurrentLoginAccount中，帳號資料的"userProfile"的格式。
-
 以下為更新帳戶資料的範例：
 healthyLifeStyleDBUtil.getCurrentLoginAccount(function(data){
 	//從伺服器取得當前登入帳戶資料後更新
@@ -99,7 +83,6 @@ healthyLifeStyleDBUtil.getCurrentLoginAccount(function(data){
 	profile.availableLangs.push("en_us");
 	healthyLifeStyleDBUtil.updateProfile(profile);
 });
-
 healthyLifeStyleDBUtil.getSchedule([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 取得當前登入用戶的日程表(日曆記錄)
 成功時執行的回呼函數successCallBack(data, textStatus, jqXHR)中，data為解析好的日曆資料，型態為陣列。
@@ -115,27 +98,45 @@ healthyLifeStyleDBUtil.getSchedule((e)=>{
 length: 2
 [[Prototype]]: Array(0)
 ﻿
-healthyLifeStyleDBUtil.addSchedule(scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack)
-healthyLifeStyleDBUtil.removeSchedule(scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack)
+healthyLifeStyleDBUtil.addSchedule(scheduleData, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
+healthyLifeStyleDBUtil.removeSchedule(scheduleData, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 分別對日曆進行增加以及移除的特定記錄的方法。
 scheduleData的格式等同於successCallBack中，回傳陣列中的元素的值
 當要移除記錄時，scheduleData中的三筆資料必須「與資料庫內的記錄完全相同」才會成功移除。
 以getSchedule的範例來繼續：
 healthyLifeStyleDBUtil.addSchedule({date: 1728438400000, title: "RR", theme: "blue"}) //將新增一筆如左的日曆記錄
-
 以getSchedule中的資料為範例：
 healthyLifeStyleDBUtil.removeSchedule(sch[0])
 將會移除資料庫中的{date: 1628438400000, title: "YAA", theme: "green"}這筆記錄，如果存在的話。
 
-setSchedule(scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack)
+healthyLifeStyleDBUtil.setSchedule(scheduleData, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 指定一系列日曆資料，將當前當入的使用者的所有日曆資料設為傳入的資料。
 以getSchedul中的為範例：
 sch.push({date: 7468800000, title: "6ㄏ", theme: "red"})
 sch[1].theme = "white";
-setSchedule(sch);
+healthyLifeStyleDBUtil.setSchedule(sch);
 
-clearSchedule(successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack)
+clearSchedule([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
 清空當前登入的使用者的所有日曆資料。
+
+healthyLifeStyleDBUtil.getDiagBooking([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
+使用方式與getSchedule相同。
+回傳資料的範例：
+var boo;
+healthyLifeStyleDBUtil.getSchedule((e)=>{
+	boo = e;
+	console.log(boo);
+})
+控制台將打印：
+0: {interval: 1800, doctor: "Lai", diagClass: "神經內科", desc: "脖子涼涼的，感覺有東西勒著。", datetime: 1657500423000}
+length: 1
+[[Prototype]]: Array(0)
+
+healthyLifeStyleDBUtil.addDiagBooking(bookingData, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
+healthyLifeStyleDBUtil.removeDiagBooking(bookingData, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
+healthyLifeStyleDBUtil.setDiagBooking(bookingData, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
+healthyLifeStyleDBUtil.clearDiagBooking([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
+
 
 */
 const healthyLifeStyleDBUtil = {};
@@ -153,6 +154,7 @@ const healthyLifeStyleDBUtil = {};
 		this.loginPath = "/Account/Login";
 		
 		this.schedulePath = "/UserScheduleHandler";
+		this.diagBookingPath = "/DiagnosisBookingHandler";
 		
 		this.login = (user, password, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
 			
@@ -461,6 +463,94 @@ const healthyLifeStyleDBUtil = {};
 		
 		this.clearSchedule = (successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
 			modifySchedule.call(this,{},"rq_op_clear", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
+		}
+		
+		//////////////////////////////////////////////////
+		
+		this.getDiagBooking = (successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			successCallBack = successCallBack || function(){};
+			failCallBack = failCallBack || function(){};
+			
+			var defaultSuccessCallBack = function(data, textStatus, jqXHR){
+				alert("成功取得預約表!");
+				successCallBack(data, textStatus, jqXHR);
+			};
+			var defaultFailCallBack = function(data, textStatus, jqXHR){
+				var errmsg = "";
+				switch(data.status){
+					case 401:
+						errmsg = "登入狀態過期，請重新登入。";
+						break;
+					default:
+						errmsg = "伺服器發生未預期錯誤，無法取得資料。";
+				}
+				alert(errmsg);
+				failCallBack(data, textStatus, jqXHR);
+			}
+			
+			var finalSuccessCallBack = !replaceSuccessCallBack ? defaultSuccessCallBack : successCallBack;
+			var finalFailCallBack = !replaceFailCallBack ? defaultFailCallBack : failCallBack;
+			
+			$.get({
+				url: this.requestOrigin+this.diagBookingPath
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
+			}).done(finalSuccessCallBack).fail(finalFailCallBack);
+			
+		}
+		
+		function modifyDiagBooking(bookingData, oper, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack){
+			successCallBack = successCallBack || function(){};
+			failCallBack = failCallBack || function(){};
+			
+			var defaultSuccessCallBack = function(data, textStatus, jqXHR){
+				alert("成功更新預約表!");
+				successCallBack(data, textStatus, jqXHR);
+			};
+			var defaultFailCallBack = function(data, textStatus, jqXHR){
+				var errmsg = "";
+				switch(data.status){
+					case 401:
+						errmsg = "登入狀態過期，請重新登入。";
+						break;
+					default:
+						errmsg = "伺服器發生未預期錯誤，無法更新資料。";
+				}
+				alert(errmsg);
+				failCallBack(data, textStatus, jqXHR);
+			}
+			
+			var finalSuccessCallBack = !replaceSuccessCallBack ? defaultSuccessCallBack : successCallBack;
+			var finalFailCallBack = !replaceFailCallBack ? defaultFailCallBack : failCallBack;
+			
+			var rqData = {};
+			rqData["rq_content"] = JSON.stringify(bookingData);
+			rqData[oper] = 1;
+			$.post({
+				url: this.requestOrigin+this.diagBookingPath,
+				data: $.param(rqData)
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
+			}).done(finalSuccessCallBack).fail(finalFailCallBack);
+			
+		}
+		
+		this.addDiagBooking = (bookingData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			modifyDiagBooking.call(this,bookingData,"rq_op_add", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
+		}
+		
+		this.removeDiagBooking = (bookingData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			modifyDiagBooking.call(this,bookingData,"rq_op_remove", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
+		}
+		
+		this.setDiagBooking = (bookingData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			modifyDiagBooking.call(this,bookingData,"rq_op_set", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
+		}
+		
+		this.clearDiagBooking = (successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			modifyDiagBooking.call(this,{},"rq_op_clear", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
 		}
 		
 	};

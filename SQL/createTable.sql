@@ -94,6 +94,9 @@ insert into [AvailableLanguage] values('RRR','zh_tw');
 insert into [AvailableLanguage] values('RRR','ja_jp');
 --insert into [AvailableLanguage] values('RRR','ja_jpp');
 
+insert into [Member] values('Lai','lai@lai.com','賴','普拿疼-潘志遠','$2a$10$UnA66biPUgb9PDsSajsKEeBdjvyarDKhqrDb55eSNRLLPx1rwhbTy','MALE','O','2022-11-6',null,'0987848763',189.7,56.2,'台北市','信義區');--預設密碼 rrr
+insert into [Doctors] values('Lai','神經內科')
+
 create table [UserSchedule](
 	[user] varchar(128) not null foreign key references [Member]([user]),
 	[date] date,
@@ -103,6 +106,17 @@ create table [UserSchedule](
 
 insert into [UserSchedule] values('RRR','2021-08-09','YAA','green');
 insert into [UserSchedule] values('RRR','2022-07-11','2ㄏ','yellow');
+
+create table [DiagnosisBooking](
+	[user] varchar(128) not null foreign key references [Member]([user]),
+	[date] datetime not null,
+	interval int not null,
+	[doctor] varchar(128) not null foreign key references [Doctors]([user]),
+	[diagClass] nvarchar(32) not null,
+	[desc] nvarchar(1024)
+)
+
+insert into [DiagnosisBooking] values('RRR','2022-07-11 08:47:03',1800,'Lai','神經內科','脖子涼涼的，感覺有東西勒著。');
 
 create table [LoginRecord](
   id int not null primary key identity(1,1),
