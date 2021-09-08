@@ -25,6 +25,8 @@ public class TagsAndPatterns {
 	public static final String REQUEST_OP_CLEAR = "rq_op_clear";
 	public static final String REQUEST_OP_SET = "rq_op_set";
 	
+	public static final String REQUEST_CONTENT = "rq_content";
+	
 	public static boolean isAddElementRequest(HttpServletRequest r) {
 		return r.getParameter(REQUEST_OP_ADD) != null;
 	}

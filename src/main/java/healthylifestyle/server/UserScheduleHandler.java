@@ -64,25 +64,28 @@ public class UserScheduleHandler extends HttpServlet {
 		}
 		
 		MemberProfile mp = TableMember.INSTANCE.getDataByPK(ou.getUser()).get();
+		String content = request.getParameter(TagsAndPatterns.REQUEST_CONTENT);
 		
 		if(TagsAndPatterns.isAddElementRequest(request)) {
 			
 			Schedule s = new Schedule();
-			s.constructWithJson(request.getReader());
+			s.constructWithJson(content);
 			mp.addSchedule(s);
 			
 		}else if(TagsAndPatterns.isRemoveElementRequest(request)) {
 			
 			Schedule s = new Schedule();
-			s.constructWithJson(request.getReader());
+			s.constructWithJson(content);
 			mp.removeSchedule(s);
 			
 		}else if(TagsAndPatterns.isClearElementRequest(request)) {
+			
 			mp.clearSchedule();
+			
 		}else if(TagsAndPatterns.isSetCollectionRequest(request)) {
 			
 			TypeReference<Set<Schedule>> tr = new TypeReference<>() {};
-			Set<Schedule> ss = IJsonUtilsWrapper.DEFAULT_WRAPPER.getWrappedUtil().readValue(request.getReader(), tr);
+			Set<Schedule> ss = IJsonUtilsWrapper.DEFAULT_WRAPPER.getWrappedUtil().readValue(content, tr);
 			mp.setSchedule(ss);
 			
 		}else {

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import healthylifestyle.database.table.TableMember;
 import healthylifestyle.database.table.record.MemberProfile;
-import healthylifestyle.server.MainHandler;
 
 /**
  * Servlet implementation class UpdateProfile

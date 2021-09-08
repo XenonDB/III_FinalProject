@@ -100,6 +100,43 @@ healthyLifeStyleDBUtil.getCurrentLoginAccount(function(data){
 	healthyLifeStyleDBUtil.updateProfile(profile);
 });
 
+healthyLifeStyleDBUtil.getSchedule([successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
+取得當前登入用戶的日程表(日曆記錄)
+成功時執行的回呼函數successCallBack(data, textStatus, jqXHR)中，data為解析好的日曆資料，型態為陣列。
+範例：
+var sch;
+healthyLifeStyleDBUtil.getSchedule((e)=>{
+	sch = e;
+	console.log(sch);
+})
+控制台將打印出：
+0: {date: 1628438400000, title: "YAA", theme: "green"}
+1: {date: 1657468800000, title: "2ㄏ", theme: "yellow"}
+length: 2
+[[Prototype]]: Array(0)
+﻿
+healthyLifeStyleDBUtil.addSchedule(scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack)
+healthyLifeStyleDBUtil.removeSchedule(scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack)
+分別對日曆進行增加以及移除的特定記錄的方法。
+scheduleData的格式等同於successCallBack中，回傳陣列中的元素的值
+當要移除記錄時，scheduleData中的三筆資料必須「與資料庫內的記錄完全相同」才會成功移除。
+以getSchedule的範例來繼續：
+healthyLifeStyleDBUtil.addSchedule({date: 1728438400000, title: "RR", theme: "blue"}) //將新增一筆如左的日曆記錄
+
+以getSchedule中的資料為範例：
+healthyLifeStyleDBUtil.removeSchedule(sch[0])
+將會移除資料庫中的{date: 1628438400000, title: "YAA", theme: "green"}這筆記錄，如果存在的話。
+
+setSchedule(scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack)
+指定一系列日曆資料，將當前當入的使用者的所有日曆資料設為傳入的資料。
+以getSchedul中的為範例：
+sch.push({date: 7468800000, title: "6ㄏ", theme: "red"})
+sch[1].theme = "white";
+setSchedule(sch);
+
+clearSchedule(successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack)
+清空當前登入的使用者的所有日曆資料。
+
 */
 const healthyLifeStyleDBUtil = {};
 
@@ -222,7 +259,7 @@ const healthyLifeStyleDBUtil = {};
 			var defaultSuccessCallBack = function(data, textStatus, jqXHR){
 				successCallBack(data, textStatus, jqXHR);
 			};
-			var defaultFailCallBack = function(data){
+			var defaultFailCallBack = function(data, textStatus, jqXHR){
 				var errmsg = "";
 				switch(data.status){
 					case 401:
@@ -311,7 +348,7 @@ const healthyLifeStyleDBUtil = {};
 				alert("成功更新個人資料!");
 				successCallBack(data, textStatus, jqXHR);
 			};
-			var defaultFailCallBack = function(data){
+			var defaultFailCallBack = function(data, textStatus, jqXHR){
 				var errmsg = "";
 				switch(data.status){
 					case 401:
@@ -348,7 +385,7 @@ const healthyLifeStyleDBUtil = {};
 				alert("成功取得排程表!");
 				successCallBack(data, textStatus, jqXHR);
 			};
-			var defaultFailCallBack = function(data){
+			var defaultFailCallBack = function(data, textStatus, jqXHR){
 				var errmsg = "";
 				switch(data.status){
 					case 401:
@@ -373,7 +410,7 @@ const healthyLifeStyleDBUtil = {};
 			
 		}
 		
-		this.modifySchedule = (scheduleData, oper, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+		function modifySchedule(scheduleData, oper, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack){
 			successCallBack = successCallBack || function(){};
 			failCallBack = failCallBack || function(){};
 			
@@ -381,7 +418,7 @@ const healthyLifeStyleDBUtil = {};
 				alert("成功更新排程表!");
 				successCallBack(data, textStatus, jqXHR);
 			};
-			var defaultFailCallBack = function(data){
+			var defaultFailCallBack = function(data, textStatus, jqXHR){
 				var errmsg = "";
 				switch(data.status){
 					case 401:
@@ -397,9 +434,12 @@ const healthyLifeStyleDBUtil = {};
 			var finalSuccessCallBack = !replaceSuccessCallBack ? defaultSuccessCallBack : successCallBack;
 			var finalFailCallBack = !replaceFailCallBack ? defaultFailCallBack : failCallBack;
 			
+			var rqData = {};
+			rqData["rq_content"] = JSON.stringify(scheduleData);
+			rqData[oper] = 1;
 			$.post({
-				url: this.requestOrigin+this.schedulePath+"?"+oper+"=1",
-				data: JSON.stringify(profile)
+				url: this.requestOrigin+this.schedulePath,
+				data: $.param(rqData)
 				//xhrFields: {withCredentials: true},
 				//crossDomain: true,
 				//headers: { 'Origin': window.location.origin }
@@ -408,19 +448,19 @@ const healthyLifeStyleDBUtil = {};
 		}
 		
 		this.addSchedule = (scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
-			this.modifySchedule(scheduleData,"rq_op_add");
+			modifySchedule.call(this,scheduleData,"rq_op_add", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
 		}
 		
 		this.removeSchedule = (scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
-			this.modifySchedule(scheduleData,"rq_op_remove");
+			modifySchedule.call(this,scheduleData,"rq_op_remove", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
 		}
 		
 		this.setSchedule = (scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
-			this.modifySchedule(scheduleData,"rq_op_set");
+			modifySchedule.call(this,scheduleData,"rq_op_set", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
 		}
 		
-		this.clearSchedule = (scheduleData, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
-			this.modifySchedule(scheduleData,"rq_op_clear");
+		this.clearSchedule = (successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack) => {
+			modifySchedule.call(this,{},"rq_op_clear", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
 		}
 		
 	};
