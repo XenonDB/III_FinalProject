@@ -38,18 +38,16 @@ public class GenericUtils {
 	public static void procressInSession(List<Consumer<Session>> cs) {
 		Session s = null;
 		Transaction trans = null;
-		LinkedList<Consumer<Session>> doneWork = new LinkedList<>();
-		Consumer<Session> work = null;
 		
 		try{
 			s = ConnectionUtils.openSession();
 			trans = s.beginTransaction();
 			
+			Consumer<Session> work;
 			Iterator<Consumer<Session>> it = cs.iterator();
 			while(it.hasNext()) {
 				work = it.next();
 				work.accept(s);
-				doneWork.add(work);
 				it.remove();
 			}
 			
