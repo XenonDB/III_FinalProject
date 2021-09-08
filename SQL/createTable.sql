@@ -94,7 +94,7 @@ insert into [AvailableLanguage] values('RRR','zh_tw');
 insert into [AvailableLanguage] values('RRR','ja_jp');
 --insert into [AvailableLanguage] values('RRR','ja_jpp');
 
-insert into [Member] values('Lai','lai@lai.com','賴','普拿疼-潘志遠','$2a$10$UnA66biPUgb9PDsSajsKEeBdjvyarDKhqrDb55eSNRLLPx1rwhbTy','MALE','O','2022-11-6',null,'0987848763',189.7,56.2,'台北市','信義區');--預設密碼 rrr
+insert into [Member] values('Lai','lai@lai.com','賴','普拿疼-潘志遠','$2a$10$UnA66biPUgb9PDsSajsKEeBdjvyarDKhqrDb55eSNRLLPx1rwhbTy','MALE','O','2022-11-6',null,'0987848763',189.7,56.2,'台北市','信義區');--預設密碼 lai
 insert into [Doctors] values('Lai','神經內科')
 
 create table [UserSchedule](
