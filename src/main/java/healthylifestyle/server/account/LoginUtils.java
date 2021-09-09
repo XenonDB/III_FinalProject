@@ -22,8 +22,8 @@ public class LoginUtils {
 	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	/**
-	 * 當使用者成功登入後，回傳一個隨機的存取令牌給予客戶端下達操作指令用。
-	 * 令牌有時效性，預設為5分鐘。
+	 * 當使用者成功登入後，建構一個有效的session給予客戶端下達操作指令用。
+	 * session有時效性，預設為5分鐘。
 	 * */
 	public static boolean onMemberTryingLogin(String user, String password, HttpServletRequest request) {
 		
@@ -61,13 +61,6 @@ public class LoginUtils {
 		
 		return Optional.empty();
 		
-	}
-	
-	
-	public static boolean updateLoginIdentity(HttpServletRequest request, LoginIdentity level) {
-		Optional<OnlineUser> user = getVaildOnlineUser(request);
-		
-		return !user.isEmpty() && user.get().setLoginIdentity(level);
 	}
 	
 	public static Optional<OnlineUser> getOnlineUser(String user) {

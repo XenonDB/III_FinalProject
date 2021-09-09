@@ -42,4 +42,6 @@ public class TagsAndPatterns {
 	public static boolean isSetCollectionRequest(HttpServletRequest r) {
 		return r.getParameter(REQUEST_OP_SET) != null;
 	}
+	
+	public static final String DEFAULT_ADMIN_ACCOUNT = "Admin";
 }

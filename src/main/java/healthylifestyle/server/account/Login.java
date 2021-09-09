@@ -96,6 +96,9 @@ public class Login extends HttpServlet {
 		session.setAttribute(LoginUtils.SESSION_TAG_USER, account);
 		session.setMaxInactiveInterval(LoginUtils.getSessionExpireTimeSeconds());
 
+		//嘗試把登入者的身分設為醫生。如果該人不具有醫生身分則不會更動登入身分。
+		LoginUtils.getOnlineUser(account).get().setLoginIdentity(LoginIdentity.DOCTOR);
+		
 		response.setStatus(HttpServletResponse.SC_OK);
 		System.out.println(request.getSession().getId());
 	}

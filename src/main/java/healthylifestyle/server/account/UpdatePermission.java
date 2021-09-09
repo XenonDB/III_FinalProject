@@ -30,6 +30,12 @@ public class UpdatePermission extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		OnlineUser ou = LoginUtils.getVaildOnlineUser(request).orElse(null);
+		if(ou == null) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			return;
+		}
+		
 		LoginIdentity toUpdate;
 		
 		try {
@@ -39,7 +45,7 @@ public class UpdatePermission extends HttpServlet {
 			return;
 		}
 		
-		boolean result = LoginUtils.updateLoginIdentity(request, toUpdate);
+		boolean result = ou.setLoginIdentity(toUpdate);
 		
 		if(result) {
 			response.setStatus(HttpServletResponse.SC_ACCEPTED);

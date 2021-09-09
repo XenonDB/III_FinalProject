@@ -555,6 +555,46 @@ const healthyLifeStyleDBUtil = {};
 			modifyDiagBooking.call(this,{},"rq_op_clear", successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack);
 		}
 		
+		this.updatePermission(perm, successCallBack, failCallBack, replaceSuccessCallBack, replaceFailCallBack){
+			successCallBack = successCallBack || function(){};
+			failCallBack = failCallBack || function(){};
+			
+			var defaultSuccessCallBack = function(data, textStatus, jqXHR){
+				console.log("成功更新登入身分!");
+				successCallBack(data, textStatus, jqXHR);
+			};
+			var defaultFailCallBack = function(data, textStatus, jqXHR){
+				var errmsg = "";
+				switch(data.status){
+					case 401:
+						errmsg = "登入狀態過期，請重新登入。";
+						break;
+					case 400:
+						errmsg = "無效的身分名稱!";
+						break;
+					case 403:
+						errmsg = "您沒有該身分!!";
+						break;
+					default:
+						errmsg = "伺服器發生未預期錯誤，無法更新登入身分。";
+				}
+				alert(errmsg);
+				failCallBack(data, textStatus, jqXHR);
+			}
+			
+			var finalSuccessCallBack = !replaceSuccessCallBack ? defaultSuccessCallBack : successCallBack;
+			var finalFailCallBack = !replaceFailCallBack ? defaultFailCallBack : failCallBack;
+			
+			$.post({
+				url: this.requestOrigin+"/Account/UpdatePermission",
+				data: $.param({updateLoginIdentity: perm})
+				//xhrFields: {withCredentials: true},
+				//crossDomain: true,
+				//headers: { 'Origin': window.location.origin }
+			}).done(finalSuccessCallBack).fail(finalFailCallBack);
+			
+		}
+		
 	};
 	
 	healthyLifeStyleDBUtil.init();
