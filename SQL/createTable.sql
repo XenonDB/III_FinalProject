@@ -131,23 +131,27 @@ create table [Transaction_status](
 );
 
 create table [Products](
-  id int not null primary key identity(1,1),
-  name nvarchar(128) not null,
+  pid int not null primary key identity(1,1),--商品ID
+  ppic varchar(max),--商品照片，以html img可以使用的base64直接儲存(data:image/png;base64,...)
+  pname nvarchar(128) not null,--商品名稱
   price int not null, -- 定價，單位為新台幣，但不一定會在交易時使用。
+  qty int not null,--該商品剩餘數量
+  seller varchar(128) not null foreign key references [Member]([user])--販售該商品的會員是誰
 );
 
 create table [Transaction](
-  id int not null primary key identity(1,1),
-  seller varchar(128) not null foreign key references [Member]([user]),
-  buyer varchar(128) not null foreign key references [Member]([user]),
-  buyer_money int not null, --buyer在此次交易提出的，即將會給seller的交易金額(若交易成功)
-  seller_product int foreign key references Products(id), --seller在此次交易提出的，即將會給buyer的交易商品(若交易成功。商品必定為商品列表內的其中一項或null)
-  seller_comment nvarchar(1024),
-  buyer_comment nvarchar(1024),
+  oid int not null primary key identity(1,1),--訂單ID
+  pid int not null foreign key references [Products]([pid]),--交易商品ID
+  qty int not null,--交易商品的數量
+  seller varchar(128) not null foreign key references [Member]([user]),--販售者
+  customer varchar(128) not null foreign key references [Member]([user]),--購買者
+  price int not null, --此次交易(預計或已完成)的成交價格。
+  seller_comment nvarchar(1024),--販售者對此次交易的評價。
+  customer_comment nvarchar(1024),--購買者對此次交易的評價。
   status int not null foreign key references [Transaction_status](id), --交易狀態
-  date datetimeoffset not null default SYSDATETIMEOFFSET(), --訂單產生的日期
+  odate datetimeoffset not null default SYSDATETIMEOFFSET(), --訂單產生的日期
   postal_code int, --交易物品欲送達地址的郵遞區號。只有在地址存在的狀況下才可能存在。
-  location_desc nvarchar(1024) --交易物品欲送達的實體地址。實體地址的意義為給buyer的取貨位址。
+  location_desc nvarchar(1024) --交易物品欲送達的實體地址。實體地址的意義為給customer的取貨位址。
 );
 
 insert into Transaction_status values(0,'交易預定中');
