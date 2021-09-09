@@ -89,7 +89,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	private String phone;
 	
 	@Column(name = "photo")
-	private byte[] photo;
+	private String photo;
 	
 	
 	@Column(name = "height")
@@ -102,7 +102,10 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	private String city;
 	
 	@Column(name = "[location]")
-	private String location;	
+	private String location;
+	
+	@Column(name = "[desc]")
+	private String desc;
 	
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name="AvailableLanguage", joinColumns=@JoinColumn(name="[user]"))
@@ -278,11 +281,11 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	*/
 
 	
-	public Optional<byte[]> getPhoto() {
+	public Optional<String> getPhoto() {
 		return Optional.ofNullable(this.photo);
 	}
 
-	public MemberProfile setPhoto(byte[] photo) {
+	public MemberProfile setPhoto(String photo) {
 		this.photo = photo;
 		return this;
 	}
@@ -419,8 +422,8 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		setWeight(target.getWeight()).
 		setCity(target.getCity()).
 		setLocation(target.getLocation()).
+		setDesc(target.getDesc()).
 		setAvailableLangs(target.getAvailableLangs());
-		
 	}
 	
 	/**
@@ -483,6 +486,15 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		this.setDiagBooking(null);
 	}
 	
+	public Optional<String> getDesc() {
+		return Optional.ofNullable(this.desc);
+	}
+
+	public MemberProfile setDesc(String desc) {
+		this.desc = desc;
+		return this;
+	}
+
 	public static class MemberProfileJson implements Serializable{
 		
 		/**
@@ -506,7 +518,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		
 		private String phone;
 		
-		private byte[] photo;
+		private String photo;
 
 		
 		private float height;
@@ -516,6 +528,8 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 		private String city;
 		
 		private String location;	
+		
+		private String desc;
 		
 		private Set<String> availableLangs;
 		
@@ -595,11 +609,11 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 			this.phone = phone;
 		}
 
-		public byte[] getPhoto() {
+		public String getPhoto() {
 			return photo;
 		}
 
-		public void setPhoto(byte[] photo) {
+		public void setPhoto(String photo) {
 			this.photo = photo;
 		}
 
@@ -661,6 +675,14 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 
 		public void setAvailableLangs(Set<String> list) {
 			this.availableLangs = list;
+		}
+
+		public String getDesc() {
+			return desc;
+		}
+
+		public void setDesc(String desc) {
+			this.desc = desc;
 		}
 		
 	}

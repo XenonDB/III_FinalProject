@@ -35,12 +35,13 @@ create table [Member](
   gender nvarchar(32),
   bloodtypeABO nvarchar(32),
   birthday date,
-  photo varbinary(max),
+  photo varchar(max),--個人資料的頭像，以javascript的FileReader轉換成的base64字串記錄(data:image/png;base64,...)
   phone nvarchar(32),
   height decimal(8,2), --身高
   [weight] decimal(8,2), --體重
   city nvarchar(8), --居住城市
-  [location] nvarchar(128) --居住地點(不含城市)
+  [location] nvarchar(128), --居住地點(不含城市)
+  [desc] nvarchar(1024)--個人資料的描述(健康存摺用)
 )
 
 --語言列表以語系/地區碼表示，可用的地區碼請參考healthylifestyle.utils.Language
@@ -89,12 +90,12 @@ insert into [Employees] values('System',100);
 insert into [Member](firstName,[user],hashedPassword) values('測試管理員帳號','Admin','$2a$10$Cs4flB8Wy.2euaXb8dkMROClq9ptGGA7vqGBGIwcf/GyvpVYCgR1a');-- 預設密碼 healthy
 insert into [Employees] values('Admin',100);
 
-insert into [Member] values('RRR','RRR@RRR.com','Lee','Long','$2a$10$ggFu4s4foKvzQ6AY/TAFDu4bMO11VEQaSyYAg1POktA7bnCGyjWN6','MALE','O','2022-11-6',null,'0987848763',199.1,66.2,'高雄市','新西區');--預設密碼 rrr
+insert into [Member] values('RRR','RRR@RRR.com','Lee','Long','$2a$10$ggFu4s4foKvzQ6AY/TAFDu4bMO11VEQaSyYAg1POktA7bnCGyjWN6','MALE','O','2022-11-6',null,'0987848763',199.1,66.2,'高雄市','新西區',null);--預設密碼 rrr
 insert into [AvailableLanguage] values('RRR','zh_tw');
 insert into [AvailableLanguage] values('RRR','ja_jp');
 --insert into [AvailableLanguage] values('RRR','ja_jpp');
 
-insert into [Member] values('Lai','lai@lai.com','賴','普拿疼-潘志遠','$2a$10$UnA66biPUgb9PDsSajsKEeBdjvyarDKhqrDb55eSNRLLPx1rwhbTy','MALE','O','2022-11-6',null,'0987848763',189.7,56.2,'台北市','信義區');--預設密碼 lai
+insert into [Member] values('Lai','lai@lai.com','賴','普拿疼-潘志遠','$2a$10$UnA66biPUgb9PDsSajsKEeBdjvyarDKhqrDb55eSNRLLPx1rwhbTy','MALE','O','2022-11-6',null,'0987848763',189.7,56.2,'台北市','信義區',null);--預設密碼 lai
 insert into [Doctors] values('Lai','神經內科')
 
 create table [UserSchedule](
