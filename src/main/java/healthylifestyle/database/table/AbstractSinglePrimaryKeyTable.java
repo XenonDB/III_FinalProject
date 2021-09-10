@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import healthylifestyle.database.ConnectionUtils;
+import healthylifestyle.database.GenericUtils;
 import healthylifestyle.database.dbinterface.DataBaseOperation;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.dbinterface.table.ISinglePrimaryKeyTable;
@@ -25,26 +23,15 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 	 * */
 	private Optional<T> peekData(U primaryKey, boolean doReturn){
 		
-		Session s = null;
-		Transaction trans = null;
-		T p = null;
-		
-		try{
-			s = ConnectionUtils.openSession();
-			trans = s.beginTransaction();
+		T p = GenericUtils.<Object,T>procressInSession((Session ss,Object d) -> {
 			
-			p = s.get(getCorrespondRecordClass(), primaryKey);
-			if(doReturn && p instanceof IHibernateInitializable) {
-				((IHibernateInitializable) p).initialize();
+			T pp = ss.get(getCorrespondRecordClass(), primaryKey);
+			if(doReturn && pp instanceof IHibernateInitializable) {
+				((IHibernateInitializable) pp).initialize();
 			}
 			
-		}catch(Exception e) {
-			if(trans != null) trans.rollback();
-			throw e;
-		}
-		finally {
-			if(s != null) s.close();
-		}
+			return pp;
+		}, null);
 		
 		return Optional.ofNullable(p);
 		
@@ -62,66 +49,43 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 	@Override
 	public List<T> getAllData() {
 		
-		Session ss = null;
-		Transaction trans = null;
-		List<T> data = List.of();
-		
-		try {
+		return GenericUtils.<Object,List<T>>procressInSession((Session ss,Object d) -> {
 			
-			ss = ConnectionUtils.openSession();
-			trans = ss.beginTransaction();
+			List<T> result = List.of();
 			
 			Query<T> q = ss.createQuery(String.format("from %s", getCorrespondRecordClass().getSimpleName()),getCorrespondRecordClass());
-			data = q.getResultList();
+			result = q.getResultList();
 			
 			if(IHibernateInitializable.class.isAssignableFrom(getCorrespondRecordClass())) {
-				data.stream().forEach(e -> ((IHibernateInitializable) e).initialize());
+				result.stream().forEach(e -> ((IHibernateInitializable) e).initialize());
 			}
 			
-		}catch(Exception e) {
-			if(trans != null) trans.rollback();
-			throw e;
-		}finally {
-			if(ss != null) ss.close();
-		}
+			return result;
+		}, null);
 		
-		return data;
 	}
 
 	private int insertOrUpdate(T data, DataBaseOperation oper) {
-		Session s = null;
-		Transaction trans = null;
-		int result = 0;
 		
-		try{
-			s = ConnectionUtils.openSession();
-			trans = s.beginTransaction();
+		return GenericUtils.<Object,Integer>procressInSession((Session ss,Object d) -> {
 			
 			switch(oper) {
-				case CREATE:
-					s.save(data);
-					break;
-				case UPDATE:
-					s.update(data);
-					break;
-				case DELETE:
-					s.delete(data);
-					break;
-				default:
-					throw new UnsupportedOperationException("...How did you do that?");
+			case CREATE:
+				ss.save(data);
+				break;
+			case UPDATE:
+				ss.update(data);
+				break;
+			case DELETE:
+				ss.delete(data);
+				break;
+			default:
+				throw new UnsupportedOperationException("...How did you do that?");
 			}
 			
-			trans.commit();
-			result = 1;
-			
-		}catch(Exception e) {
-			if(trans != null) trans.rollback();
-			throw e;
-		}
-		finally {
-			if(s != null)s.close();
-		}
-		return result;
+			return 1;
+		}, null);
+		
 	}
 	
 	@Override

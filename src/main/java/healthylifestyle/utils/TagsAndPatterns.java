@@ -25,6 +25,8 @@ public class TagsAndPatterns {
 	public static final String REQUEST_OP_CLEAR = "rq_op_clear";
 	public static final String REQUEST_OP_SET = "rq_op_set";
 	
+	public static final String REQUEST_OP_GETALL = "rq_op_getall";
+	
 	public static final String REQUEST_CONTENT = "rq_content";
 	
 	public static boolean isAddElementRequest(HttpServletRequest r) {
@@ -43,5 +45,5 @@ public class TagsAndPatterns {
 		return r.getParameter(REQUEST_OP_SET) != null;
 	}
 	
-	public static final String DEFAULT_ADMIN_ACCOUNT = "Admin";
+	public static final String DEFAULT_SYSTEM_ACCOUNT = "System";
 }

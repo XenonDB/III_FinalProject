@@ -140,6 +140,9 @@ create table [Products](
   seller varchar(128) not null foreign key references [Member]([user])--販售該商品的會員是誰
 );
 
+insert into [Products] values(null,'維維骨力',30,300,'System');
+insert into [Products] values(null,'普拿疼疼',60,200,'System');
+
 create table [Transaction](
   oid int not null primary key identity(1,1),--訂單ID
   pid int not null foreign key references [Products]([pid]),--交易商品ID
@@ -149,7 +152,7 @@ create table [Transaction](
   price int not null, --此次交易(預計或已完成)的成交價格。
   seller_comment nvarchar(1024),--販售者對此次交易的評價。
   customer_comment nvarchar(1024),--購買者對此次交易的評價。
-  status int not null foreign key references [Transaction_status](id), --交易狀態
+  [status] int not null foreign key references [Transaction_status](id), --交易狀態
   odate datetimeoffset not null default SYSDATETIMEOFFSET(), --訂單產生的日期
   postal_code int, --交易物品欲送達地址的郵遞區號。只有在地址存在的狀況下才可能存在。
   location_desc nvarchar(1024) --交易物品欲送達的實體地址。實體地址的意義為給customer的取貨位址。

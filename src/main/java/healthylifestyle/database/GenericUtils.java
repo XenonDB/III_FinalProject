@@ -1,10 +1,9 @@
 package healthylifestyle.database;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -60,6 +59,33 @@ public class GenericUtils {
 		finally {
 			if(s != null) s.close();
 		}
+	}
+	
+	/**
+	 * 允許外部程序傳進資料，在有session的環境下執行自定義的程序，並且回傳結果。
+	 * 以支援使用lambda表示式的原則設計。
+	 * */
+	public static <D, R> R procressInSession(BiFunction<Session,D,R> cs, D data) {
+		Session s = null;
+		Transaction trans = null;
+		R result;
+		
+		try{
+			s = ConnectionUtils.openSession();
+			trans = s.beginTransaction();
+			
+			result = cs.apply(s,data);
+			
+			trans.commit();
+			
+		}catch(Exception e) {
+			if(trans != null) trans.rollback();
+			throw e;
+		}
+		finally {
+			if(s != null) s.close();
+		}
+		return result;
 	}
 	
 }
