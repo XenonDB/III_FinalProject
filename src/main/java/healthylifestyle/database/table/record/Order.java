@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableTransaction;
 import healthylifestyle.utils.TagsAndPatterns;
@@ -73,7 +75,7 @@ public class Order implements IUniquidKeyData<Integer>, IJsonSerializable<Order>
 	
 	@Override
 	public boolean canInsertIntoTable() {
-		return this.getSeller() != null && this.getCustomer() != null && this.getOdate() != null;
+		return this.getSeller() != null && this.getCustomer() != null;
 	}
 
 	@Override
@@ -102,6 +104,7 @@ public class Order implements IUniquidKeyData<Integer>, IJsonSerializable<Order>
 		this.status = proxy.status;
 	}
 
+	@JsonIgnore
 	@Override
 	public Optional<Integer> getUniquidKey() {
 		return Optional.of(this.getOid());

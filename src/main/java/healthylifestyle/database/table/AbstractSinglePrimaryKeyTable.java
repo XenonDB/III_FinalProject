@@ -23,7 +23,7 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 	 * */
 	private Optional<T> peekData(U primaryKey, boolean doReturn){
 		
-		T p = GenericUtils.<Object,T>procressInSession((Session ss,Object d) -> {
+		T p = GenericUtils.<T>procressInSession(ss -> {
 			
 			T pp = ss.get(getCorrespondRecordClass(), primaryKey);
 			if(doReturn && pp instanceof IHibernateInitializable) {
@@ -31,7 +31,7 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 			}
 			
 			return pp;
-		}, null);
+		});
 		
 		return Optional.ofNullable(p);
 		
@@ -49,7 +49,7 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 	@Override
 	public List<T> getAllData() {
 		
-		return GenericUtils.<Object,List<T>>procressInSession((Session ss,Object d) -> {
+		return GenericUtils.<List<T>>procressInSession((Session ss) -> {
 			
 			List<T> result = List.of();
 			
@@ -61,13 +61,13 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 			}
 			
 			return result;
-		}, null);
+		});
 		
 	}
 
 	private int insertOrUpdate(T data, DataBaseOperation oper) {
 		
-		return GenericUtils.<Object,Integer>procressInSession((Session ss,Object d) -> {
+		return GenericUtils.<Integer>procressInSession((Session ss) -> {
 			
 			switch(oper) {
 			case CREATE:
@@ -84,7 +84,7 @@ public abstract class AbstractSinglePrimaryKeyTable<T extends IUniquidKeyData<U>
 			}
 			
 			return 1;
-		}, null);
+		});
 		
 	}
 	

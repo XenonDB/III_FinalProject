@@ -46,13 +46,25 @@ public class Product implements IUniquidKeyData<Integer>, IJsonSerializable<Prod
 	@Column(name = "[seller]", nullable = false)
 	private String seller;// varchar(128) not null foreign key references [Member]([user])--販售該商品的會員是誰
 	
+	@Column(name = "[ptype]", nullable = false)
+	private String ptype;
+	
+	@Column(name = "[pbewrite1]")
+	private String pbewrite1;
+	
+	@Column(name = "[pbewrite2]")
+	private String pbewrite2;
+	
+	@Column(name = "[pbewrite3]")
+	private String pbewrite3;
+	
 	public Product() {
 		this.setSeller(null);
 	}
 	
 	@Override
 	public boolean canInsertIntoTable() {
-		return this.getPname() != null && this.getSeller() != null;
+		return this.getPname() != null && this.getSeller() != null && this.getPtype() != null;
 	}
 
 	@Override
@@ -139,6 +151,38 @@ public class Product implements IUniquidKeyData<Integer>, IJsonSerializable<Prod
 
 	public void setQty(int qty) {
 		this.qty = qty;
+	}
+
+	public String getPtype() {
+		return ptype;
+	}
+
+	public void setPtype(String ptype) {
+		this.ptype = ptype;
+	}
+
+	public String getPbewrite1() {
+		return pbewrite1;
+	}
+
+	public void setPbewrite1(String pbewrite1) {
+		this.pbewrite1 = pbewrite1;
+	}
+
+	public String getPbewrite2() {
+		return pbewrite2;
+	}
+
+	public void setPbewrite2(String pbewrite2) {
+		this.pbewrite2 = pbewrite2;
+	}
+
+	public String getPbewrite3() {
+		return pbewrite3;
+	}
+
+	public void setPbewrite3(String pbewrite3) {
+		this.pbewrite3 = pbewrite3;
 	}
 
 }

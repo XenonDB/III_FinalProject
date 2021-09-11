@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -65,7 +67,7 @@ public class GenericUtils {
 	 * 允許外部程序傳進資料，在有session的環境下執行自定義的程序，並且回傳結果。
 	 * 以支援使用lambda表示式的原則設計。
 	 * */
-	public static <D, R> R procressInSession(BiFunction<Session,D,R> cs, D data) {
+	public static <R> R procressInSession(Function<Session,R> cs) {
 		Session s = null;
 		Transaction trans = null;
 		R result;
@@ -74,7 +76,7 @@ public class GenericUtils {
 			s = ConnectionUtils.openSession();
 			trans = s.beginTransaction();
 			
-			result = cs.apply(s,data);
+			result = cs.apply(s);
 			
 			trans.commit();
 			

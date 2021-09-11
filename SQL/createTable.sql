@@ -131,17 +131,25 @@ create table [Transaction_status](
   name nvarchar(64) not null,
 );
 
+insert into Transaction_status values(0,'交易預定中');
+insert into Transaction_status values(1,'交易進行中');
+insert into Transaction_status values(2,'交易完成');
+
 create table [Products](
   pid int not null primary key identity(1,1),--商品ID
   ppic varchar(max),--商品照片，以html img可以使用的base64直接儲存(data:image/png;base64,...)
   pname nvarchar(128) not null,--商品名稱
   price int not null, -- 定價，單位為新台幣，但不一定會在交易時使用。
   qty int not null,--該商品剩餘數量
-  seller varchar(128) not null foreign key references [Member]([user])--販售該商品的會員是誰
+  seller varchar(128) not null foreign key references [Member]([user]),--販售該商品的會員是誰
+  ptype varchar(32) not null,--商品類型
+  pbewrite1 nvarchar(1024),--商品描述1~3
+  pbewrite2 nvarchar(1024),
+  pbewrite3 nvarchar(1024)
 );
 
-insert into [Products] values(null,'維維骨力',30,300,'System');
-insert into [Products] values(null,'普拿疼疼',60,200,'System');
+insert into [Products] values(null,'維維骨力',30,300,'System','medical',null,null,null);
+insert into [Products] values(null,'普拿疼疼',60,200,'System','medical',null,null,null);
 
 create table [Transaction](
   oid int not null primary key identity(1,1),--訂單ID
@@ -158,9 +166,11 @@ create table [Transaction](
   location_desc nvarchar(1024) --交易物品欲送達的實體地址。實體地址的意義為給customer的取貨位址。
 );
 
-insert into Transaction_status values(0,'交易預定中');
-insert into Transaction_status values(1,'交易進行中');
-insert into Transaction_status values(2,'交易完成');
+insert into [Transaction](pid,qty,seller,customer,price,[status]) values(1,5,'System','Lai',140,0);
+insert into [Transaction](pid,qty,seller,customer,price,[status]) values(2,5,'System','RRR',240,0);
+insert into [Transaction](pid,qty,seller,customer,price,[status]) values(1,5,'System','RRR',340,0);
+
+
 
 --表示一個成員可以看到那些聊天群組的紀錄。此表預設適用於權限0的成員。擁有更高階權限的人則視情況處裡。
 create table [ChattingGroupJoinList](

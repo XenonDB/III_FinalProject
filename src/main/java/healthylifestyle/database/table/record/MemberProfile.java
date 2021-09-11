@@ -550,6 +550,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 			setCity(p.city);
 			setLocation(p.location);
 			setAvailableLangs(p.availableLangs);
+			setDesc(p.desc);
 		}
 		
 		

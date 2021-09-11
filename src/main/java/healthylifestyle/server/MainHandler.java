@@ -21,7 +21,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import healthylifestyle.database.ConnectionConfig;
 import healthylifestyle.database.ConnectionUtils;
 import healthylifestyle.database.table.TableMember;
+import healthylifestyle.database.table.TableProduct;
+import healthylifestyle.database.table.TableTransaction;
 import healthylifestyle.database.table.record.MemberProfile;
+import healthylifestyle.database.table.record.Order;
+import healthylifestyle.database.table.record.Product;
 import healthylifestyle.database.table.record.Schedule;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
@@ -102,10 +106,33 @@ public class MainHandler extends HttpServlet {
 		System.out.println(s.toJson());
 		System.out.println(s2.toJson());
 		*/
+		/*
 		String json = IJsonUtilsWrapper.DEFAULT_WRAPPER.objectToJson(TableMember.INSTANCE.getDataByPK("RRR").get().getSchedule()).get();
 		System.out.println(json);
-		
-		
+		*/
+		/*
+		Product pr = TableProduct.INSTANCE.getDataByPK(2).get();
+		System.out.println(pr.toJson());
+		pr.setSeller("RRR");
+		TableProduct.INSTANCE.updateData(pr);
+		*/
+		/*
+		Order or = new Order();
+		or.setPid(2);
+		or.setCustomer("RRR");
+		TableTransaction.INSTANCE.insertData(or);
+		System.out.println(TableTransaction.INSTANCE.getDataByPK(1).get().toJson());
+		*/
+		/*
+		Product pr = TableProduct.INSTANCE.getDataByPK(2).get();
+		pr.setPname("raa");
+		pr.setPid(5);
+		TableProduct.INSTANCE.updateData(pr);
+		*/
+		/*
+		System.out.println(IJsonSerializable.listToJson(TableTransaction.INSTANCE.getTransactionListForCustomer("RRR")));
+		System.out.println(IJsonSerializable.listToJson(TableTransaction.INSTANCE.getTransactionListForSeller(";delete Transaction")));
+		*/
 		response.getWriter().print("Server is online.");
 	}
 
@@ -125,7 +152,6 @@ public class MainHandler extends HttpServlet {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static void allowCrossOriginFor(HttpServletRequest request, HttpServletResponse response, String origin) {
 		response.setHeader("Access-Control-Allow-Origin", origin /*request.getHeader("Origin")*/);
 		response.setHeader("Access-Control-Allow-Methods", "GET, POST");

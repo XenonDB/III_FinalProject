@@ -17,6 +17,8 @@
 		<mapping class="healthylifestyle.database.table.record.EmployeeProfile"/>
 		<mapping class="healthylifestyle.database.table.record.DoctorProfile"/>
 		<!--mapping class="healthylifestyle.database.table.record.AvailableLanguage"/-->
+		<mapping class="healthylifestyle.database.table.record.Product"/>
+		<mapping class="healthylifestyle.database.table.record.Order"/>
 		
     </session-factory>
 </hibernate-configuration>

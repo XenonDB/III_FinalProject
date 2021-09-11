@@ -24,10 +24,15 @@ public class TagsAndPatterns {
 	public static final String REQUEST_OP_REMOVE = "rq_op_remove";
 	public static final String REQUEST_OP_CLEAR = "rq_op_clear";
 	public static final String REQUEST_OP_SET = "rq_op_set";
+	public static final String REQUEST_OP_UPDATE = "rq_op_update";
 	
 	public static final String REQUEST_OP_GETALL = "rq_op_getall";
 	
 	public static final String REQUEST_CONTENT = "rq_content";
+	
+	public static boolean isGetAllElementRequest(HttpServletRequest r) {
+		return r.getParameter(REQUEST_OP_GETALL) != null;
+	}
 	
 	public static boolean isAddElementRequest(HttpServletRequest r) {
 		return r.getParameter(REQUEST_OP_ADD) != null;
@@ -35,6 +40,10 @@ public class TagsAndPatterns {
 	
 	public static boolean isRemoveElementRequest(HttpServletRequest r) {
 		return r.getParameter(REQUEST_OP_REMOVE) != null;
+	}
+	
+	public static boolean isUpdateElementRequest(HttpServletRequest r) {
+		return r.getParameter(REQUEST_OP_UPDATE) != null;
 	}
 	
 	public static boolean isClearElementRequest(HttpServletRequest r) {
