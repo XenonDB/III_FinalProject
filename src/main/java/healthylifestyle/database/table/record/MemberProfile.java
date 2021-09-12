@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -20,8 +19,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import org.hibernate.Hibernate;
-import org.hibernate.proxy.HibernateProxy;
-
 import healthylifestyle.database.GenericUtils;
 import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
 import healthylifestyle.database.table.TableMember;
@@ -119,10 +116,6 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
                           @AttributeOverride(name = "title", column = @Column(name = "title")),
                           @AttributeOverride(name = "theme", column = @Column(name = "theme")) })
 	private Set<Schedule> schedule;
-	
-	@ElementCollection(fetch = FetchType.LAZY)
-    @CollectionTable(name="DiagnosisBooking", joinColumns ={@JoinColumn(name = "[user]")})
-	private Set<DiagnosisBooking> diagBooking;
 	
 	public MemberProfile() {}
 	
@@ -235,7 +228,7 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	
 	public MemberProfile setBirthday(String birthday){
 		try {
-			this.birthday = TagsAndPatterns.DATE_FORMAT.parse(birthday);
+			this.birthday = birthday == null ? null : TagsAndPatterns.DATE_FORMAT.parse(birthday);
 			return this;
 		} catch (ParseException e) {
 			throw new DeserializeException(e);
@@ -456,34 +449,6 @@ public class MemberProfile implements IUniquidKeyData<String>, IJsonSerializable
 	
 	public void clearSchedule() {
 		this.setSchedule(null);
-	}
-	
-	public Set<DiagnosisBooking> getDiagBooking() {
-		
-		if(diagBooking != null && !Hibernate.isInitialized(diagBooking)) {
-			GenericUtils.procressInSession(cs -> {
-				cs.update(this);
-				Hibernate.initialize(diagBooking);
-			});
-		}
-		
-		return diagBooking;
-	}
-
-	public void setDiagBooking(Set<DiagnosisBooking> diagBooking) {
-		this.diagBooking = diagBooking == null ? new HashSet<>() : diagBooking;
-	}
-
-	public boolean addDiagBooking(DiagnosisBooking b) {
-		return this.getDiagBooking().add(b);
-	}
-	
-	public boolean removeDiagBooking(DiagnosisBooking b) {
-		return this.getDiagBooking().remove(b);
-	}
-	
-	public void clearDiagBooking() {
-		this.setDiagBooking(null);
 	}
 	
 	public Optional<String> getDesc() {

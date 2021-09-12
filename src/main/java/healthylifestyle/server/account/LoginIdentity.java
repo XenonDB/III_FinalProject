@@ -22,7 +22,7 @@ public enum LoginIdentity {
 		
 		if(p == NONE) return true;
 		
-		if(p == DOCTOR && isDoctor(user)) return true;
+		if(p == DOCTOR) return isDoctor(user);
 		
 		Optional<EmployeeProfile> emp = TableEmployee.INSTANCE.getDataByPK(user);
 		if(emp.isEmpty()) return false;

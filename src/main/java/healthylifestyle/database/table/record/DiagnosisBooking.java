@@ -2,25 +2,38 @@ package healthylifestyle.database.table.record;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Objects;
+import java.util.Optional;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import healthylifestyle.server.account.LoginIdentity;
+import healthylifestyle.database.dbinterface.record.IUniquidKeyData;
+import healthylifestyle.database.table.TableDiagnosisBooking;
 import healthylifestyle.utils.json.IJsonSerializable;
-import jdk.jshell.Diag;
 
-@Embeddable
-public class DiagnosisBooking implements IJsonSerializable<DiagnosisBooking>, Serializable{
+@Entity
+@Table(name = TableDiagnosisBooking.NAME)
+public class DiagnosisBooking implements IUniquidKeyData<Integer>, IJsonSerializable<DiagnosisBooking>, Serializable{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6918303624061535063L;
-
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="[id]", nullable = false)
+	private int id;
+	
+	@Column(name="[user]", nullable = false)
+	private String user;
+	
 	@Column(name="[date]", nullable = false)
 	private Date date;
 	
@@ -48,6 +61,8 @@ public class DiagnosisBooking implements IJsonSerializable<DiagnosisBooking>, Se
 
 	@Override
 	public void constructWithProxy(DiagnosisBooking proxy) {
+		this.id = proxy.id;
+		this.user = proxy.user;
 		this.date = proxy.date;
 		this.desc = proxy.desc;
 		this.diagClass = proxy.diagClass;
@@ -76,7 +91,6 @@ public class DiagnosisBooking implements IJsonSerializable<DiagnosisBooking>, Se
 	}
 
 	public void setDoctor(String doctor) {
-		if(!LoginIdentity.isDoctor(doctor)) throw new IllegalArgumentException(String.format("%s isn't a doctor!!", doctor));
 		this.doctor = doctor;
 	}
 
@@ -96,19 +110,31 @@ public class DiagnosisBooking implements IJsonSerializable<DiagnosisBooking>, Se
 		this.desc = desc;
 	}
 
-	@Override
-	public boolean equals(Object other) {
-		if(other == this) return true;
-		if(!(other instanceof DiagnosisBooking)) return false;
-		
-		DiagnosisBooking o = (DiagnosisBooking) other;
-		
-		return Objects.equals(this.getDatetime(), o.getDatetime()) && Objects.equals(this.getDesc(), o.getDesc()) && Objects.equals(this.getDiagClass(), o.getDiagClass()) && Objects.equals(this.getDoctor(), o.getDoctor()) && (this.getInterval() == o.getInterval());
+	public String getUser() {
+		return user;
 	}
-	
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
 	@Override
-	public int hashCode() {
-		return (new HashCodeBuilder()).append(this.getDatetime()).append(this.getDesc()).append(this.getDiagClass()).append(this.getDoctor()).append(this.getInterval()).toHashCode();
+	public boolean canInsertIntoTable() {
+		return this.user != null && this.date != null && this.doctor != null && this.diagClass != null;
+	}
+
+	@JsonIgnore
+	@Override
+	public Optional<Integer> getUniquidKey() {
+		return Optional.of(this.getId());
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

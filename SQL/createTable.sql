@@ -109,6 +109,7 @@ insert into [UserSchedule] values('RRR','2021-08-09','YAA','green');
 insert into [UserSchedule] values('RRR','2022-07-11','2ㄏ','yellow');
 
 create table [DiagnosisBooking](
+	id int not null primary key identity(1,1),
 	[user] varchar(128) not null foreign key references [Member]([user]),
 	[date] datetime not null,
 	interval int not null,
@@ -118,6 +119,7 @@ create table [DiagnosisBooking](
 )
 
 insert into [DiagnosisBooking] values('RRR','2022-07-11 08:47:03',1800,'Lai','神經內科','脖子涼涼的，感覺有東西勒著。');
+insert into [DiagnosisBooking] values('Admin','2022-07-11 08:47:03',1800,'Lai','神經內科','最近突然很想女裝。');
 
 create table [LoginRecord](
   id int not null primary key identity(1,1),

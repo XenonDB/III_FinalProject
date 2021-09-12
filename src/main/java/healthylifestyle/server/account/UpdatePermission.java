@@ -41,6 +41,7 @@ public class UpdatePermission extends HttpServlet {
 		try {
 			toUpdate = LoginIdentity.valueOf(request.getParameter(TagsAndPatterns.AJAX_TAG_UPDATELOGINIDENTITY));
 		}catch(Exception e) {
+			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}

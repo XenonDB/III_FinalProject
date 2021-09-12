@@ -43,6 +43,7 @@ public class UpdateProfile extends HttpServlet {
 		try{
 			toUpdate.constructWithJson(request.getReader());
 		}catch(Exception e) {
+			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}

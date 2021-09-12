@@ -1,19 +1,16 @@
 package healthylifestyle.server;
 
 import java.io.IOException;
-import java.util.Set;
-
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-
-import healthylifestyle.database.table.TableMember;
+import healthylifestyle.database.table.TableDiagnosisBooking;
 import healthylifestyle.database.table.record.DiagnosisBooking;
-import healthylifestyle.database.table.record.MemberProfile;
+import healthylifestyle.server.account.LoginIdentity;
 import healthylifestyle.server.account.LoginUtils;
 import healthylifestyle.server.account.OnlineUser;
 import healthylifestyle.utils.TagsAndPatterns;
@@ -46,7 +43,13 @@ public class DiagnosisBookingHandler extends HttpServlet {
 			return;
 		}
 		
-		Set<DiagnosisBooking> booking = TableMember.INSTANCE.getDataByPK(ou.getUser()).get().getDiagBooking();
+		List<DiagnosisBooking> booking;
+		
+		if(ou.getLoginIdentity() == LoginIdentity.DOCTOR) {
+			booking = TableDiagnosisBooking.INSTANCE.getBookingListForDoctor(ou.getUser());
+		}else {
+			booking = TableDiagnosisBooking.INSTANCE.getBookingListForUser(ou.getUser());
+		}
 		
 		response.getWriter().print(IJsonUtilsWrapper.DEFAULT_WRAPPER.objectToJson(booking).orElse("[]"));
 	}
@@ -61,36 +64,29 @@ public class DiagnosisBookingHandler extends HttpServlet {
 			return;
 		}
 		
-		MemberProfile mp = TableMember.INSTANCE.getDataByPK(ou.getUser()).get();
 		String content = request.getParameter(TagsAndPatterns.REQUEST_CONTENT);
 		
 		if(TagsAndPatterns.isAddElementRequest(request)) {
 			
-			DiagnosisBooking s = new DiagnosisBooking();
-			s.constructWithJson(content);
-			mp.addDiagBooking(s);
+			DiagnosisBooking s = IJsonUtilsWrapper.DEFAULT_WRAPPER.JsonToObject(content, DiagnosisBooking.class).get();
+			s.setUser(ou.getUser());
+			TableDiagnosisBooking.INSTANCE.insertData(s);
 			
 		}else if(TagsAndPatterns.isRemoveElementRequest(request)) {
 			
-			DiagnosisBooking s = new DiagnosisBooking();
-			s.constructWithJson(content);
-			mp.removeDiagBooking(s);
+			DiagnosisBooking s = IJsonUtilsWrapper.DEFAULT_WRAPPER.JsonToObject(content, DiagnosisBooking.class).get();
+			s = TableDiagnosisBooking.INSTANCE.getDataByPK(s.getId()).get();
 			
-		}else if(TagsAndPatterns.isClearElementRequest(request)) {
-			
-			mp.clearDiagBooking();
-			
-		}else if(TagsAndPatterns.isSetCollectionRequest(request)) {
-			
-			TypeReference<Set<DiagnosisBooking>> tr = new TypeReference<>() {};
-			Set<DiagnosisBooking> ss = IJsonUtilsWrapper.DEFAULT_WRAPPER.getWrappedUtil().readValue(content, tr);
-			mp.setDiagBooking(ss);
+			if(!ou.getUser().equals(s.getUser()) && !ou.getUser().equals(s.getDoctor())) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+			TableDiagnosisBooking.INSTANCE.deleteData(s);
 			
 		}else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return;
 		}
-		TableMember.INSTANCE.updateData(mp);
 	}
 
 }
