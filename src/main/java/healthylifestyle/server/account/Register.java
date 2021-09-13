@@ -83,7 +83,7 @@ public class Register extends HttpServlet {
 		}
 	}
 	
-	private MemberProfile resolveProfile(HttpServletRequest request) {
+	public static MemberProfile resolveProfile(HttpServletRequest request) {
 		String account = request.getParameter(TagsAndPatterns.AJAX_TAG_ACCOUNT);
 		String password = request.getParameter(TagsAndPatterns.AJAX_TAG_PASSWORD);
 		String email = request.getParameter(TagsAndPatterns.AJAX_TAG_EMAIL);
@@ -94,17 +94,17 @@ public class Register extends HttpServlet {
 		return null;
 	}
 	
-	private boolean isVaildEmail(String mail) {
+	public static boolean isVaildEmail(String mail) {
 		boolean r = mail == null || (mail.matches(TagsAndPatterns.VAILD_EMAIL_PATTERN1) && mail.matches(TagsAndPatterns.VAILD_EMAIL_PATTERN2));
 		return r;
 	}
 
-	private boolean isVaildPassword(String pass) {
+	public static boolean isVaildPassword(String pass) {
 		boolean r = pass != null && pass.matches(TagsAndPatterns.VAILD_PASSWORD_PATTERN);
 		return r;
 	}
 	
-	private boolean isVaildAccount(String acc) {
+	public static boolean isVaildAccount(String acc) {
 		return isVaildPassword(acc);
 	}
 	
