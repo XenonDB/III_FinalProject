@@ -262,6 +262,8 @@ healthyLifeStyleDBUtil.updateOrder(order, [successCallBack][, failCallBack][, re
 更新一筆訂單資料。order為一筆訂單資料，格式與getAllOrders中，取出的訂單資料格式相同。
 只有管理員才可執行此操作。
 -----------------------------------------------------------------------------------------------------
+healthyLifeStyleDBUtil.changePassword(newpass, [successCallBack][, failCallBack][, replaceSuccessCallBack][, replaceFailCallBack])
+更改當前使用者的密碼。
 -----------------------------------------------------------------------------------------------------
 */
 const healthyLifeStyleDBUtil = {};
